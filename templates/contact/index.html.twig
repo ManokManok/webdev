@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contact Us{% endblock %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  <link rel="stylesheet" href="{{ asset('css/admin.css') }}?v=3">
+  <style>
+    .contact-wrap{max-width:1100px;margin:24px auto;padding:0 20px}
+    .contact-grid{display:grid;grid-template-columns:2fr 1fr;gap:16px}
+    .contact-card{background:#fff;border:1px solid #eef2f7;border-radius:16px;padding:20px;box-shadow:0 10px 24px rgba(15,23,42,.06)}
+    .contact-title{font-weight:800;margin:0 0 6px;color:#0f172a}
+    .contact-sub{opacity:.8;margin-bottom:14px}
+    .contact-list{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+    .contact-list li{display:flex;gap:10px;align-items:flex-start}
+    .badge{min-width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#ffedd5,#fdba74);color:#7c2d12;display:flex;align-items:center;justify-content:center;font-weight:800}
+    .ext-link{color:#ea580c;font-weight:700;text-decoration:none}
+    .ext-link:hover{text-decoration:underline}
+  </style>
+{% endblock %}
+
+{% block body %}
+<header class="topbar" style="position:static;box-shadow:none;border-radius:12px;margin:16px auto;max-width:1100px;padding:12px 18px">
+  <div class="brand">Onins Smartphone Repair & Service</div>
+  <nav class="nav">
+    <a href="{{ path('app_admin_dashboard') }}">Admin</a>
+    <a href="{{ path('app_about') }}">About</a>
+    <a href="{{ path('app_contact') }}" class="active">Contact Us</a>
+  </nav>
+  <div></div>
+</header>
+
+<div class="contact-wrap">
+  <div class="contact-grid">
+    <section class="contact-card">
+      <h2 class="contact-title">Get in touch</h2>
+      <p class="contact-sub">We'd love to hear from you. Reach us through the details below.</p>
+      <ul class="contact-list">
+        <li>
+          <div class="badge"><i data-feather="map-pin"></i></div>
+          <div>
+            <strong>Address</strong><br>
+            Poblacion, Talisayan, Misamis Oriental 9012
+          </div>
+        </li>
+        <li>
+          <div class="badge">☎️</div>
+          <div>
+            <strong>Phone</strong><br>
+            <a class="ext-link" href="tel:+639123456789">+63 912 345 6789</a>
+          </div>
+        </li>
+        <li>
+          <div class="badge"><i data-feather="mail"></i></div>
+          <div>
+            <strong>Email</strong><br>
+            <a class="ext-link" href="mailto:onins@example.com">onins@example.com</a>
+          </div>
+        </li>
+        <li>
+          <div class="badge">🕒</div>
+          <div>
+            <strong>Hours</strong><br>
+            Mon–Sat: 9:00 AM – 6:00 PM
+          </div>
+        </li>
+      </ul>
+    </section>
+    <aside class="contact-card">
+      <h3 class="contact-title" style="font-size:18px">Quick Links</h3>
+      <ul class="contact-list">
+        <li><a class="ext-link" href="https://maps.google.com/?q=Poblacion,+Talisayan,+Misamis+Oriental+9012" target="_blank" rel="noopener">Open in Google Maps</a></li>
+        <li><a class="ext-link" href="{{ path('app_product_index') }}">Browse Products</a></li>
+        <li><a class="ext-link" href="{{ path('app_supplier_index') }}">Suppliers</a></li>
+      </ul>
+    </aside>
+  </div>
+</div>
+{% endblock %}

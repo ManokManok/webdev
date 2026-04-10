@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/admin.css') }}?v=11">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+      /* Hide global top navbar on admin page and expand container */
+      nav.navbar { display: none !important; }
+      main.container { max-width: 100% !important; padding-left: 0 !important; padding-right: 0 !important; }
+    </style>
+{% endblock %}
+
+{% block body %}
+{% set current = app.request.attributes.get('_route') %}
+<div class="admin-page admin-layout">
+    <aside class="sidebar">
+        <div class="logo"><img src="{{ asset('images/logo.png') }}" alt="ONINS"></div>
+        <nav class="menu">
+            <a class="menu-item {{ current == 'app_admin_dashboard' ? 'active' : '' }}" href="{{ path('app_admin_dashboard') }}">
+                <i class="menu-icon">📊</i>
+                <span>Admin</span>
+            </a>
+            <a class="menu-item {{ current starts with 'app_product_' ? 'active' : '' }}" href="{{ path('app_product_index') }}">
+                <i class="menu-icon"><i data-feather="smartphone"></i></i>
+                <span>Product Services</span>
+            </a>
+            <a class="menu-item {{ current starts with 'app_category_' ? 'active' : '' }}" href="{{ path('app_category_index') }}">
+                <i class="menu-icon">🏷️</i>
+                <span>Categories</span>
+            </a>
+            <a class="menu-item {{ current starts with 'app_supplier_' ? 'active' : '' }}" href="{{ path('app_supplier_index') }}">
+                <i class="menu-icon">🏢</i>
+                <span>Suppliers</span>
+            </a>
+            <a class="menu-item {{ current starts with 'app_activity_logs' ? 'active' : '' }}" href="{{ path('app_activity_logs') }}">
+                <i class="menu-icon"><i data-feather="clipboard"></i></i>
+                <span>Activity Logs</span>
+            </a>
+            <a class="menu-item {{ current starts with 'app_user_' ? 'active' : '' }}" href="{{ path('app_user_index') }}">
+                <i class="menu-icon"><i data-feather="settings"></i></i>
+                <span>User Management</span>
+            </a>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <a href="{{ path('app_logout') }}" class="logout-button">
+                <i class="menu-icon">🚪</i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </aside>
+
+    <div class="main">
+        <main class="content">
+            {% for type, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ type == 'success' ? 'success' : (type == 'error' ? 'danger' : type) }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/sidebar-animations.js') }}"></script>
+{% endblock %}

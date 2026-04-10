@@ -1,0 +1,75 @@
+{{ form_start(form) }}
+    <div class="row">
+        <div class="col-md-6">
+            <div class="mb-3">
+                {{ form_label(form.itemName) }}
+                {{ form_widget(form.itemName, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.itemName) }}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="mb-3">
+                {{ form_label(form.sku) }}
+                {{ form_widget(form.sku, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.sku) }}
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.description) }}
+        {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.description) }}
+    </div>
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="mb-3">
+                {{ form_label(form.quantity) }}
+                {{ form_widget(form.quantity, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.quantity) }}
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="mb-3">
+                {{ form_label(form.minThreshold) }}
+                {{ form_widget(form.minThreshold, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.minThreshold) }}
+                <small class="form-text text-muted">Alert when stock reaches this level</small>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="mb-3">
+                {{ form_label(form.unit) }}
+                {{ form_widget(form.unit, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.unit) }}
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="mb-3">
+                {{ form_label(form.unitCost) }}
+                {{ form_widget(form.unitCost, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.unitCost) }}
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="mb-3">
+                {{ form_label(form.supplier) }}
+                {{ form_widget(form.supplier, {'attr': {'class': 'form-select'}}) }}
+                {{ form_errors(form.supplier) }}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="mb-3">
+                {{ form_label(form.location) }}
+                {{ form_widget(form.location, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.location) }}
+            </div>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

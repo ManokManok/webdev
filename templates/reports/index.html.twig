@@ -1,0 +1,100 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reports{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="admin-page">
+    <header class="topbar">
+        <div class="brand">ONINS</div>
+        <nav class="nav">
+            <a href="{{ path('app_admin_dashboard') }}">Dashboard</a>
+            <a href="{{ path('app_product_index') }}">Products</a>
+            <a href="{{ path('app_reports_index') }}" class="active">Reports</a>
+        </nav>
+        <div class="profile"><div class="avatar">R</div></div>
+    </header>
+
+    <main class="content">
+        <section class="hero">
+            <div class="tabs">
+                <button class="tab active">Overview</button>
+                <button class="tab">Pricing</button>
+                <button class="tab">Performance</button>
+            </div>
+            <div class="widgets">
+                <div class="widget">
+                    <div class="widget-head">
+                        <div class="label">Totals</div>
+                    </div>
+                    <div class="metrics" style="margin:0">
+                        <div class="metric">
+                            <div class="icon">📦</div>
+                            <div>
+                                <div class="metric-title">Products</div>
+                                <div class="metric-value">{{ count }}</div>
+                            </div>
+                        </div>
+                        <div class="metric">
+                            <div class="icon">💰</div>
+                            <div>
+                                <div class="metric-title">Total Value</div>
+                                <div class="metric-value">₱{{ totalValue|number_format(2) }}</div>
+                            </div>
+                        </div>
+                        <div class="metric">
+                            <div class="icon">📊</div>
+                            <div>
+                                <div class="metric-title">Avg Price</div>
+                                <div class="metric-value">₱{{ avgPrice|number_format(2) }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="widget">
+                    <div class="widget-head">
+                        <div class="label">Min/Max</div>
+                    </div>
+                    <div class="metrics" style="margin:0">
+                        <div class="metric">
+                            <div class="icon">⬇️</div>
+                            <div>
+                                <div class="metric-title">Lowest</div>
+                                <div class="metric-value">₱{{ (minPrice ?? 0)|number_format(2) }}</div>
+                            </div>
+                        </div>
+                        <div class="metric">
+                            <div class="icon">⬆️</div>
+                            <div>
+                                <div class="metric-title">Highest</div>
+                                <div class="metric-value">₱{{ (maxPrice ?? 0)|number_format(2) }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="table-container" style="margin-top:20px">
+            <div class="table-header"><h2>Top 5 Most Expensive</h2></div>
+            <table class="table">
+                <thead><tr><th>Name</th><th>Price</th></tr></thead>
+                <tbody>
+                {% for p in top %}
+                    <tr>
+                        <td>{{ p.name }}</td>
+                        <td><strong>₱{{ p.price|number_format(2) }}</strong></td>
+                    </tr>
+                {% else %}
+                    <tr><td colspan="2">No data yet.</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </main>
+</div>
+{% endblock %}

@@ -1,0 +1,240 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Activity Logs{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<style>
+:root {
+    --primary-color: #f59e0b;
+    --primary-dark: #ea580c;
+    --success-color: #10b981;
+    --danger-color: #ef4444;
+    --info-color: #3b82f6;
+    --text-secondary: #6b7280;
+    --border-color: #e5e7eb;
+    --light-bg: #f9fafb;
+}
+.activity-logs-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    padding: 40px 48px;
+    border-radius: 20px;
+    margin-bottom: 32px;
+    box-shadow: 0 12px 24px rgba(234, 88, 12, 0.2);
+    color: white;
+}
+.activity-logs-header h1 {
+    margin: 0 0 8px 0;
+    font-size: 36px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+.activity-logs-header p {
+    margin: 0;
+    font-size: 16px;
+    opacity: 0.95;
+}
+.activity-logs-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+}
+.activity-logs-card-header {
+    padding: 28px 32px;
+    background: var(--light-bg);
+    border-bottom: 2px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.activity-logs-card-header h5 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: #111827;
+}
+.activity-logs-card-header small {
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 600;
+}
+.activity-logs-card-body {
+    padding: 0;
+}
+.table-activity-logs {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+.table-activity-logs thead {
+    background: var(--light-bg);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+.table-activity-logs th {
+    padding: 18px 24px;
+    text-align: left;
+    font-weight: 700;
+    font-size: 12px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 2px solid var(--border-color);
+    background: var(--light-bg);
+}
+.table-activity-logs td {
+    padding: 20px 24px;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 14px;
+    color: #374151;
+    vertical-align: middle;
+}
+.table-activity-logs tbody tr {
+    transition: all 0.2s ease;
+}
+.table-activity-logs tbody tr:hover {
+    background: rgba(245, 158, 11, 0.05);
+    transform: translateX(2px);
+}
+.table-activity-logs tbody tr:last-child td {
+    border-bottom: none;
+}
+.badge-activity {
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: inline-block;
+}
+.badge-danger { background: rgba(239, 68, 68, 0.15); color: var(--danger-color); border: 1px solid rgba(239, 68, 68, 0.2); }
+.badge-primary { background: rgba(59, 130, 246, 0.15); color: var(--info-color); border: 1px solid rgba(59, 130, 246, 0.2); }
+.badge-success { background: rgba(16, 185, 129, 0.15); color: var(--success-color); border: 1px solid rgba(16, 185, 129, 0.2); }
+.badge-secondary { background: rgba(107, 114, 128, 0.15); color: var(--text-secondary); border: 1px solid rgba(107, 114, 128, 0.2); }
+.badge-info { background: rgba(59, 130, 246, 0.15); color: var(--info-color); border: 1px solid rgba(59, 130, 246, 0.2); }
+.table-scroll-container {
+    max-height: 70vh;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+.table-scroll-container::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+.table-scroll-container::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 10px;
+}
+.table-scroll-container::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #f59e0b, #ea580c);
+    border-radius: 10px;
+}
+.table-scroll-container::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #ea580c, #dc2626);
+}
+.empty-state {
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--text-secondary);
+}
+.empty-state-icon {
+    font-size: 64px;
+    margin-bottom: 20px;
+    opacity: 0.4;
+}
+.empty-state-text {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+    <div class="activity-logs-header">
+        <h1>
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm15 2h-4v3h4V4zm0 4h-4v3h4V8zm0 4h-4v3h3a1 1 0 0 0 1-1v-2zm-5 3v-3H6v3h4zm-5 0v-3H1v2a1 1 0 0 0 1 1h1zm-4-4h4V8H1v3zm0-4h4V4H1v3zm5-3v3h4V4H6zm4 4H6v3h4V8z"/>
+            </svg>
+            Activity Logs
+        </h1>
+        <p>Monitor all system activities and user actions</p>
+    </div>
+
+    <div class="activity-logs-card">
+        <div class="activity-logs-card-header">
+            <div>
+                <h5>All Activity Logs</h5>
+                <small>Total: {{ activityLogs|length }} {{ activityLogs|length == 1 ? 'log' : 'logs' }}</small>
+            </div>
+        </div>
+        <div class="activity-logs-card-body">
+            <div class="table-scroll-container">
+                <table class="table-activity-logs">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>User</th>
+                            <th>Role</th>
+                            <th>Action</th>
+                            <th>Entity</th>
+                            <th>Entity ID</th>
+                            <th>Details</th>
+                            <th>Timestamp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for log in activityLogs %}
+                        <tr>
+                            <td><strong style="color: var(--primary-dark);">#{{ log.id }}</strong></td>
+                            <td><strong>{{ log.user ? log.user.username : 'System' }}</strong></td>
+                            <td>
+                                {% if log.user %}
+                                    {% if 'ROLE_ADMIN' in log.user.roles %}
+                                        <span class="badge-activity badge-danger">Admin</span>
+                                    {% elseif 'ROLE_STAFF' in log.user.roles %}
+                                        <span class="badge-activity badge-primary">Staff</span>
+                                    {% else %}
+                                        <span class="badge-activity badge-secondary">User</span>
+                                    {% endif %}
+                                {% else %}
+                                    <span class="badge-activity badge-secondary">System</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <span class="badge-activity badge-{{ log.action == 'CREATE' ? 'success' : (log.action == 'UPDATE' ? 'primary' : (log.action == 'DELETE' ? 'danger' : 'info')) }}">
+                                    {{ log.action }}
+                                </span>
+                            </td>
+                            <td><strong>{{ log.entity }}</strong></td>
+                            <td>{{ log.entityId ?? '-' }}</td>
+                            <td>
+                                {% if log.details %}
+                                    <span style="color: var(--text-secondary); font-size: 13px;">{{ log.details|slice(0, 60) }}{% if log.details|length > 60 %}...{% endif %}</span>
+                                {% else %}
+                                    <span style="color: #d1d5db;">-</span>
+                                {% endif %}
+                            </td>
+                            <td style="color: var(--text-secondary); font-size: 13px;">{{ log.createdAt|date('M d, Y H:i') }}</td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="8" class="empty-state">
+                                <div class="empty-state-icon"><i data-feather="clipboard"></i></div>
+                                <p class="empty-state-text">No activity logs found</p>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

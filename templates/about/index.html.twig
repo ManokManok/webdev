@@ -1,0 +1,98 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}About Me{% endblock %}
+{% block navbar %}{% endblock %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  <link rel="stylesheet" href="{{ asset('css/admin.css') }}?v=3">
+  <style>
+    .about-wrap{max-width:1100px;margin:24px auto;padding:0 20px}
+    .about-card{background:#fff;border:1px solid #eef2f7;border-radius:16px;padding:24px;box-shadow:0 10px 24px rgba(15,23,42,.06)}
+    .about-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+    .about-title{font-weight:800;color:#0f172a}
+    .about-sub{opacity:.8}
+    /* Simple page background accents */
+    .page-bg{background: radial-gradient(1200px 300px at 15% -10%, #fff7ed 0%, rgba(255,247,237,0) 60%),
+                           radial-gradient(800px 240px at 95% 0%, #ffedd5 0%, rgba(255,237,213,0) 65%); padding:14px 0 24px}
+    /* Gradient hero similar to Suppliers */
+    .page-hero{background:linear-gradient(90deg,#f59e0b,#fb923c); color:#fff; border-radius:14px; padding:16px 18px; display:flex; justify-content:space-between; align-items:center; box-shadow:0 10px 24px rgba(245,158,11,.18); max-width:1100px; margin:18px auto 8px auto}
+    .page-hero h1{margin:0; font-size:1.25rem; font-weight:800}
+    .hero-right{display:flex; gap:10px}
+    .btn-admin{background:#fff; color:#9a3412; border:none; font-weight:700; border-radius:10px; padding:10px 14px}
+    .btn-admin:hover{background:#fff7ed; color:#9a3412}
+    /* Tiny heading style for sections */
+    .section-title{color:#92400e;font-weight:800;margin-bottom:8px}
+    .muted{color:#78350f}
+    .ceo-section{display:flex;align-items:center;gap:32px;margin-top:24px;padding:28px;background:linear-gradient(135deg,#fff7ed 0%,#ffedd5 100%);border-radius:16px;border:1px solid #fed7aa}
+    .ceo-image{width:180px;height:180px;border-radius:50%;object-fit:cover;border:4px solid #fff;box-shadow:0 8px 24px rgba(234,88,12,.25);flex-shrink:0}
+    .ceo-info{flex:1}
+    .ceo-name{font-size:1.5rem;font-weight:800;color:#7c2d12;margin-bottom:4px}
+    .ceo-title{font-size:1rem;font-weight:600;color:#c2410c;margin-bottom:12px;text-transform:uppercase;letter-spacing:1px}
+    .ceo-bio{color:#78350f;line-height:1.7;margin:0}
+    @media (max-width:768px){
+      .ceo-section{flex-direction:center;text-align:center;padding:24px}
+      .ceo-image{width:150px;height:150px;margin:0 auto 20px}
+    }
+  </style>
+{% endblock %}
+
+{% block body %}
+<div class="page-bg">
+  <div class="page-hero">
+    <h1>About</h1>
+    <div class="hero-right">
+      <a class="btn-admin" href="{{ path('app_admin_dashboard') }}">Return to Admin</a>
+    </div>
+  </div>
+
+  <div class="about-wrap">
+  <div class="about-card">
+    <div class="about-header">
+      <h2 class="about-title">About Smartphone Repair & Service</h2>
+      <span class="about-sub">v1.0</span>
+    </div>
+    <p class="muted">
+      Our Smartphone Repair & Service system is designed to turn everyday phone problems into quick, confident solutions. With a warm, modern interface and carefully tuned workflows, it keeps repairs fast, parts authentic, prices transparent, and records neatly organized—so every visit feels professional and easy.
+    </p>
+    <p class="muted">
+      Behind the scenes, smart stock tracking keeps essentials on hand, supplier insights guide better sourcing, and a tidy job flow ensures each device gets the care it deserves. Up front, you’ll find focused pages, clear labels, and just the right amount of detail—no clutter, no confusion.
+    </p>
+    <hr>
+    <div class="row g-3">
+      <div class="col-12 col-lg-6">
+        <h6 class="section-title">Signature Services</h6>
+        <ul class="mb-0 muted">
+          <li>Rapid diagnostics and same‑day fixes for common issues</li>
+          <li>Precision board‑level repairs handled with proper tools</li>
+          <li>Battery, screen, and port replacements using quality parts</li>
+          <li>Data‑safe procedures with clear, friendly updates</li>
+        </ul>
+      </div>
+      <div class="col-12 col-lg-6">
+        <h6 class="section-title">Trusted Products</h6>
+        <ul class="mb-0 muted">
+          <li>Genuine and high‑grade components from vetted suppliers</li>
+          <li>Shop‑standard consumables: cleaners, adhesives, solder</li>
+          <li>Professional tools and licenses for accurate diagnostics</li>
+          <li>Warranty‑backed parts with clear documentation</li>
+        </ul>
+      </div>
+    </div>
+    <hr>
+    <div class="ceo-section">
+      <img src="{{ asset('images/nino-ceo.jpg') }}" alt="Niño Cabajon - CEO and Owner" class="ceo-image">
+      <div class="ceo-info">
+        <div class="ceo-name">Niño Cabajon</div>
+        <div class="ceo-title">CEO & Owner</div>
+        <p class="ceo-bio">
+          Niño leads the team with a passion for precision and customer care. With years of hands-on experience in smartphone repair and a commitment to quality service, he ensures every device receives expert attention. His vision drives the business forward—combining technical expertise with genuine customer relationships to deliver repairs you can trust.
+        </p>
+      </div>
+    </div>
+    <hr>
+    <p class="muted mb-0">Built for reliability on quiet days and peak seasons alike—simple, professional, and ready when you are.</p>
+  </div>
+  </div>
+</div>
+{% endblock %}

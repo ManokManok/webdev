@@ -1,0 +1,5 @@
+# Symfony Local Server Configuration
+# This tells Symfony CLI to use XAMPP PHP with our custom php.ini
+
+php:
+    binary: C:\xampp\php\php-cgi.exe

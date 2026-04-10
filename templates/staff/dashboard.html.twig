@@ -1,0 +1,159 @@
+{% extends 'staff/base.html.twig' %}
+
+{% block title %}Staff Dashboard{% endblock %}
+
+{% block content %}
+    <section class="welcome-section" style="margin-bottom: 32px;">
+        <div class="welcome-card" style="background: #fff; border: 2px solid #fde68a; border-radius: 16px; padding: 32px 40px; box-shadow: 0 8px 24px rgba(245, 158, 11, 0.12);">
+            <h2 style="margin: 0 0 12px 0; font-size: 28px; font-weight: 800; color: #1f2937; letter-spacing: -0.5px;">
+                Welcome, {{ user.username }}!
+            </h2>
+            <p style="margin: 0; font-size: 16px; color: #4b5563; line-height: 1.6;">
+                Manage products, categories, and suppliers with ease.
+            </p>
+        </div>
+    </section>
+
+    <section class="hero">
+        <div class="widgets">
+            <div class="widget turnover">
+                <div class="widget-head">
+                    <div>
+                        <div class="label">TOTAL VALUE</div>
+                        <div class="amount">₱{{ totalValue|number_format(2) }}</div>
+                        <div class="sub">Estimated total product value</div>
+                    </div>
+                    <a href="{{ path('app_product_index') }}" class="link">View All</a>
+                </div>
+                <canvas id="turnoverChart" height="100"></canvas>
+            </div>
+            <div class="widget table">
+                <div class="widget-head">
+                    <div class="label">Recent Items</div>
+                    <input type="search" class="recent-search" placeholder="Search items..." oninput="filterRecent(this.value)" aria-label="Search recent items">
+                </div>
+                <ul id="recentList" class="recent-list">
+                    {% for p in recent %}
+                        <li class="recent-row" data-name="{{ p.name|lower }}">
+                            <div class="avatar small">{{ p.name|slice(0,1)|upper }}</div>
+                            <div class="recent-info">
+                                <div class="name">{{ p.name }}</div>
+                                <div class="meta">₱{{ p.price|number_format(2) }}</div>
+                            </div>
+                            <a href="{{ path('app_product_show', {id:p.id}) }}" class="row-action">Details</a>
+                        </li>
+                    {% else %}
+                        <li class="recent-row empty">No items yet</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="metrics">
+        <div class="metric">
+            <div class="icon">📦</div>
+            <div>
+                <div class="metric-title">Products</div>
+                <div class="metric-value">{{ totalProducts }}</div>
+            </div>
+        </div>
+        <div class="metric">
+            <div class="icon">📁</div>
+            <div>
+                <div class="metric-title">Categories</div>
+                <div class="metric-value">{{ totalCategories }}</div>
+            </div>
+        </div>
+        <div class="metric">
+            <div class="icon">🏢</div>
+            <div>
+                <div class="metric-title">Suppliers</div>
+                <div class="metric-value">{{ totalSuppliers }}</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="brands">
+        <div class="brands-head">
+            <div class="brands-title">Brands we service</div>
+        </div>
+        <div class="brands-grid">
+            {% set brands = [
+              {name:'Apple', url:'https://cdn.simpleicons.org/apple/ea580c', href:'https://www.apple.com/'},
+              {name:'Asus', url:'https://cdn.simpleicons.org/asus/ea580c', href:'https://www.asus.com/'},
+              {name:'Huawei', url:'https://cdn.simpleicons.org/huawei/ea580c', href:'https://consumer.huawei.com/'},
+              {name:'Infinix', url:'https://cdn.simpleicons.org/infinix/ea580c', href:'https://www.infinixmobility.com/'},
+              {name:'Lenovo', url:'https://cdn.simpleicons.org/lenovo/ea580c', href:'https://www.lenovo.com/'},
+              {name:'Motorola', url:'https://cdn.simpleicons.org/motorola/ea580c', href:'https://www.motorola.com/'},
+              {name:'Nokia', url:'https://cdn.simpleicons.org/nokia/ea580c', href:'https://www.nokia.com/phones/'},
+              {name:'OnePlus', url:'https://cdn.simpleicons.org/oneplus/ea580c', href:'https://www.oneplus.com/'},
+              {name:'OPPO', url:'https://cdn.simpleicons.org/oppo/ea580c', href:'https://www.oppo.com/'},
+              {name:'realme', url:'https://cdn.simpleicons.org/realme/ea580c', href:'https://www.realme.com/'},
+              {name:'Samsung', url:'https://cdn.simpleicons.org/samsung/ea580c', href:'https://www.samsung.com/'},
+              {name:'Sony', url:'https://cdn.simpleicons.org/sony/ea580c', href:'https://www.sony.com/'},
+              {name:'TECNO', url:'https://cdn.simpleicons.org/tecno/ea580c', href:'https://www.tecno-mobile.com/'},
+              {name:'vivo', url:'https://cdn.simpleicons.org/vivo/ea580c', href:'https://www.vivo.com/'},
+              {name:'Xiaomi', url:'https://cdn.simpleicons.org/xiaomi/ea580c', href:'https://www.mi.com/'}
+            ] %}
+            {% for b in brands|sort((a,b) => a.name <=> b.name) %}
+            <div class="brand-item" title="{{ b.name }}">
+                <a href="{{ b.href|default('#') }}" target="_blank" rel="noopener noreferrer">
+                    <img loading="lazy" decoding="async" referrerpolicy="no-referrer" src="{{ b.url }}" alt="{{ b.name }} logo" onerror="this.style.display='none'; this.parentElement.querySelector('.brand-fallback').style.display='inline-block'">
+                    <span class="brand-fallback" aria-hidden="true">{{ b.name|slice(0,1) }}</span>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+        </section>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script>
+    function filterRecent(q){
+        const list = document.getElementById('recentList');
+        if(!list) return;
+        const term = (q||'').toLowerCase();
+        let visible = 0;
+        list.querySelectorAll('.recent-row').forEach(li=>{
+            if(li.classList.contains('empty')) return;
+            const match = (li.dataset.name||'').includes(term);
+            li.style.display = match ? '' : 'none';
+            if(match) visible++;
+        });
+        const emptyRow = list.querySelector('.recent-row.empty');
+        if(emptyRow){ emptyRow.style.display = visible===0 ? '' : 'none'; }
+    }
+
+    const ctx = document.getElementById('turnoverChart');
+    if (ctx) {
+        const data = [12, 19, 8, 15, 22, 18, 25];
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+                datasets: [{
+                    label: 'Turnover',
+                    data: data,
+                    fill: true,
+                    tension: 0.35,
+                    borderColor: '#ffffff',
+                    backgroundColor: 'rgba(255,255,255,0.2)',
+                    pointRadius: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { display: false },
+                    y: { display: false }
+                }
+            }
+        });
+    }
+    </script>
+{% endblock %}
+

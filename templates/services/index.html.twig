@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Services{% endblock %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+{% endblock %}
+
+{% block body %}
+<header class="topbar clean" style="margin:16px auto;max-width:1100px;padding:12px 18px">
+  <div class="brand"><img src="{{ asset('img/admin-logo.jpg') }}" alt="Nin's Smartphone Repair & Service" style="height:40px;width:auto;display:block" onerror="this.onerror=null;this.src='{{ asset('img/logo.svg') }}'"></div>
+  <nav class="nav">
+    <a href="{{ path('app_admin_dashboard') }}">Admin</a>
+    <a href="{{ path('app_services') }}" class="active">Services</a>
+    <a href="{{ path('app_about') }}">About</a>
+    <a href="{{ path('app_others') }}">Others</a>
+  </nav>
+  <div></div>
+</header>
+
+<div class="content">
+  <div class="panel">
+    <div class="panel-head">
+      <h3>Our Services</h3>
+    </div>
+    <p>Describe your repair and service offerings here.</p>
+  </div>
+</div>
+{% endblock %}

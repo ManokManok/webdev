@@ -1,0 +1,124 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Stock Dashboard{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Stock Dashboard</h1>
+        <div>
+            <a href="{{ path('app_stock_index') }}" class="btn btn-outline-secondary me-2">
+                <i class="fas fa-list"></i> All Stock
+            </a>
+            <a href="{{ path('app_stock_new') }}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Add Stock Item
+            </a>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Total Items</h5>
+                    <p class="card-text display-6">{{ total_items }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-dark">
+                <div class="card-body">
+                    <h5 class="card-title">Low Stock Alerts</h5>
+                    <p class="card-text display-6">{{ low_stock_items|length }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Inventory Value</h5>
+                    <p class="card-text h4">₱{{ total_inventory_value|number_format(2) }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Suppliers</h5>
+                    <p class="card-text display-6">{{ stock_by_supplier|length }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if low_stock_items|length > 0 %}
+    <div class="card border-warning mb-4">
+        <div class="card-header bg-warning text-dark">
+            <h5 class="mb-0"><i class="fas fa-exclamation-triangle"></i> Low Stock Alerts</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>SKU</th>
+                            <th>Current Qty</th>
+                            <th>Min. Threshold</th>
+                            <th>Supplier</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in low_stock_items %}
+                        <tr>
+                            <td>{{ item.itemName }}</td>
+                            <td><code>{{ item.sku ?: 'N/A' }}</code></td>
+                            <td><span class="badge bg-danger">{{ item.quantity }}</span></td>
+                            <td>{{ item.minThreshold }}</td>
+                            <td>{{ item.supplier ? item.supplier.name : 'N/A' }}</td>
+                            <td>
+                                <a href="{{ path('app_stock_show', {'id': item.id}) }}" class="btn btn-sm btn-outline-primary">View</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">Stock Distribution by Supplier</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Supplier</th>
+                            <th>Number of Items</th>
+                            <th>Total Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for data in stock_by_supplier %}
+                        <tr>
+                            <td>{{ data.supplierName }}</td>
+                            <td>{{ data.itemCount }}</td>
+                            <td>{{ data.totalQuantity }}</td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="3" class="text-center">No data available</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,152 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Stock Item: {{ stock.itemName }}{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Stock Item: {{ stock.itemName }}</h1>
+        <div>
+            <a href="{{ path('app_stock_index') }}" class="btn btn-outline-secondary me-2">Back to List</a>
+            <a href="{{ path('app_stock_edit', {'id': stock.id}) }}" class="btn btn-primary">Edit</a>
+        </div>
+    </div>
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    {% endfor %}
+
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    {% endfor %}
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Item Details</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-borderless">
+                        <tr>
+                            <th width="30%">SKU:</th>
+                            <td><code>{{ stock.sku ?: 'N/A' }}</code></td>
+                        </tr>
+                        <tr>
+                            <th>Item Name:</th>
+                            <td>{{ stock.itemName }}</td>
+                        </tr>
+                        <tr>
+                            <th>Description:</th>
+                            <td>{{ stock.description ?: 'No description available' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Supplier:</th>
+                            <td>
+                                {% if stock.supplier %}
+                                    <a href="{{ path('app_supplier_show', {'id': stock.supplier.id}) }}">{{ stock.supplier.name }}</a>
+                                {% else %}
+                                    N/A
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Storage Location:</th>
+                            <td>{{ stock.location ?: 'N/A' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Created At:</th>
+                            <td>{{ stock.createdAt ? stock.createdAt|date('Y-m-d H:i') : 'N/A' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Last Updated:</th>
+                            <td>{{ stock.updatedAt ? stock.updatedAt|date('Y-m-d H:i') : 'Never' }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card mb-4 {{ stock.isLowStock ? 'border-warning' : 'border-success' }}">
+                <div class="card-header {{ stock.isLowStock ? 'bg-warning text-dark' : 'bg-success text-white' }}">
+                    <h5 class="mb-0">Stock Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-3">
+                        <h2 class="display-4 {{ stock.isLowStock ? 'text-warning' : 'text-success' }}">
+                            {{ stock.quantity }}
+                        </h2>
+                        <p class="text-muted">{{ stock.unit ?: 'units' }} in stock</p>
+                    </div>
+                    
+                    {% if stock.isLowStock %}
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle"></i> 
+                            <strong>Low Stock Alert!</strong><br>
+                            Current quantity ({{ stock.quantity }}) is at or below minimum threshold ({{ stock.minThreshold }}).
+                        </div>
+                    {% endif %}
+
+                    <table class="table table-sm">
+                        <tr>
+                            <th>Minimum Threshold:</th>
+                            <td>{{ stock.minThreshold ?: 'Not set' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Unit Cost:</th>
+                            <td>
+                                {% if stock.unitCost %}
+                                    ₱{{ stock.unitCost|number_format(2) }}
+                                {% else %}
+                                    Not set
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Stock Value:</th>
+                            <td>
+                                {% if stock.unitCost %}
+                                    <strong>₱{{ stock.stockValue|number_format(2) }}</strong>
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Quick Adjust Quantity</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="{{ path('app_stock_adjust', {'id': stock.id}) }}">
+                        <div class="mb-3">
+                            <label class="form-label">Adjustment</label>
+                            <input type="number" name="adjustment" class="form-control" placeholder="+10 or -5" required>
+                            <small class="form-text text-muted">Use positive to add, negative to remove</small>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Reason</label>
+                            <input type="text" name="reason" class="form-control" placeholder="e.g., New shipment arrived">
+                        </div>
+                        <button type="submit" class="btn btn-warning w-100">Adjust Stock</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        {{ include('stock/_delete_form.html.twig') }}
+    </div>
+</div>
+{% endblock %}

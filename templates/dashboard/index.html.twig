@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0">Dashboard</h2>
+                </div>
+                <div class="card-body">
+                    {# Show current logged-in user #}
+                    {% if app.user %}
+                        <div class="alert alert-info">
+                            <strong>Welcome, {{ app.user.username }}!</strong>
+                            <br>
+                            <small>
+                                Email: {{ app.user.email }} | 
+                                Roles: {{ app.user.roles|join(', ') }}
+                            </small>
+                        </div>
+                    {% endif %}
+
+                    <h3>Protected Content</h3>
+                    <p>This page is only accessible to authenticated users (ROLE_USER or higher).</p>
+
+                    {# Show content based on user roles using is_granted() #}
+                    <div class="mt-4">
+                        <h4>Role-Based Content Display</h4>
+                        
+                        {# Content visible to all authenticated users #}
+                        {% if is_granted('ROLE_USER') %}
+                            <div class="alert alert-success">
+                                <strong>✓ ROLE_USER:</strong> You can see this because you are authenticated.
+                            </div>
+                        {% endif %}
+
+                        {# Content visible only to admins #}
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <div class="alert alert-danger">
+                                <strong>✓ ROLE_ADMIN:</strong> You can see this because you have admin privileges.
+                                <br>
+                                <a href="{{ path('app_admin_dashboard') }}" class="btn btn-sm btn-danger mt-2">
+                                    Go to Admin Dashboard
+                                </a>
+                            </div>
+                        {% else %}
+                            <div class="alert alert-warning">
+                                <strong>✗ ROLE_ADMIN:</strong> You need admin privileges to see admin content.
+                            </div>
+                        {% endif %}
+
+                        {# Content visible only to staff #}
+                        {% if is_granted('ROLE_STAFF') %}
+                            <div class="alert alert-primary">
+                                <strong>✓ ROLE_STAFF:</strong> You have staff privileges.
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    {# Logout Button #}
+                    <div class="mt-4">
+                        <a href="{{ path('app_logout') }}" class="btn btn-secondary">
+                            Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,615 @@
+{# templates/product/new.html.twig #}
+{% extends 'product/base.html.twig' %}
+
+{% block title %}New Product{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        /* Page Container */
+        .page-container {
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
+            background: transparent;
+            min-height: auto;
+        }
+
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
+            padding: 36px 48px;
+            border-radius: 20px;
+            margin: 0 0 28px 0;
+            width: 100%;
+            box-shadow: 0 10px 32px rgba(245, 158, 11, 0.3), 0 4px 12px rgba(234, 88, 12, 0.2);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            flex-shrink: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 24px;
+        }
+
+        .page-header:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(245, 158, 11, 0.35), 0 6px 16px rgba(234, 88, 12, 0.25);
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .page-header::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -5%;
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .page-header-content {
+            position: relative;
+            z-index: 1;
+            flex: 1;
+        }
+
+        .page-header-actions {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: flex-start;
+            padding-top: 8px;
+        }
+
+        .btn-back-to-list {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            letter-spacing: 0.2px;
+            white-space: nowrap;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-back-to-list:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-back-to-list:active {
+            transform: translateY(0);
+        }
+
+        .btn-back-to-list svg {
+            width: 18px;
+            height: 18px;
+            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+        }
+
+        .page-header h1 {
+            color: white;
+            font-size: 40px;
+            font-weight: 800;
+            margin: 0 0 16px 0;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .page-header h1 svg {
+            width: 48px;
+            height: 48px;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        }
+
+        .page-header p {
+            color: rgba(255, 255, 255, 0.98);
+            font-size: 17px;
+            margin: 0;
+            line-height: 1.7;
+            font-weight: 400;
+            max-width: 800px;
+        }
+
+        .page-header .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 16px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .page-header .breadcrumb a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.2s;
+            font-weight: 600;
+        }
+
+        .page-header .breadcrumb a:hover {
+            opacity: 0.8;
+        }
+
+        .page-header .breadcrumb svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        /* Content Layout */
+        .content-layout {
+            display: block;
+            margin: 0;
+        }
+
+        /* Main Form Card */
+        .form-card {
+            background: linear-gradient(135deg, #ffffff 0%, #fffbeb 100%);
+            border: 2px solid #fde68a;
+            border-radius: 24px;
+            padding: 0;
+            box-shadow: 0 8px 32px rgba(245, 158, 11, 0.15), 0 4px 16px rgba(245, 158, 11, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: visible;
+            display: flex;
+            flex-direction: column;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .form-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #f59e0b 0%, #ea580c 100%);
+        }
+
+        .form-card:hover {
+            box-shadow: 0 8px 32px rgba(245, 158, 11, 0.15), 0 4px 12px rgba(245, 158, 11, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .form-card-header {
+            margin-bottom: 0;
+            padding: 48px 56px 32px 56px;
+            border-bottom: 2px solid #fde68a;
+            position: relative;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, #ffffff 0%, #fffbeb 100%);
+        }
+
+        .form-card-header::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, #f59e0b 0%, #ea580c 100%);
+            border-radius: 2px;
+        }
+
+        .form-card-header h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #92400e;
+            margin: 0 0 16px 0;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            letter-spacing: -0.4px;
+        }
+
+        .form-card-header h2 svg {
+            width: 28px;
+            height: 28px;
+            color: #f59e0b;
+            filter: drop-shadow(0 1px 2px rgba(245, 158, 11, 0.3));
+        }
+
+        .form-card-header p {
+            font-size: 16px;
+            color: #b45309;
+            margin: 0;
+            line-height: 1.7;
+            font-weight: 400;
+        }
+
+        /* Quick Guide Inline (inside Service Details) */
+        .guide-card-inline {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 2px solid #fbbf24;
+            border-radius: 16px;
+            padding: 32px;
+            margin: 0 56px 40px 56px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(245, 158, 11, 0.12);
+        }
+
+        .guide-card-inline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #f59e0b 0%, #ea580c 100%);
+        }
+
+        .guide-card-header-inline {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid rgba(251, 191, 36, 0.3);
+        }
+
+        .guide-card-icon-inline {
+            width: 48px;
+            height: 48px;
+            background: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.25);
+        }
+
+        .guide-card-icon-inline svg {
+            width: 20px;
+            height: 20px;
+            color: #ea580c;
+        }
+
+        .guide-card-header-inline h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #92400e;
+            margin: 0;
+            letter-spacing: -0.3px;
+        }
+
+        .guide-content-inline {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+
+        .guide-section-inline {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .guide-section-title-inline {
+            font-size: 14px;
+            font-weight: 700;
+            color: #b45309;
+            margin: 0 0 16px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .guide-section-title-inline::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(251, 191, 36, 0.5) 0%, transparent 100%);
+        }
+
+        .guide-steps-inline {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .guide-step-inline {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .guide-step-inline:hover {
+            background: rgba(255, 255, 255, 0.9);
+            transform: translateX(4px);
+        }
+
+        .guide-step-number-inline {
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 13px;
+            font-weight: 700;
+            flex-shrink: 0;
+            box-shadow: 0 3px 8px rgba(245, 158, 11, 0.35);
+        }
+
+        .guide-step-text-inline {
+            font-size: 14px;
+            font-weight: 500;
+            color: #92400e;
+            line-height: 1.5;
+        }
+
+        .guide-tips-inline {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .guide-tips-inline li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 13px;
+            color: #92400e;
+            padding: 10px 14px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 10px;
+            transition: all 0.2s ease;
+        }
+
+        .guide-tips-inline li:hover {
+            background: rgba(255, 255, 255, 0.9);
+            transform: translateX(4px);
+        }
+
+        .guide-tips-inline li svg {
+            width: 14px;
+            height: 14px;
+            color: #f59e0b;
+            flex-shrink: 0;
+        }
+
+        /* Responsive for inline guide */
+        @media (max-width: 768px) {
+            .guide-card-inline {
+                margin: 0 32px 28px 32px;
+                padding: 24px;
+            }
+
+            .guide-content-inline {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .form-card-header {
+                padding: 36px 32px 24px 32px;
+        }
+
+            .form-card-header h2 {
+                font-size: 24px;
+            }
+        }
+
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .content-layout {
+                grid-template-columns: 1fr;
+                max-height: none;
+            }
+
+            .form-card {
+                max-height: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-container { 
+                padding: 20px 16px; 
+            }
+
+            .page-header { 
+                padding: 28px 24px; 
+                margin: 0 8px 24px 8px; 
+                border-radius: 16px;
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .page-header-content {
+                width: 100%;
+            }
+
+            .page-header-actions {
+                width: 100%;
+                padding-top: 16px;
+                justify-content: flex-start;
+            }
+
+            .btn-back-to-list {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .page-header h1 {
+                font-size: 32px;
+                gap: 14px;
+            }
+
+            .page-header h1 svg {
+                width: 40px;
+                height: 40px;
+            }
+
+            .content-layout { 
+                margin: 0 8px;
+            }
+            
+            .form-card { 
+                padding: 32px 28px; 
+                border-radius: 16px;
+            }
+
+            .form-card-header h2 {
+                font-size: 22px;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="page-container" style="padding: 0 56px 48px 56px;">
+        {# Page Header #}
+        <div class="page-header">
+            <div class="page-header-content">
+                <h1>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 5v14M5 12h14"></path>
+                        <circle cx="12" cy="12" r="10"></circle>
+                    </svg>
+                    Add Service
+                </h1>
+                <p>Add a new product to your inventory. Fill in all the required information below to get started.</p>
+                <div class="breadcrumb">
+                    <a href="{{ path('app_product_index') }}">Products</a>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                    <span>New Product</span>
+                </div>
+            </div>
+            <div class="page-header-actions">
+                <a href="{{ path('app_product_index') }}" class="btn-back-to-list">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    Back
+                </a>
+            </div>
+        </div>
+
+        {# Content Layout #}
+        <div class="content-layout">
+            {# Main Form Card #}
+            <div class="form-card">
+                <div class="form-card-header">
+                    <h2>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 11l3 3L22 4"></path>
+                            <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path>
+                        </svg>
+                        Service Details
+                    </h2>
+                    <p>Enter all product information carefully. Fields marked with an asterisk (*) are required.</p>
+                </div>
+
+                {# Quick Guide inside Service Details #}
+                <div class="guide-card-inline">
+                    <div class="guide-card-header-inline">
+                        <div class="guide-card-icon-inline">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                        </svg>
+                    </div>
+                    <h3>Quick Guide</h3>
+                    </div>
+
+                    <div class="guide-content-inline">
+                        <div class="guide-section-inline">
+                            <h4 class="guide-section-title-inline">Steps</h4>
+                            <div class="guide-steps-inline">
+                                <div class="guide-step-inline">
+                                    <span class="guide-step-number-inline">1</span>
+                                    <span class="guide-step-text-inline">Fill Product Information</span>
+                                </div>
+                                <div class="guide-step-inline">
+                                    <span class="guide-step-number-inline">2</span>
+                                    <span class="guide-step-text-inline">Set Pricing & Category</span>
+                                </div>
+                                <div class="guide-step-inline">
+                                    <span class="guide-step-number-inline">3</span>
+                                    <span class="guide-step-text-inline">Review & Save</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="guide-section-inline">
+                            <h4 class="guide-section-title-inline">Tips</h4>
+                            <ul class="guide-tips-inline">
+                                <li>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            Use clear, descriptive names
+                        </li>
+                        <li>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            Set competitive pricing
+                        </li>
+                        <li>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            Provide detailed descriptions
+                        </li>
+                        <li>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            Double-check all information
+                        </li>
+                    </ul>
+                        </div>
+                    </div>
+                </div>
+
+                {{ include('product/_form.html.twig') }}
+                </div>
+
+        </div>
+    </div>
+{% endblock %}

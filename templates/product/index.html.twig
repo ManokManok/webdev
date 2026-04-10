@@ -1,0 +1,708 @@
+{% extends 'product/base.html.twig' %}
+
+{% block title %}Products{% if is_granted('ROLE_ADMIN') %} - Admin{% else %} - Staff{% endif %}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        /* Page Container */
+        .page-container {
+            max-width: 100%;
+            margin: 0;
+            padding: 20px 28px;
+        }
+
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
+            padding: 20px 28px;
+            border-radius: 14px;
+            margin: 0 0 20px 0;
+            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -5%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .page-header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-header h1 {
+            color: white;
+            font-size: 28px;
+            font-weight: 800;
+            margin: 0;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .page-header h1 svg {
+            width: 32px;
+            height: 32px;
+        }
+
+        /* Create New Button */
+        .header-actions{display:flex;flex-direction:column;gap:10px;align-items:flex-end}
+
+        .btn-create {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: white;
+            color: #ea580c;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            letter-spacing: 0.3px;
+        }
+
+        .btn-create:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            background: #fffbeb;
+            color: #ea580c;
+        }
+
+        .btn-create svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .btn-return{
+            display:inline-flex;align-items:center;gap:10px;
+            background: white;
+            color: #ea580c;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            letter-spacing: 0.3px;
+        }
+        .btn-return:hover{
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            background: #fffbeb;
+            color: #ea580c;
+        }
+
+        /* Stats Cards */
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin: 0 0 20px 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+            border: 2px solid #fde68a;
+            border-radius: 12px;
+            padding: 18px 20px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(245, 158, 11, 0.2);
+            border-color: #fbbf24;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: 0 3px 10px rgba(245, 158, 11, 0.25);
+            flex-shrink: 0;
+        }
+
+        .stat-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .stat-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .stat-info h3 {
+            font-size: 12px;
+            color: #92400e;
+            font-weight: 600;
+            margin: 0 0 4px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-info p {
+            font-size: 24px;
+            font-weight: 800;
+            color: #ea580c;
+            margin: 0;
+        }
+
+        /* Stat card with dropdown */
+        .stat-card-wrapper {
+            position: relative;
+        }
+
+        .services-tooltip {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            margin-top: 8px;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            min-width: 260px;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.2s ease;
+            padding: 12px 0;
+        }
+
+        .stat-card-wrapper:hover .services-tooltip {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .services-tooltip-header {
+            padding: 8px 16px;
+            border-bottom: 1px solid #e5e7eb;
+            font-weight: 600;
+            font-size: 13px;
+            color: #374151;
+            background: #f9fafb;
+        }
+
+        .services-tooltip-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .services-tooltip-item {
+            padding: 10px 16px;
+            color: #4b5563;
+            font-size: 14px;
+            border-bottom: 1px solid #f3f4f6;
+            transition: all 0.2s ease;
+        }
+
+        .services-tooltip-item:last-child {
+            border-bottom: none;
+        }
+
+        .services-tooltip-item:hover {
+            background: #f3f4f6;
+            color: #ea580c;
+        }
+
+        .stat-card-wrapper .stat-card {
+            cursor: pointer;
+        }
+
+        /* Table Container */
+        .table-container {
+            background: white;
+            border: 2px solid #fde68a;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(245, 158, 11, 0.08);
+            margin: 0;
+        }
+
+        .table-header {
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+            padding: 16px 20px;
+            border-bottom: 2px solid #fde68a;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .table-header h2 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #92400e;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .table-header h2 svg {
+            width: 20px;
+            height: 20px;
+            color: #f59e0b;
+        }
+
+        /* Table */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table thead {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        }
+
+        .table thead th {
+            padding: 14px 16px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 800;
+            color: #92400e;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #fbbf24;
+            white-space: nowrap;
+        }
+
+        .table thead th:nth-child(1) { width: 60px; min-width: 60px; }
+        .table thead th:nth-child(2) { width: 200px; min-width: 200px; }
+        .table thead th:nth-child(3) { width: 300px; min-width: 200px; }
+        .table thead th:nth-child(4) { width: 120px; min-width: 100px; }
+        .table thead th:nth-child(5) { width: 160px; min-width: 140px; }
+
+        .table tbody tr {
+            border-bottom: 1px solid #fef3c7;
+            transition: all 0.2s ease;
+        }
+
+        .table tbody tr:hover {
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+        }
+
+        .table tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        .table tbody td {
+            padding: 14px 16px;
+            font-size: 14px;
+            color: #78350f;
+            vertical-align: middle;
+        }
+
+        .table tbody td:first-child {
+            font-weight: 700;
+            color: #ea580c;
+            text-align: center;
+        }
+
+        .table tbody td:nth-child(2) {
+            font-weight: 600;
+        }
+
+        .table tbody td:nth-child(4) {
+            font-weight: 600;
+            color: #ea580c;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            letter-spacing: 0.2px;
+            white-space: nowrap;
+        }
+
+        .btn-show {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            color: #1e40af;
+            border: 2px solid #93c5fd;
+        }
+
+        .btn-show:hover {
+            background: linear-gradient(135deg, #bfdbfe 0%, #93c5fd 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            color: #1e40af;
+        }
+
+        .btn-edit {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #92400e;
+            border: 2px solid #fbbf24;
+        }
+
+        .btn-edit:hover {
+            background: linear-gradient(135deg, #fde68a 0%, #fbbf24 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+            color: #92400e;
+        }
+
+        .btn-action svg {
+            width: 13px;
+            height: 13px;
+            flex-shrink: 0;
+        }
+
+        /* Sort toggle */
+        .btn-toggle{
+            display:inline-flex;align-items:center;gap:6px;
+            background: white; color:#92400e; border:2px solid #fde68a;
+            padding:8px 12px; border-radius:8px; font-weight:700; font-size:12px;
+            transition: all .2s ease;
+            white-space: nowrap;
+        }
+        .btn-toggle:hover{ background:#fffbeb; border-color:#fbbf24 }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 80px 40px;
+        }
+
+        .empty-state-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+        }
+
+        .empty-state-icon svg {
+            width: 40px;
+            height: 40px;
+            color: #ea580c;
+        }
+
+        .empty-state h3 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #92400e;
+            margin-bottom: 12px;
+        }
+
+        .empty-state p {
+            font-size: 15px;
+            color: #b45309;
+            margin-bottom: 24px;
+        }
+
+        /* Badge */
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+
+        .badge-success {
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+            color: #166534;
+            border: 1px solid #86efac;
+        }
+
+        .badge-warning {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #92400e;
+            border: 1px solid #fbbf24;
+        }
+
+        /* Search Bar */
+        .search-bar {
+            margin: 0;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .search-input {
+            width: 220px;
+            padding: 8px 14px;
+            border: 2px solid #fde68a;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #78350f;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #f59e0b;
+            box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.15);
+            background: #fffbeb;
+        }
+
+        .search-input::placeholder {
+            color: #d4a574;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .page-container { padding: 16px; }
+            
+            .page-header { padding: 20px; margin: 0 8px 16px 8px; }
+
+            .page-header-content {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+
+            .page-header h1 {
+                font-size: 28px;
+            }
+
+            .stats-cards { grid-template-columns: 1fr; margin: 0 8px 16px 8px; }
+
+            .table-container { overflow-x: auto; margin: 0 8px; }
+        
+            .table {
+                min-width: 600px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="page-container">
+        {# Page Header #}
+        <div class="page-header">
+            <div class="page-header-content">
+                <h1>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                        <path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"></path>
+                    </svg>
+                    Service Inventory
+                </h1>
+                <div class="header-actions">
+                    <a href="{{ path('app_product_new') }}" class="btn-create" style="display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%); color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.2s ease; box-shadow: 0 4px 12px rgba(234, 88, 12, 0.25);">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        <span>Add Service</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        {# Stats Cards #}
+        <div class="stats-cards">
+            <div class="stat-card-wrapper">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 7h-9M14 17H5M5 7h4m5 10h4"></path>
+                            <circle cx="7" cy="7" r="2"></circle>
+                            <circle cx="17" cy="17" r="2"></circle>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Hardware Repair Services</h3>
+                    </div>
+                </div>
+                <div class="services-tooltip">
+                    <div class="services-tooltip-header">Available Repair Services</div>
+                    <ul class="services-tooltip-list">
+                        <li class="services-tooltip-item">Screen replacement</li>
+                        <li class="services-tooltip-item">Battery replacement</li>
+                        <li class="services-tooltip-item">Keyboard and touchpad repair</li>
+                        <li class="services-tooltip-item">Charging port repair</li>
+                        <li class="services-tooltip-item">Motherboard repair</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="stat-card-wrapper">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Software Repair Services</h3>
+                    </div>
+                </div>
+                <div class="services-tooltip">
+                    <div class="services-tooltip-header">Available Software Services</div>
+                    <ul class="services-tooltip-list">
+                        <li class="services-tooltip-item">Operating system reinstallation</li>
+                        <li class="services-tooltip-item">Virus and malware removal</li>
+                        <li class="services-tooltip-item">Data recovery</li>
+                        <li class="services-tooltip-item">System optimization</li>
+                        <li class="services-tooltip-item">Driver and firmware updates</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="1" x2="12" y2="23"></line>
+                        <path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"></path>
+                    </svg>
+                </div>
+                <div class="stat-info">
+                    <h3>Total Value</h3>
+                    <p>₱{{ products|reduce((carry, product) => carry + product.price, 0)|number_format(2) }}</p>
+                </div>
+            </div>
+        </div>
+
+        {# Table Container #}
+        <div class="table-container">
+            <div class="table-header">
+                <h2>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                    Product List
+                </h2>
+                <div class="d-flex align-items-center gap-2" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                    <a class="btn-toggle" href="{{ path('app_product_index', { q: q|default(''), sort: sort == 'ASC' ? 'DESC' : 'ASC' }) }}">
+                        {% if sort == 'ASC' %}Newest first{% else %}Oldest first{% endif %}
+                    </a>
+                    <form method="get" action="{{ path('app_product_index') }}" class="search-bar" style="margin:0;">
+                        <input type="hidden" name="sort" value="{{ sort }}" />
+                        <input type="text" name="q" value="{{ q|default('') }}" class="search-input" placeholder="Search products..." />
+                        <button type="submit" class="btn-create" style="padding:8px 14px;font-size:12px;display:inline-flex;align-items:center;gap:6px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                            Search
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            {% if products|length > 0 %}
+                <div style="overflow-x: auto;">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>Product Name</th>
+                                <th>Issue</th>
+                                <th>Price</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for product in products %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td><strong>{{ product.name }}</strong></td>
+                                <td>{{ product.issue|default('—') }}</td>
+                                <td>₱{{ product.price|number_format(2) }}</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <a href="{{ path('app_product_show', {'id': product.id}) }}" class="btn-action btn-show">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                                <circle cx="12" cy="12" r="3"></circle>
+                                            </svg>
+                                            View
+                                        </a>
+                                        {# Both staff and admin can edit all products #}
+                                        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_STAFF') %}
+                                        <a href="{{ path('app_product_edit', {'id': product.id}) }}" class="btn-action btn-edit">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"></path>
+                                                <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                            </svg>
+                                            Edit
+                                        </a>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <div class="empty-state-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
+                    </div>
+                    <h3>No Products Found</h3>
+                    <p>You haven't added any products yet. Get started by creating your first product!</p>
+                    <a href="{{ path('app_product_new') }}" class="btn-create">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Create Your First Product
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

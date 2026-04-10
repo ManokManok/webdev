@@ -1,0 +1,94 @@
+security:
+    # Password Hashing Configuration
+    # Uses Symfony's auto-detection (bcrypt/argon2i based on PHP version)
+    password_hashers:
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+            algorithm: auto
+            cost: 12  # Higher cost = more secure but slower
+
+    # User Provider Configuration
+    # Loads users from the database using the User entity
+    providers:
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: email  # Field used for authentication
+
+    # Firewall Configuration
+    # Defines authentication mechanisms and protected routes
+    firewalls:
+        # Development tools (profiler, WDT) - no authentication needed
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        # Main firewall - protects all routes except those in 'dev'
+        main:
+
+            lazy: true  # Lazy loading for better performance
+            provider: app_user_provider  # Use the entity user provider
+
+            user_checker: App\Security\UserChecker
+            
+            # Form Login Configuration
+            form_login:
+                login_path: app_login      # Route to redirect to for login
+                check_path: app_login_check  # Route that processes login form (separate from display)
+                success_handler: App\Security\AuthenticationSuccessHandler  # Custom success handler
+                username_parameter: _username
+                password_parameter: _password
+                csrf_parameter: _csrf_token
+                csrf_token_id: authenticate
+                enable_csrf: true
+
+            # Logout Configuration
+            logout:
+                path: app_logout           # Route that triggers logout
+                target: app_home           # Where to redirect after logout (home page)
+                invalidate_session: true    # Clear session on logout
+            
+            # Remember Me (optional - uncomment to enable)
+            # remember_me:
+            #     secret: '%kernel.secret%'
+            #     lifetime: 604800  # 1 week in seconds
+            #     path: /
+            #     always_remember_me: false
+
+    # Access Control Rules
+    # Rules are evaluated in order - first match wins
+    # More specific rules should come first
+    access_control:
+        # Public access - login and registration pages
+        - { path: ^/login$, roles: PUBLIC_ACCESS }
+        - { path: ^/login_check, roles: PUBLIC_ACCESS }
+        - { path: ^/register, roles: PUBLIC_ACCESS }
+        - { path: ^/register-admin, roles: PUBLIC_ACCESS }
+        - { path: ^/verify-email, roles: PUBLIC_ACCESS }
+        
+        # Admin-only routes
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/admin/users, roles: ROLE_ADMIN }
+        - { path: ^/activity-logs, roles: ROLE_ADMIN }
+        
+        # Staff routes (accessible by ROLE_STAFF and ROLE_ADMIN)
+        - { path: ^/staff, roles: ROLE_STAFF }
+        
+        # Authenticated users only (any logged-in user)
+        - { path: ^/dashboard, roles: ROLE_USER }
+        - { path: ^/profile, roles: ROLE_USER }
+        
+        # Public access - homepage and other public pages
+        - { path: ^/$, roles: PUBLIC_ACCESS }
+        
+        # Default: require authentication for all other routes
+        - { path: ^/, roles: ROLE_USER }
+
+when@test:
+    security:
+        password_hashers:
+            # Faster password hashing for tests
+            Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+                algorithm: auto
+                cost: 4
+                time_cost: 3
+                memory_cost: 10
