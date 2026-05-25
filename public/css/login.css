@@ -631,3 +631,51 @@
     color: #1e40af;
     border: 1px solid #93c5fd;
 }
+
+.demo-accounts {
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+.demo-accounts-title {
+    margin: 0 0 0.5rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #9ca3af;
+    text-align: center;
+}
+
+.demo-accounts-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.demo-account-btn {
+    flex: 1 1 auto;
+    min-width: 5.5rem;
+    padding: 0.45rem 0.65rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #374151;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+}
+
+.demo-account-btn:hover {
+    border-color: #f97316;
+    background: #fff7ed;
+    color: #c2410c;
+}
+
+.demo-account-btn--customer {
+    border-color: #fdba74;
+    background: #fff7ed;
+}
