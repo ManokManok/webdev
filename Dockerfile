@@ -18,6 +18,9 @@ RUN composer install --no-dev --no-scripts --no-autoloader --no-interaction
 
 COPY . .
 
+# Symfony bootstraps .env even in prod; Railway injects real values at runtime.
+RUN printf 'APP_ENV=prod\nAPP_DEBUG=0\n' > .env
+
 RUN composer dump-autoload --optimize --classmap-authoritative
 
 ENV APP_ENV=prod

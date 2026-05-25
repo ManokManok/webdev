@@ -3,6 +3,10 @@ set -e
 
 PORT="${PORT:-8080}"
 
+if [ ! -f .env ]; then
+  printf 'APP_ENV=prod\nAPP_DEBUG=0\n' > .env
+fi
+
 echo "Waiting for database..."
 i=0
 while [ "$i" -lt 30 ]; do
