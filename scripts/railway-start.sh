@@ -34,8 +34,11 @@ if [ "${RUN_FIXTURES:-0}" = "1" ]; then
   php bin/console doctrine:fixtures:load --no-interaction || echo "Fixtures skipped."
 fi
 
+# Safe seed: never purges existing data (mobile demo login).
+php bin/console doctrine:fixtures:load --append --group=customer --no-interaction 2>/dev/null || echo "Customer seed skipped."
+
 php bin/console cache:clear --env=prod --no-warmup
 php bin/console cache:warmup --env=prod
 
 echo "Starting server on 0.0.0.0:${PORT}"
-exec php -S "0.0.0.0:${PORT}" -t public
+exec php -S "0.0.0.0:${PORT}" -t public public/index.php

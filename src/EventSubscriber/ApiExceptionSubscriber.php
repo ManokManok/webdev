@@ -33,6 +33,10 @@ class ApiExceptionSubscriber implements EventSubscriberInterface
             ? $exception->getMessage() ?: 'API request failed.'
             : 'An unexpected server error occurred. Please try again later.';
 
+        if (!$exception instanceof HttpExceptionInterface) {
+            error_log(sprintf('API error on %s: %s', $request->getPathInfo(), $exception->getMessage()));
+        }
+
         $response = new JsonResponse([
             'status' => 'error',
             'message' => $message,
