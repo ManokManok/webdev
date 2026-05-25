@@ -46,4 +46,4 @@ php bin/console cache:clear --env=prod --no-warmup
 php bin/console cache:warmup --env=prod
 
 echo "Starting server on 0.0.0.0:${PORT}"
-exec php -S "0.0.0.0:${PORT}" -t public public/index.php
+exec php -S "0.0.0.0:${PORT}" -t public public/router.php
