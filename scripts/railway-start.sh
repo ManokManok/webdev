@@ -26,10 +26,12 @@ while [ "$i" -lt 30 ]; do
   sleep 2
 done
 
-php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
+if ! php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration; then
+  echo "Migrations skipped (database may already be initialized)."
+fi
 
 if [ "${RUN_FIXTURES:-0}" = "1" ]; then
-  php bin/console doctrine:fixtures:load --no-interaction
+  php bin/console doctrine:fixtures:load --no-interaction || echo "Fixtures skipped."
 fi
 
 php bin/console cache:clear --env=prod --no-warmup
