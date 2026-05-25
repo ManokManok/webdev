@@ -30,6 +30,11 @@ if ! php bin/console doctrine:migrations:migrate --no-interaction --allow-no-mig
   echo "Migrations skipped (database may already be initialized)."
 fi
 
+if ! php bin/console dbal:run-sql "SELECT 1 FROM \`user\` LIMIT 1" >/dev/null 2>&1; then
+  echo "Base schema missing — syncing from entity mappings..."
+  php bin/console doctrine:schema:update --force --no-interaction
+fi
+
 if [ "${RUN_FIXTURES:-0}" = "1" ]; then
   php bin/console doctrine:fixtures:load --no-interaction || echo "Fixtures skipped."
 fi
