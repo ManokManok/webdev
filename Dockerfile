@@ -19,7 +19,14 @@ RUN composer install --no-dev --no-scripts --no-autoloader --no-interaction
 COPY . .
 
 # Symfony bootstraps .env even in prod; Railway injects real values at runtime.
-RUN printf 'APP_ENV=prod\nAPP_DEBUG=0\n' > .env
+RUN printf '%s\n' \
+    'APP_ENV=prod' \
+    'APP_DEBUG=0' \
+    'JWT_SECRET_KEY=%kernel.project_dir%/config/jwt/private.pem' \
+    'JWT_PUBLIC_KEY=%kernel.project_dir%/config/jwt/public.pem' \
+    'JWT_PASSPHRASE=build' \
+    > .env \
+    && mkdir -p config/jwt
 
 RUN composer dump-autoload --optimize --classmap-authoritative
 

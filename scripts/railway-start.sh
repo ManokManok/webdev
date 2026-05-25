@@ -4,8 +4,16 @@ set -e
 PORT="${PORT:-8080}"
 
 if [ ! -f .env ]; then
-  printf 'APP_ENV=prod\nAPP_DEBUG=0\n' > .env
+  printf '%s\n' \
+    'APP_ENV=prod' \
+    'APP_DEBUG=0' \
+    'JWT_SECRET_KEY=%kernel.project_dir%/config/jwt/private.pem' \
+    'JWT_PUBLIC_KEY=%kernel.project_dir%/config/jwt/public.pem' \
+    > .env
 fi
+
+mkdir -p config/jwt
+php bin/console lexik:jwt:generate-keypair --skip-if-exists --no-interaction
 
 echo "Waiting for database..."
 i=0
@@ -18,7 +26,6 @@ while [ "$i" -lt 30 ]; do
   sleep 2
 done
 
-php bin/console lexik:jwt:generate-keypair --skip-if-exists --no-interaction
 php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
 
 if [ "${RUN_FIXTURES:-0}" = "1" ]; then
