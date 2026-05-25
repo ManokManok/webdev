@@ -1,4 +1,8 @@
 security:
+    role_hierarchy:
+        ROLE_ADMIN: [ROLE_STAFF, ROLE_USER]
+        ROLE_STAFF: [ROLE_USER]
+
     # Password Hashing Configuration
     # Uses Symfony's auto-detection (bcrypt/argon2i based on PHP version)
     password_hashers:
@@ -19,33 +23,46 @@ security:
     firewalls:
         # Development tools (profiler, WDT) - no authentication needed
         dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            pattern: ^/(_profiler|_wdt|assets|build)/
             security: false
+            
+        api:
+            pattern: ^/api
+            stateless: true
+            provider: app_user_provider
+            jwt: ~
+
 
         # Main firewall - protects all routes except those in 'dev'
         main:
 
             lazy: true  # Lazy loading for better performance
             provider: app_user_provider  # Use the entity user provider
-
-            user_checker: App\Security\UserChecker
-            
-            # Form Login Configuration
-            form_login:
-                login_path: app_login      # Route to redirect to for login
-                check_path: app_login_check  # Route that processes login form (separate from display)
-                success_handler: App\Security\AuthenticationSuccessHandler  # Custom success handler
-                username_parameter: _username
-                password_parameter: _password
-                csrf_parameter: _csrf_token
-                csrf_token_id: authenticate
-                enable_csrf: true
-
-            # Logout Configuration
             logout:
                 path: app_logout           # Route that triggers logout
-                target: app_home           # Where to redirect after logout (home page)
-                invalidate_session: true    # Clear session on logout
+            custom_authenticators:
+              - App\Security\LoginAuthenticator
+              - App\Security\GoogleAuthenticator
+            
+            # Custom Authenticators
+
+            
+            # Form Login Configuration
+            # form_login:
+            #     login_path: app_login      # Route to redirect to for login
+            #     check_path: app_login_check  # Route that processes login form (separate from display)
+            #     success_handler: App\Security\AuthenticationSuccessHandler  # Custom success handler
+            #     username_parameter: _username
+            #     password_parameter: _password
+            #     csrf_parameter: _csrf_token
+            #     csrf_token_id: authenticate
+            #     enable_csrf: true
+
+            # Logout Configuration
+            # logout:
+            #     path: app_logout           # Route that triggers logout
+            #     target: app_home           # Where to redirect after logout (home page)
+            #     invalidate_session: true    # Clear session on logout
             
             # Remember Me (optional - uncomment to enable)
             # remember_me:
@@ -54,13 +71,18 @@ security:
             #     path: /
             #     always_remember_me: false
 
-    # Access Control Rules
-    # Rules are evaluated in order - first match wins
-    # More specific rules should come first
     access_control:
-        # Public access - login and registration pages
+            # API routes - public access for login, authenticated access for everything else
+        - { path: ^/api/login, roles: PUBLIC_ACCESS }
+        - { path: ^/api/register, roles: PUBLIC_ACCESS }
+        - { path: ^/api/auth/google, roles: PUBLIC_ACCESS }
+        - { path: ^/api/admin, roles: ROLE_ADMIN }
+        - { path: ^/api/staff, roles: ROLE_STAFF }
+        - { path: ^/api, roles: IS_AUTHENTICATED }
+                # Public access - login and registration pages
         - { path: ^/login$, roles: PUBLIC_ACCESS }
         - { path: ^/login_check, roles: PUBLIC_ACCESS }
+        - { path: ^/connect/google, roles: PUBLIC_ACCESS }
         - { path: ^/register, roles: PUBLIC_ACCESS }
         - { path: ^/register-admin, roles: PUBLIC_ACCESS }
         - { path: ^/verify-email, roles: PUBLIC_ACCESS }

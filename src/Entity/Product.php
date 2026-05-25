@@ -8,33 +8,49 @@ use App\Entity\Category;
 use App\Entity\Supplier;
 use App\Entity\User;
 
+use Symfony\Component\Serializer\Attribute\Groups;
+
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 class Product
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['product:read'])]
+
     private ?int $id = null;
 
     #[ORM\Column(length: 150)]
+    #[Groups(['product:read', 'product:write'])]
+
     private ?string $name = null;
 
     #[ORM\Column(type: 'text')]
+    #[Groups(['product:read', 'product:write'])]
+
     private ?string $issue = null;
 
     #[ORM\Column(type: 'float')]
+    #[Groups(['product:read', 'product:write'])]
+
     private ?float $price = null;
 
-    #[ORM\ManyToOne(inversedBy: 'products')]
+    #[ORM\ManyToOne(inversedBy: 'product')]
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[Groups(['product:read', 'product:write'])]
+
     private ?Category $category = null;
 
-    #[ORM\ManyToOne(inversedBy: 'products')]
+    #[ORM\ManyToOne(inversedBy: 'product')]
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[Groups(['product:read', 'product:write'])]
+
     private ?Supplier $supplier = null;
 
     #[ORM\ManyToOne(fetch: 'LAZY')]
     #[ORM\JoinColumn(name: 'created_by_id', nullable: true, onDelete: 'SET NULL')]
+    #[Groups(['product:read', 'product:write'])]
+
     private ?User $createdBy = null;
 
     public function getId(): ?int

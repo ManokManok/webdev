@@ -4,6 +4,30 @@ namespace App\Entity;
 
 use App\Repository\StockRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Delete;
+
+use Symfony\Component\Serializer\Attribute\Groups;
+
+#[ApiResource(
+    operations: [
+        new Get(),
+        new GetCollection(),
+        new Post(),
+        new Put(),
+        new Delete()
+    ],
+    normalizationContext: [
+        'groups' => ['stock:read']
+    ],
+    denormalizationContext: [
+        'groups' => ['stock:write']
+    ]
+)]
 
 #[ORM\Entity(repositoryClass: StockRepository::class)]
 class Stock
@@ -11,43 +35,69 @@ class Stock
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['stock:read'])]
+
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['stock:read', 'stock:write'])]
+
     private ?string $itemName = null;
 
     #[ORM\Column]
+    #[Groups(['stock:read', 'stock:write'])]
+
     private ?int $quantity = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['stock:read', 'stock:write'])]
+
     private ?int $minThreshold = null;
 
     #[ORM\Column(length: 50, nullable: true)]
+    #[Groups(['stock:read', 'stock:write'])]
+
     private ?string $unit = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['stock:read', 'stock:write'])]
+
     private ?string $description = null;
 
-    #[ORM\ManyToOne(inversedBy: 'stocks')]
+    #[ORM\ManyToOne(inversedBy: 'stock')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['stock:read', 'stock:write'])]
+
     private ?Supplier $supplier = null;
 
     #[ORM\Column]
+    #[Groups(['stock:read', 'stock:write'])]
+
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['stock:read', 'stock:write'])]
+
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\ManyToOne(inversedBy: 'managedStocks')]
+    #[ORM\ManyToOne(inversedBy: 'managedStock')]
+    #[Groups(['stock:read', 'stock:write'])]
+
     private ?User $managedBy = null;
 
     #[ORM\Column(length: 50, nullable: true)]
+    #[Groups(['stock:read', 'stock:write'])]
+
     private ?string $sku = null;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2, nullable: true)]
+    #[Groups(['stock:read', 'stock:write'])]
+
     private ?string $unitCost = null;
 
     #[ORM\Column(length: 100, nullable: true)]
+    #[Groups(['stock:read', 'stock:write'])]
+
     private ?string $location = null;
 
     public function __construct()

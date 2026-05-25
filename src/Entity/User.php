@@ -10,51 +10,76 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+use Symfony\Component\Serializer\Attribute\Groups;
+
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['user:read'])]
+
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
+    #[Groups(['user:read', 'user:write'])]
+
     private ?string $username = null;
 
     #[ORM\Column(length: 180, unique: true)]
+    #[Groups(['user:read', 'user:write'])]
+
     private ?string $email = null;
 
     #[ORM\Column(length: 100, nullable: true)]
+    #[Groups(['user:read', 'user:write'])]
+
     private ?string $fullName = null;
 
     #[ORM\Column]
+    #[Groups(['user:read', 'user:write'])]
+
     private array $roles = [];
 
     /**
      * @var string The hashed password
      */
     #[ORM\Column]
+
     private ?string $password = null;
 
     #[ORM\Column(type: Types::BOOLEAN, options: ['default' => true])]
+    #[Groups(['user:read', 'user:write'])]
+
     private ?bool $isActive = true;
 
     #[ORM\Column(type: Types::BOOLEAN, options: ['default' => false])]
+    #[Groups(['user:read', 'user:write'])]
+
     private ?bool $isArchived = false;
 
     #[ORM\Column(type: Types::BOOLEAN, options: ['default' => false])]
+    #[Groups(['user:read', 'user:write'])]
+
     private ?bool $isVerified = false;
 
     #[ORM\Column(length: 64, nullable: true)]
+
     private ?string $verificationToken = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['user:read', 'user:write'])]
     private ?string $googleId = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(['user:read', 'user:write'])]
     private ?\DateTimeInterface $createdAt = null;
 
     #[ORM\OneToMany(mappedBy: 'managedBy', targetEntity: Stock::class)]
+
+    #[Groups(['user:read', 'user:write'])]
+
     private Collection $managedStocks;
 
     public function getId(): ?int

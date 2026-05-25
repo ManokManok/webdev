@@ -4,7 +4,8 @@ when@dev:
 
     framework:
         profiler:
-            collect_serializer_data: true
+            # Serializer introspection is expensive on large responses; keep dev snappier.
+            collect_serializer_data: false
 
 when@test:
     framework:

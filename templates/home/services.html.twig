@@ -1,0 +1,370 @@
+		<!-- ══════════════════════════════
+						      SERVICES
+						  ══════════════════════════════ -->
+		<div class="page" id="pg-services">
+			<div class="ph-hero">
+				<img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=1600&q=80&auto=format&fit=crop" alt="repair tools">
+				<div class="ph-hero-ov"></div>
+				<div class="ph-hero-geo">
+					<div class="geo-circ gc1"></div>
+					<div class="geo-circ gc2"></div>
+					<div class="geo-circ gc3"></div>
+				</div>
+				<div class="ph-hero-inner">
+					<div class="pill">
+						<span class="pill-dot"></span>What We Fix</div>
+					<h1 class="stitle">Complete repair
+						<em>solutions</em>
+					</h1>
+					<p class="sdesc">
+						{% if app.user %}
+							Tap any service below to instantly book your repair. Certified techs, genuine parts, 90-day warranty.
+						{% else %}
+							Browse our services below. Sign in to book your repair instantly.
+						{% endif %}
+					</p>
+				</div>
+			</div>
+
+			<section class="fs-sec">
+				<img class="fs-bg" src="https://images.unsplash.com/photo-1555774698-0b77e0d5fac6?w=1200&q=60&auto=format&fit=crop" alt="">
+				<div class="fs-inner">
+					<div class="fs-head-row">
+						<div>
+							<div class="pill">
+								<span class="pill-dot"></span>Our Services</div>
+							<h2 class="stitle">Everything your phone
+								<em>needs</em>
+							</h2>
+						</div>
+					</div>
+
+					<!-- ══ AUTH BANNER — shown only when signed OUT ══ -->
+					{% if not app.user %}
+						<div class="auth-banner">
+							<div class="auth-banner-icon">
+								<i data-feather="lock"></i>
+							</div>
+							<div class="auth-banner-text">
+								<strong>Sign in to book a repair</strong>
+								<span>Create a free account or sign in to instantly book any of our services below.</span>
+							</div>
+							<a href="{{ path('app_login') }}" class="auth-banner-btn">Sign In / Register →</a>
+						</div>
+					{% endif %}
+
+					<!-- ══ SIGNED-IN NOTE — shown only when signed IN ══ -->
+					{% if app.user %}
+						<div class="svc-signed-in-note">
+							<span>
+								<i data-feather="check" style="color:green;width:20px;height:20px;"></i>
+							</span>
+							<span>You're signed in — tap any service card to book your repair instantly.</span>
+						</div>
+					{% endif %}
+
+					<div
+						class="fs-grid">
+
+						<!-- SCREEN REPAIR -->
+						<div class="fscard {% if app.user %}unlocked{% else %}locked{% endif %}" {% if app.user %} onclick="openBooking('Screen Repair & Replacement','smartphone','₱800–₱3,500','Most Common')" {% endif %}>
+							<div class="fsc-icon-wrap">
+								<i data-feather="smartphone"></i>
+							</div>
+							{% if not app.user %}
+								<div class="fsc-lock-badge">
+									<i data-feather="lock"></i>
+								</div>
+							{% endif %}
+							<div class="fsc-body">
+								<div class="fsc-top">
+									<h3>Screen Repair & Replacement</h3>
+								</div>
+								<p>Cracked, shattered, or unresponsive screens repaired for all major brands. Original and OEM-grade panels that restore full display clarity and touch sensitivity.</p>
+							</div>
+							<div class="fsc-meta">
+								<div class="fsc-tag">
+									<span class="fsc-tag-dot"></span>Most Common · ₱800–₱3,500</div>
+								{% if app.user %}
+									<div class="fsc-book-cta">Book Now →</div>
+								{% endif %}
+							</div>
+							{% if not app.user %}
+								<a href="{{ path('app_login') }}" class="fsc-lock-overlay">
+									<div class="fsc-lock-prompt">
+										<div class="fsc-lock-icon">
+											<i data-feather="lock"></i>
+										</div>
+										<div class="fsc-lock-title">Sign in to book</div>
+										<div class="fsc-lock-sub">Create a free account to instantly<br>book this repair.</div>
+										<div class="fsc-lock-btn">Sign In / Register →</div>
+									</div>
+								</a>
+							{% endif %}
+						</div>
+
+						<!-- BATTERY -->
+						<div class="fscard {% if app.user %}unlocked{% else %}locked{% endif %}" {% if app.user %} onclick="openBooking('Battery Replacement','battery','₱600–₱1,800','Same Day · Under 45 mins')" {% endif %}>
+							<div class="fsc-icon-wrap">
+								<i data-feather="battery"></i>
+							</div>
+							{% if not app.user %}
+								<div class="fsc-lock-badge">
+									<i data-feather="lock"></i>
+								</div>
+							{% endif %}
+							<div class="fsc-body">
+								<div class="fsc-top">
+									<h3>Battery Replacement</h3>
+								</div>
+								<p>Rapid drain or unexpected shutdowns? We install genuine OEM-spec batteries that restore your phone's original performance. Done in under 45 minutes.</p>
+							</div>
+							<div class="fsc-meta">
+								<div class="fsc-tag">
+									<span class="fsc-tag-dot"></span>Same Day · ₱600–₱1,800</div>
+								{% if app.user %}
+									<div class="fsc-book-cta">Book Now →</div>
+								{% endif %}
+							</div>
+							{% if not app.user %}
+								<a href="{{ path('app_login') }}" class="fsc-lock-overlay">
+									<div class="fsc-lock-prompt">
+										<div class="fsc-lock-icon">
+											<i data-feather="lock"></i>
+										</div>
+										<div class="fsc-lock-title">Sign in to book</div>
+										<div class="fsc-lock-sub">Create a free account to instantly<br>book this repair.</div>
+										<div class="fsc-lock-btn">Sign In / Register →</div>
+									</div>
+								</a>
+							{% endif %}
+						</div>
+
+						<!-- WATER DAMAGE -->
+						<div class="fscard {% if app.user %}unlocked{% else %}locked{% endif %}" {% if app.user %} onclick="openBooking('Water Damage Repair','droplet','₱500–₱2,000','No fix, no fee')" {% endif %}>
+							<div class="fsc-icon-wrap">
+								<i data-feather="droplet"></i>
+							</div>
+							{% if not app.user %}
+								<div class="fsc-lock-badge">
+									<i data-feather="lock"></i>
+								</div>
+							{% endif %}
+							<div class="fsc-body">
+								<div class="fsc-top">
+									<h3>Water Damage Repair</h3>
+								</div>
+								<p>Don't wait — corrosion sets in fast. Our ultrasonic cleaning process removes moisture and mineral deposits to revive your water-damaged device.</p>
+							</div>
+							<div class="fsc-meta">
+								<div class="fsc-tag">
+									<span class="fsc-tag-dot"></span>Act Fast · ₱500–₱2,000</div>
+								{% if app.user %}
+									<div class="fsc-book-cta">Book Now →</div>
+								{% endif %}
+							</div>
+							{% if not app.user %}
+								<a href="{{ path('app_login') }}" class="fsc-lock-overlay">
+									<div class="fsc-lock-prompt">
+										<div class="fsc-lock-icon">
+											<i data-feather="lock"></i>
+										</div>
+										<div class="fsc-lock-title">Sign in to book</div>
+										<div class="fsc-lock-sub">Create a free account to instantly<br>book this repair.</div>
+										<div class="fsc-lock-btn">Sign In / Register →</div>
+									</div>
+								</a>
+							{% endif %}
+						</div>
+
+						<!-- SOFTWARE -->
+						<div class="fscard {% if app.user %}unlocked{% else %}locked{% endif %}" {% if app.user %} onclick="openBooking('Software & OS Issues','settings','₱300–₱800','Quick Fix')" {% endif %}>
+							<div class="fsc-icon-wrap">
+								<i data-feather="settings"></i>
+							</div>
+							{% if not app.user %}
+								<div class="fsc-lock-badge">
+									<i data-feather="lock"></i>
+								</div>
+							{% endif %}
+							<div class="fsc-body">
+								<div class="fsc-top">
+									<h3>Software & OS Issues</h3>
+								</div>
+								<p>Freezes, boot loops, virus removal, OS updates, and full factory restoration. We diagnose the root cause and fix it properly the first time.</p>
+							</div>
+							<div class="fsc-meta">
+								<div class="fsc-tag">
+									<span class="fsc-tag-dot"></span>Quick Fix · ₱300–₱800</div>
+								{% if app.user %}
+									<div class="fsc-book-cta">Book Now →</div>
+								{% endif %}
+							</div>
+							{% if not app.user %}
+								<a href="{{ path('app_login') }}" class="fsc-lock-overlay">
+									<div class="fsc-lock-prompt">
+										<div class="fsc-lock-icon">
+											<i data-feather="lock"></i>
+										</div>
+										<div class="fsc-lock-title">Sign in to book</div>
+										<div class="fsc-lock-sub">Create a free account to instantly<br>book this repair.</div>
+										<div class="fsc-lock-btn">Sign In / Register →</div>
+									</div>
+								</a>
+							{% endif %}
+						</div>
+
+						<!-- CAMERA -->
+						<div class="fscard {% if app.user %}unlocked{% else %}locked{% endif %}" {% if app.user %} onclick="openBooking('Camera Repair','camera','₱600–₱2,500','Specialist')" {% endif %}>
+							<div class="fsc-icon-wrap">
+								<i data-feather="camera"></i>
+							</div>
+							{% if not app.user %}
+								<div class="fsc-lock-badge">
+									<i data-feather="lock"></i>
+								</div>
+							{% endif %}
+							<div class="fsc-body">
+								<div class="fsc-top">
+									<h3>Camera Repair</h3>
+								</div>
+								<p>Blurry images, broken lens glass, or camera app failures? We replace camera modules and restore full photo and video functionality for all models.</p>
+							</div>
+							<div class="fsc-meta">
+								<div class="fsc-tag">
+									<span class="fsc-tag-dot"></span>Specialist · ₱600–₱2,500</div>
+								{% if app.user %}
+									<div class="fsc-book-cta">Book Now →</div>
+								{% endif %}
+							</div>
+							{% if not app.user %}
+								<a href="{{ path('app_login') }}" class="fsc-lock-overlay">
+									<div class="fsc-lock-prompt">
+										<div class="fsc-lock-icon">
+											<i data-feather="lock"></i>
+										</div>
+										<div class="fsc-lock-title">Sign in to book</div>
+										<div class="fsc-lock-sub">Create a free account to instantly<br>book this repair.</div>
+										<div class="fsc-lock-btn">Sign In / Register →</div>
+									</div>
+								</a>
+							{% endif %}
+						</div>
+
+						<!-- CHARGING PORT -->
+						<div class="fscard {% if app.user %}unlocked{% else %}locked{% endif %}" {% if app.user %} onclick="openBooking('Charging Port Repair','power','₱400–₱1,200','Affordable')" {% endif %}>
+							<div class="fsc-icon-wrap">
+								<i data-feather="power"></i>
+							</div>
+							{% if not app.user %}
+								<div class="fsc-lock-badge">
+									<i data-feather="lock"></i>
+								</div>
+							{% endif %}
+							<div class="fsc-body">
+								<div class="fsc-top">
+									<h3>Charging Port Repair</h3>
+								</div>
+								<p>Phone not charging or connection is intermittent? We clean, repair, or replace charging ports quickly and affordably. USB-C, Lightning, and Micro-USB.</p>
+							</div>
+							<div class="fsc-meta">
+								<div class="fsc-tag">
+									<span class="fsc-tag-dot"></span>Affordable · ₱400–₱1,200</div>
+								{% if app.user %}
+									<div class="fsc-book-cta">Book Now →</div>
+								{% endif %}
+							</div>
+							{% if not app.user %}
+								<a href="{{ path('app_login') }}" class="fsc-lock-overlay">
+									<div class="fsc-lock-prompt">
+										<div class="fsc-lock-icon">
+											<i data-feather="lock"></i>
+										</div>
+										<div class="fsc-lock-title">Sign in to book</div>
+										<div class="fsc-lock-sub">Create a free account to instantly<br>book this repair.</div>
+										<div class="fsc-lock-btn">Sign In / Register →</div>
+									</div>
+								</a>
+							{% endif %}
+						</div>
+
+					</div>
+				</div>
+			</section>
+
+			<section class="price-sec">
+				<img class="price-bg" src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1600&q=60&auto=format&fit=crop" alt="">
+				<div class="price-inner">
+					<div class="price-head">
+						<div class="pill" style="margin:0 auto 18px;">
+							<span class="pill-dot"></span>Pricing</div>
+						<h2 class="stitle">Transparent
+							<em>pricing</em>
+						</h2>
+						<p class="sdesc" style="text-align:center;margin:0 auto;">No hidden fees, ever. Final quote given after free diagnostic.</p>
+					</div>
+					<div class="price-grid">
+						<div class="pcard">
+							<span class="pcard-icon">
+								<i data-feather="smartphone"></i>
+							</span>
+							<div class="pcard-name">Screen Repair</div>
+							<div class="pcard-price">₱800–₱3,500</div>
+							<div class="pcard-note">Depends on model & screen type</div>
+							<ul class="pcard-feats">
+								<li>All major brands supported</li>
+								<li>Original & OEM-grade panels</li>
+								<li>Touch calibration included</li>
+								<li>90-day warranty</li>
+							</ul>
+							{% if app.user %}
+								<button class="pcard-btn" onclick="openBooking('Screen Repair & Replacement','smartphone','₱800–₱3,500','Most Common')">Book This Repair →</button>
+							{% else %}
+								<a href="{{ path('app_login') }}" class="pcard-btn" style="background:linear-gradient(135deg,#6b7280,#9ca3af);box-shadow:none;display:inline-block;text-decoration:none;text-align:center;">
+									<i data-feather="lock" style="width:14px;height:14px;display:inline;margin-right:4px;"></i>Sign In to Book</a>
+							{% endif %}
+						</div>
+						<div class="pcard pop">
+							<span class="pcard-icon">
+								<i data-feather="battery"></i>
+							</span>
+							<div class="pcard-name">Battery Replacement</div>
+							<div class="pcard-price">₱600–₱1,800</div>
+							<div class="pcard-note">Genuine OEM cells · Under 45 mins</div>
+							<ul class="pcard-feats">
+								<li>Genuine OEM batteries</li>
+								<li>Done in under 45 minutes</li>
+								<li>Full capacity restored</li>
+								<li>90-day warranty</li>
+							</ul>
+							{% if app.user %}
+								<button class="pcard-btn" onclick="openBooking('Battery Replacement','battery','₱600–₱1,800','Same Day · Under 45 mins')">Book This Repair →</button>
+							{% else %}
+								<a href="{{ path('app_login') }}" class="pcard-btn" style="background:linear-gradient(135deg,#6b7280,#9ca3af);box-shadow:none;display:inline-block;text-decoration:none;text-align:center;">
+									<i data-feather="lock" style="width:14px;height:14px;display:inline;margin-right:4px;"></i>Sign In to Book</a>
+							{% endif %}
+						</div>
+						<div class="pcard">
+							<span class="pcard-icon">
+								<i data-feather="droplet"></i>
+							</span>
+							<div class="pcard-name">Water Damage</div>
+							<div class="pcard-price">₱500–₱2,000</div>
+							<div class="pcard-note">Free diagnosis · No fix, no fee</div>
+							<ul class="pcard-feats">
+								<li>Ultrasonic cleaning</li>
+								<li>Component-level inspection</li>
+								<li>No fix, no fee policy</li>
+								<li>Same-day assessment</li>
+							</ul>
+							{% if app.user %}
+								<button class="pcard-btn" onclick="openBooking('Water Damage Repair','droplet','₱500–₱2,000','No fix, no fee')">Book This Repair →</button>
+							{% else %}
+								<a href="{{ path('app_login') }}" class="pcard-btn" style="background:linear-gradient(135deg,#6b7280,#9ca3af);box-shadow:none;display:inline-block;text-decoration:none;text-align:center;">
+									<i data-feather="lock" style="width:14px;height:14px;display:inline;margin-right:4px;"></i>Sign In to Book</a>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>

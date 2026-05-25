@@ -1,1039 +1,381 @@
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Onin's Smartphone Repair & Services</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.css">
-  <link rel="stylesheet" href="{{ asset('css/landingpage.css') }}">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
-  </head>
-  <body>
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Onin's Smartphone Repair & Services</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="{{ asset('css/landingpage.css') }}">
+	</head>
+	<body>
 
-  <!-- ════ HEADER ════ -->
-  <header class="hdr">
-    <div class="hdr-logo" onclick="go('home')">
-      <div class="logo-mark"><i data-feather="settings"></i></div>
-      <div class="logo-text">
-        <div class="ln">Onin's</div>
-        <div class="ls">Smartphone Repair & Service</div>
-      </div>
-    </div>
-    <nav>
-      <ul class="hdr-nav">
-        <li><button onclick="go('home')" id="nb-home" class="act">Home</button></li>
-        <li><button onclick="go('about')" id="nb-about">About Us</button></li>
-        <li><button onclick="go('services')" id="nb-services">Services</button></li>
-        <li><button onclick="go('contact')" id="nb-contact">Contact Us</button></li>
-        <li>
-          {% if app.user %}
-          <form method="post" action="{{ path('app_logout') }}" style="display:inline;margin:0;padding:0;">
-            <button type="submit" class="hdr-cta">Sign Out →</button>
-          </form>
-          {% else %}
-          <button class="hdr-cta" onclick="openLoginModal()">Sign In</button>
-          {% endif %}
-        </li>
-      </ul>
-    </nav>
-  </header>
+		<!-- ════ HEADER ════ -->
+		<header class="hdr">
+			<div class="hdr-logo" onclick="go('home')">
+				<div class="logo-mark" style="color: #f8f7f6;">
+					<i data-feather="settings"></i>
+				</div>
+				<div class="logo-text">
+					<div class="ln">Onin's</div>
+					<div class="ls">Smartphone Repair & Service</div>
+				</div>
+			</div>
 
-  <!-- ══════════════════════════════
-      HOME
-  ══════════════════════════════ -->
-  <div class="page active" id="pg-home">
-    <section class="hero">
-      <img class="hero-bg-img" src="https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=1600&q=80&auto=format&fit=crop" alt="smartphone repair workshop">
-      <div class="hero-over"></div>
-      <div class="hero-dots"></div>
-      <div class="hero-shapes"><div class="hs hs1"></div><div class="hs hs2"></div><div class="hs hs3"></div></div>
-      <div class="hero-inner">
-        <div>
-          <div class="hero-badge"><span class="bd"></span> Cebu's #1 Trusted Repair Shop</div>
-          <h1 class="hero-title">Your device.<br>Fixed <em>right.</em><br>Fixed fast.</h1>
-          <p class="hero-desc">Certified technicians, genuine parts, and transparent pricing — restoring your smartphone to perfect condition. Most repairs done same day.</p>
-          <div class="hero-trust">
-            <div class="ht-faces">
-              <div class="ht-face">J</div><div class="ht-face">M</div><div class="ht-face">A</div><div class="ht-face">+</div>
-            </div>
-            <div class="ht-text">
-              <strong>2,400+ happy customers</strong>
-              <span>★★★★★ 4.9 average rating</span>
-            </div>
-          </div>
-        </div>
-        <div class="hero-vis">
-          <div class="orb orb1"></div><div class="orb orb2"></div>
-          <div class="phone-card">
-            <div class="ph-img-wrap">
-              <img src="https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?w=400&q=80&auto=format&fit=crop" alt="phone screen repair">
-              <div class="ph-label">REPAIR LIVE STATUS</div>
-            </div>
-            <div class="ph-body">
-              <div class="ph-chip"><div class="pc-lbl">Current Status</div><div class="pc-val">In Progress</div><div class="pc-sub">Est. 45 mins remaining</div></div>
-              <div class="ph-row"><i data-feather="check" style="color:green;width:20px;height:20px;"></i><div class="ph-row-info"><strong>Screen Replaced</strong><span>Original OLED · Warranty</span></div></div>
-              <div class="ph-chip"><div class="pc-lbl">Satisfaction Rate</div><div class="pc-val">98.7%</div><div class="pc-sub">From 2,400+ repairs</div></div>
-            </div>
-          </div>
-          <div class="fc fc-l"><div class="fc-lbl">Avg. Repair Time</div><div class="fc-val">2 hrs <span class="fc-badge">Fast</span></div></div>
-          <div class="fc fc-r"><div class="fc-lbl">Happy Customers</div><div class="fc-val">2,400+</div></div>
-        </div>
-      </div>
-    </section>
+			<button class="burger-toggle" id="menuToggle" aria-label="Toggle Menu">
+				<i data-feather="menu"></i>
+			</button>
 
-    <div class="stats">
-      <div class="si"><div class="si-num">2,400+</div><div class="si-lbl">Devices Repaired</div></div>
-      <div class="si"><div class="si-num">98%</div><div class="si-lbl">Satisfaction Rate</div></div>
-      <div class="si"><div class="si-num">2 hrs</div><div class="si-lbl">Avg. Turnaround</div></div>
-      <div class="si"><div class="si-num">90 days</div><div class="si-lbl">Repair Warranty</div></div>
-    </div>
+			<nav class="nav-container" id="navContainer">
+				<ul class="hdr-nav">
+					<li>
+						<button onclick="go('home')" id="nb-home" class="act">Home</button>
+					</li>
+					<li>
+						<button onclick="go('about')" id="nb-about">About Us</button>
+					</li>
+					<li>
+						<button onclick="go('services')" id="nb-services">Services</button>
+					</li>
+					<li>
+						<button onclick="go('contact')" id="nb-contact">Contact Us</button>
+					</li>
+					<li>
+						{% if app.user %}
+							<form method="post" action="{{ path('app_logout') }}" style="display:inline;margin:0;padding:0;">
+								<button type="submit" class="hdr-cta">Sign Out →</button>
+							</form>
+						{% else %}
+							<a href="{{ path('app_login') }}" class="hdr-cta" style="text-decoration: none; margin-left: 10px;">Join us now</a>
+						{% endif %}
+					</li>
+				</ul>
+			</nav>
+		</header>
 
-    <section class="svc-sec">
-      <img class="svc-bg" src="https://images.unsplash.com/photo-1555774698-0b77e0d5fac6?w=1200&q=60&auto=format&fit=crop" alt="">
-      <div class="svc-inner">
-        <div class="svc-head">
-          <div>
-            <div class="pill"><span class="pill-dot"></span>What We Do</div>
-            <h2 class="stitle">Expert repair for <em>every issue</em></h2>
-            <p class="sdesc">Professional services backed by warranty.</p>
-          </div>
-        </div>
-        <div class="svc-grid">
-          <div class="sc" onclick="go('services')"><div class="sc-icon-wrap"><i data-feather="smartphone"></i></div><div class="sc-arr">↗</div><h3>Screen Repair</h3><p>Fast replacement for all major brands. Original panels, touch calibrated, warranty included.</p></div>
-          <div class="sc" onclick="go('services')"><div class="sc-icon-wrap"><i data-feather="battery"></i></div><div class="sc-arr">↗</div><h3>Battery Replacement</h3><p>Restore original battery life with genuine OEM cells. Done in under 45 minutes.</p></div>
-          <div class="sc" onclick="go('services')"><div class="sc-icon-wrap"><i data-feather="droplet"></i></div><div class="sc-arr">↗</div><h3>Water Damage</h3><p>Ultrasonic cleaning to save your device before corrosion sets in. Act fast.</p></div>
-          <div class="sc" onclick="go('services')"><div class="sc-icon-wrap"><i data-feather="settings"></i></div><div class="sc-arr">↗</div><h3>Software Issues</h3><p>Fix crashes, freezes, and boot loops. OS updates and full factory restoration available.</p></div>
-        </div>
-      </div>
-    </section>
+		{% include 'home/home.html.twig' %}
+		{% include 'home/about.html.twig' %}
+		{% include 'home/services.html.twig' %}
+		{% include 'home/contact.html.twig' %}
 
-    <section class="steps-sec">
-      <div class="steps-inner">
-        <div class="steps-head">
-          <div class="pill"><span class="pill-dot"></span>How It Works</div>
-          <h2 class="stitle" style="font-size:42px;">Simple. <em>Stress-free.</em></h2>
-          <p class="sdesc" style="text-align:center;margin:0 auto;">Four easy steps from broken to brand-new.</p>
-        </div>
-        <div class="steps-row">
-          <div class="step-it"><div class="step-num">1</div><h4>Bring or Ship</h4><p>Walk in or mail us your device. Free diagnostic — no obligation to repair.</p></div>
-          <div class="step-it"><div class="step-num">2</div><h4>Get a Quote</h4><p>Transparent pricing with zero hidden fees. Approve before we begin.</p></div>
-          <div class="step-it"><div class="step-num">3</div><h4>Expert Repair</h4><p>Certified techs fix your device with premium parts and pro-grade tools.</p></div>
-          <div class="step-it"><div class="step-num">4</div><h4>Quality Check</h4><p>Full function test and 90-day warranty before it leaves our bench.</p></div>
-        </div>
-      </div>
-    </section>
+		<!-- ════ FOOTER ════ -->
+		<footer class="ftr">
+			<div class="ftr-inner">
+				<div class="ftr-top">
+					<div class="ftr-brand">
+						<div class="hdr-logo ftr-logo" onclick="go('home')" style="cursor:pointer;">
+							<div class="logo-mark">
+								<i data-feather="settings" style="color: #fff;"></i>
+							</div>
+							<div class="logo-text">
+								<div class="ln">Onin's</div>
+								<div class="ls">Smartphone Repair & Service</div>
+							</div>
+						</div>
+						<p>Cebu's trusted smartphone repair specialists. Certified technicians, premium parts, and every repair backed by a 90-day warranty.</p>
+						<div class="fsoc">
+							<div class="fsoc-btn">
+								<i data-feather="facebook"></i>
+							</div>
+							<div class="fsoc-btn">
+								<i data-feather="camera"></i>
+							</div>
+							<div class="fsoc-btn">
+								<i data-feather="twitter"></i>
+							</div>
+						</div>
+					</div>
+					<div class="ftr-links">
+						<div class="fc-col">
+							<h5>Company</h5>
+							<ul>
+								<li><a onclick="go('home')">Home</a></li>
+								<li><a onclick="go('about')">About Us</a></li>
+								<li><a onclick="go('contact')">Contact Us</a></li>
+							</ul>
+						</div>
+						<div class="fc-col">
+							<h5>Services</h5>
+							<ul>
+								<li><a onclick="go('services')">Screen Repair</a></li>
+								<li><a onclick="go('services')">Battery Replacement</a></li>
+								<li><a onclick="go('services')">Water Damage</a></li>
+								<li><a onclick="go('services')">Software Issues</a></li>
+								<li><a onclick="go('services')">View Pricing</a></li>
+							</ul>
+						</div>
+						<div class="fc-col">
+							<h5>Support</h5>
+							<ul>
+								<li><a onclick="go('services')">Book a Repair</a></li>
+								<li><a onclick="go('contact')">Get a Quote</a></li>
+								<li><a onclick="go('services')">Warranty Info</a></li>
+								<li><a onclick="go('about')">Our Team</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="ftr-bot">
+					<span class="ftr-copy">© 2025 Onin's Smartphone Repair & Service. All rights reserved.</span>
+					<div class="ftr-legal">
+						<a href="#">Privacy Policy</a>
+						<a href="#">Terms of Service</a>
+					</div>
+				</div>
+			</div>
+		</footer>
 
-    <section class="testi-sec">
-      <div class="testi-inner">
-        <div class="testi-head">
-          <div class="pill" style="margin:0 auto 18px;"><span class="pill-dot"></span>Customer Reviews</div>
-          <h2 class="stitle">What customers <em>say</em></h2>
-        </div>
-        <div class="testi-grid">
-          <div class="tc"><div class="tc-q">"</div><p class="tc-txt">My iPhone screen was completely shattered. Fixed in 2 hours and looks brand new! Great pricing, no surprises.</p><div class="tc-bot"><div style="display:flex;align-items:center;gap:12px;"><div class="tc-av">JM</div><div class="tc-name"><strong>James Martinez</strong><span>Verified Customer</span></div></div><div class="tc-stars">★★★★★</div></div></div>
-          <div class="tc"><div class="tc-q">"</div><p class="tc-txt">Dropped my Samsung in water and thought it was gone. These guys saved it! Professional, fast, and fair pricing.</p><div class="tc-bot"><div style="display:flex;align-items:center;gap:12px;"><div class="tc-av">ER</div><div class="tc-name"><strong>Emily Rodriguez</strong><span>Verified Customer</span></div></div><div class="tc-stars">★★★★★</div></div></div>
-          <div class="tc"><div class="tc-q">"</div><p class="tc-txt">Battery dying by noon every day. Replaced it quickly and now I get through the full day. Highly recommend to everyone!</p><div class="tc-bot"><div style="display:flex;align-items:center;gap:12px;"><div class="tc-av">DK</div><div class="tc-name"><strong>David Kim</strong><span>Verified Customer</span></div></div><div class="tc-stars">★★★★★</div></div></div>
-        </div>
-      </div>
-    </section>
+		<!-- ════ BOOKING MODAL ════ -->
+		<div class="booking-overlay" id="bookingOverlay" onclick="closeBookingOnBg(event)">
+			<div class="booking-modal" id="bookingModal">
+				<div class="bm-header">
+					<button class="bm-close" onclick="closeBooking()">×</button>
+					<div class="bm-service-badge" id="bm-badge">
+						<i data-feather="settings"></i>
+						Book a Repair</div>
+					<div class="bm-header-icon" id="bm-icon">
+						<i data-feather="smartphone"></i>
+					</div>
+					<h2 id="bm-title">Book Your Repair</h2>
+					<p id="bm-subtitle">Fill in your details and we'll confirm within 1 hour.</p>
+				</div>
+				<div class="bm-progress">
+					<div class="bm-step active" id="prog-1">
+						<div class="bm-step-num">1</div>
+						<div class="bm-step-label">Service</div>
+					</div>
+					<div class="bm-step-line" id="line-1"></div>
+					<div class="bm-step" id="prog-2">
+						<div class="bm-step-num">2</div>
+						<div class="bm-step-label">Details</div>
+					</div>
+					<div class="bm-step-line" id="line-2"></div>
+					<div class="bm-step" id="prog-3">
+						<div class="bm-step-num">3</div>
+						<div class="bm-step-label">Confirm</div>
+					</div>
+				</div>
+				<div class="bm-body">
+					<div class="bm-panel active" id="panel-1">
+						<div class="bm-section-label">Choose Your Service</div>
+						<div class="bm-services-grid" id="services-grid">
+							<div class="bm-svc-chip" data-service="Screen Repair & Replacement" data-icon="smartphone" data-price="₱800–₱3,500" data-tag="Most Common" onclick="selectService(this)">
+								<span class="bm-chip-icon">
+									<i data-feather="smartphone"></i>
+								</span>
+								<div class="bm-chip-info">
+									<strong>Screen Repair</strong>
+									<span>₱800–₱3,500</span>
+								</div>
+							</div>
+							<div class="bm-svc-chip" data-service="Battery Replacement" data-icon="battery" data-price="₱600–₱1,800" data-tag="Same Day" onclick="selectService(this)">
+								<span class="bm-chip-icon">
+									<i data-feather="battery"></i>
+								</span>
+								<div class="bm-chip-info">
+									<strong>Battery Replacement</strong>
+									<span>₱600–₱1,800</span>
+								</div>
+							</div>
+							<div class="bm-svc-chip" data-service="Water Damage Repair" data-icon="droplet" data-price="₱500–₱2,000" data-tag="No fix, no fee" onclick="selectService(this)">
+								<span class="bm-chip-icon">
+									<i data-feather="droplet"></i>
+								</span>
+								<div class="bm-chip-info">
+									<strong>Water Damage</strong>
+									<span>₱500–₱2,000</span>
+								</div>
+							</div>
+							<div class="bm-svc-chip" data-service="Software & OS Issues" data-icon="settings" data-price="₱300–₱800" data-tag="Quick Fix" onclick="selectService(this)">
+								<span class="bm-chip-icon">
+									<i data-feather="settings"></i>
+								</span>
+								<div class="bm-chip-info">
+									<strong>Software Issues</strong>
+									<span>₱300–₱800</span>
+								</div>
+							</div>
+							<div class="bm-svc-chip" data-service="Camera Repair" data-icon="camera" data-price="₱600–₱2,500" data-tag="Specialist" onclick="selectService(this)">
+								<span class="bm-chip-icon">
+									<i data-feather="camera"></i>
+								</span>
+								<div class="bm-chip-info">
+									<strong>Camera Repair</strong>
+									<span>₱600–₱2,500</span>
+								</div>
+							</div>
+							<div class="bm-svc-chip" data-service="Charging Port Repair" data-icon="power" data-price="₱400–₱1,200" data-tag="Affordable" onclick="selectService(this)">
+								<span class="bm-chip-icon">
+									<i data-feather="power"></i>
+								</span>
+								<div class="bm-chip-info">
+									<strong>Charging Port</strong>
+									<span>₱400–₱1,200</span>
+								</div>
+							</div>
+						</div>
+						<div class="bm-section-label">Preferred Date & Time</div>
+						<div class="bm-row" style="margin-bottom:20px;">
+							<div class="bm-field">
+								<label>Preferred Date</label><input type="date" id="bm-date" min=""></div>
+							<div class="bm-field">
+								<label>Preferred Time</label>
+								<select id="bm-time-select">
+									<option value="">Select time...</option>
+									<option>8:00 AM – 10:00 AM</option>
+									<option>10:00 AM – 12:00 PM</option>
+									<option>12:00 PM – 2:00 PM</option>
+									<option>2:00 PM – 4:00 PM</option>
+									<option>4:00 PM – 6:00 PM</option>
+								</select>
+							</div>
+						</div>
+						<div class="bm-footer">
+							<button class="bm-btn-next" id="step1-next" onclick="goToStep(2)" disabled>Continue → Details</button>
+						</div>
+					</div>
+					<div class="bm-panel" id="panel-2">
+						<div class="bm-section-label">Your Information</div>
+						<div class="bm-row">
+							<div class="bm-field">
+								<label>First Name</label><input type="text" id="bm-fname" placeholder="Juan"></div>
+							<div class="bm-field">
+								<label>Last Name</label><input type="text" id="bm-lname" placeholder="Dela Cruz"></div>
+						</div>
+						<div class="bm-row">
+							<div class="bm-field">
+								<label>Phone / Viber</label><input type="tel" id="bm-phone" placeholder="+63 900 000 0000"></div>
+							<div class="bm-field">
+								<label>Email (Optional)</label><input type="email" id="bm-email" placeholder="you@email.com"></div>
+						</div>
+						<div class="bm-section-label">Device Info</div>
+						<div class="bm-row">
+							<div class="bm-field">
+								<label>Device Brand</label>
+								<select id="bm-brand">
+									<option value="">Select brand...</option>
+									<option>Apple iPhone</option>
+									<option>Samsung</option>
+									<option>Huawei</option>
+									<option>Oppo</option>
+									<option>Vivo</option>
+									<option>Xiaomi</option>
+									<option>Realme</option>
+									<option>OnePlus</option>
+									<option>Nokia</option>
+									<option>Other</option>
+								</select>
+							</div>
+							<div class="bm-field">
+								<label>Device Model</label><input type="text" id="bm-model" placeholder="e.g. iPhone 14, S23 Ultra"></div>
+						</div>
+						<div class="bm-field">
+							<label>Describe the Issue</label>
+							<textarea id="bm-issue" placeholder="Tell us more about what's happening with your device..."></textarea>
+						</div>
+						<div class="bm-footer">
+							<button class="bm-btn-back" onclick="goToStep(1)">← Back</button>
+							<button class="bm-btn-next" onclick="goToStep(3)">Review Booking →</button>
+						</div>
+					</div>
+					<div class="bm-panel" id="panel-3">
+						<div class="bm-section-label">Booking Summary</div>
+						<div class="bm-review-card" id="bm-review">
+							<div class="bm-review-row">
+								<span class="label">Service</span>
+								<span class="value" id="rev-service">—</span>
+							</div>
+							<div class="bm-review-row">
+								<span class="label">Price Range</span>
+								<span class="value" id="rev-price">—</span>
+							</div>
+							<div class="bm-review-row">
+								<span class="label">Date & Time</span>
+								<span class="value" id="rev-datetime">—</span>
+							</div>
+							<div class="bm-review-row">
+								<span class="label">Name</span>
+								<span class="value" id="rev-name">—</span>
+							</div>
+							<div class="bm-review-row">
+								<span class="label">Phone</span>
+								<span class="value" id="rev-phone">—</span>
+							</div>
+							<div class="bm-review-row">
+								<span class="label">Device</span>
+								<span class="value" id="rev-device">—</span>
+							</div>
+							<div class="bm-review-row">
+								<span class="label">Issue</span>
+								<span class="value" id="rev-issue">—</span>
+							</div>
+						</div>
+						<p style="font-size:13px;color:var(--text3);line-height:1.6;margin-bottom:24px;">
+							<i data-feather="clipboard"></i>
+							Final pricing is confirmed after a
+							<strong>free diagnostic</strong>. We'll contact you within 1 hour to confirm your appointment.</p>
+						<div class="bm-footer">
+							<button class="bm-btn-back" onclick="goToStep(2)">← Edit Details</button>
+							<button class="bm-btn-next" onclick="confirmBooking()">✓ Confirm Booking</button>
+						</div>
+					</div>
+					<div class="bm-panel" id="panel-success">
+						<div class="bm-success">
+							<div class="bm-success-icon">
+								<i data-feather="check-circle" style="color:green;width:40px;height:40px;"></i>
+							</div>
+							<h3>Booking Confirmed!</h3>
+							<p>Thank you! Your repair request has been received. Our team will call or message you within
+								<strong>1 hour</strong>
+								to confirm your appointment details.</p>
+							<div class="bm-ref" id="bm-ref-num">ONR-000000</div>
+							<p style="font-size:13px;color:var(--text3);margin-bottom:20px;">Save your reference number above. You can also check your booking status by contacting us.</p>
+							<button class="bm-btn-next" onclick="closeBooking()" style="max-width:280px;">Back to Services</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
-    <section class="cta-sec">
-      <div class="cta-box">
-        <img class="cta-img" src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=1400&q=80&auto=format&fit=crop" alt="smartphone">
-        <div class="cta-ov"></div>
-        <div class="cta-txt"><h2>Ready to get your phone fixed?</h2><p>Walk in, book online, or call us. We make it simple.</p></div>
-      </div>
-    </section>
-  </div>
+		<script src="{{ asset('js/homeindex.js') }}"></script>
+		<!-- Feather Icons Library - Load at end for proper initialization -->
+		<script src="{{ asset('vendor/feather-icons/feather.min.js') }}" defer></script>
+		<script>
+			/* Safe Feather Icons initialization with defer handling */
+function renderIconsWhenReady() {
+if (typeof feather !== 'undefined' && feather.replace) {
+feather.replace();
+} else {
+setTimeout(renderIconsWhenReady, 50);
+}
+}
 
-  <!-- ══════════════════════════════
-      ABOUT
-  ══════════════════════════════ -->
-  <div class="page" id="pg-about">
-    <div class="ph-hero">
-      <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1600&q=80&auto=format&fit=crop" alt="repair shop">
-      <div class="ph-hero-ov"></div>
-      <div class="ph-hero-geo"><div class="geo-circ gc1"></div><div class="geo-circ gc2"></div><div class="geo-circ gc3"></div></div>
-      <div class="ph-hero-inner">
-        <div class="pill"><span class="pill-dot"></span>Our Story</div>
-        <h1 class="stitle">Built on trust,<br>driven by <em>precision.</em></h1>
-        <p class="sdesc">Years of experience, thousands of successful repairs, and a team that genuinely cares.</p>
-      </div>
-    </div>
-    <section class="ab-story">
-      <div class="ab-story-inner">
-        <div class="ab-img-col">
-          <div class="ab-img-main"><img src="https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?w=800&q=80&auto=format&fit=crop" alt="technician repairing phone"></div>
-          <div class="ab-img-badge"><div class="num">2,400+</div><div class="lbl">Devices Repaired</div></div>
-        </div>
-        <div class="ab-text">
-          <h2>Cebu's go-to smartphone repair specialists.</h2>
-          <p>Onin's Smartphone Repair & Service was founded with one goal: give people in Cebu a trustworthy, affordable place to get their devices fixed right the first time.</p>
-          <p>Our certified technicians stay current with the latest techniques and use only genuine or high-quality replacement components. We know how vital your phone is — we treat every device as if it were our own.</p>
-          <div class="perks">
-            <div class="pk"><div class="pk-ic"><i data-feather="shield"></i></div><div class="pk-body"><strong>90-Day Repair Warranty</strong><span>Every repair is fully covered. Peace of mind guaranteed.</span></div></div>
-            <div class="pk"><div class="pk-ic"><i data-feather="search"></i></div><div class="pk-body"><strong>Free Diagnostics</strong><span>Know exactly what's wrong before committing to anything.</span></div></div>
-            <div class="pk"><div class="pk-ic"><i data-feather="zap"></i></div><div class="pk-body"><strong>Same-Day Service</strong><span>Most repairs completed within 2 hours, walk-out ready.</span></div></div>
-            <div class="pk"><div class="pk-ic"><i data-feather="award"></i></div><div class="pk-body"><strong>Premium Parts Only</strong><span>Genuine or OEM-grade components for lasting results.</span></div></div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <div class="ab-metrics">
-      <div class="ab-metrics-inner">
-        <div class="am-item"><div class="am-num">2,400+</div><div class="am-lbl">Devices Repaired</div></div>
-        <div class="am-item"><div class="am-num">98%</div><div class="am-lbl">Satisfaction Rate</div></div>
-        <div class="am-item"><div class="am-num">5 yrs</div><div class="am-lbl">In Business</div></div>
-        <div class="am-item"><div class="am-num">90d</div><div class="am-lbl">Repair Warranty</div></div>
-      </div>
-    </div>
-    <section class="mv-sec">
-      <div class="mv-inner">
-        <div class="mv-header">
-          <div class="pill" style="margin:0 auto 18px;"><span class="pill-dot"></span>Our Purpose</div>
-          <h2 class="stitle">Mission & <em>Vision</em></h2>
-          <p class="sdesc" style="text-align:center;max-width:560px;margin:0 auto;">The principles that guide every repair, every interaction, and every decision we make at Onin's.</p>
-        </div>
-        <div class="mv-grid">
-          <div class="mv-card">
-            <div class="mv-card-accent"></div>
-            <div class="mv-card-inner">
-              <div class="mv-icon-wrap"><i data-feather="target"></i></div>
-              <div class="mv-label">Our Mission</div>
-              <h3 class="mv-title">To restore confidence, one repair at a time.</h3>
-              <p class="mv-desc">We exist to provide every person in Cebu with an honest, affordable, and professional smartphone repair experience — delivered with transparency, speed, and genuine care. No runarounds. No hidden costs. Just reliable service you can trust.</p>
-              <div class="mv-pillars">
-                <div class="mv-pillar"><span class="mvp-dot"></span>Honest, transparent service with no hidden fees</div>
-                <div class="mv-pillar"><span class="mvp-dot"></span>Certified, precision-driven repairs for all brands</div>
-                <div class="mv-pillar"><span class="mvp-dot"></span>Affordable pricing accessible to every budget</div>
-                <div class="mv-pillar"><span class="mvp-dot"></span>Fast turnaround without sacrificing quality</div>
-              </div>
-            </div>
-          </div>
-          <div class="mv-card">
-            <div class="mv-card-accent mv-card-accent-v"></div>
-            <div class="mv-card-inner">
-              <div class="mv-icon-wrap mv-icon-wrap-v"><i data-feather="star"></i></div>
-              <div class="mv-label mv-label-v">Our Vision</div>
-              <h3 class="mv-title">To be Cebu's most trusted name in device care.</h3>
-              <p class="mv-desc">We envision a future where no one has to worry about where to bring their broken device. Onin's will be the first name that comes to mind — synonymous with quality craftsmanship, integrity, and lasting relationships with every customer we serve.</p>
-              <div class="mv-pillars">
-                <div class="mv-pillar"><span class="mvp-dot mvp-dot-v"></span>Become Cebu's undisputed #1 repair destination</div>
-                <div class="mv-pillar"><span class="mvp-dot mvp-dot-v"></span>Expand accessible, quality repair across the region</div>
-                <div class="mv-pillar"><span class="mvp-dot mvp-dot-v"></span>Build long-term trust through every interaction</div>
-                <div class="mv-pillar"><span class="mvp-dot mvp-dot-v"></span>Set the standard for excellence in the industry</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="mv-commits">
-          <div class="mv-commit"><div class="mvc-num">01</div><div class="mvc-body"><strong>Customer First</strong><span>Every decision starts with what's best for the person standing in front of us.</span></div></div>
-          <div class="mv-divider"></div>
-          <div class="mv-commit"><div class="mvc-num">02</div><div class="mvc-body"><strong>Uncompromising Quality</strong><span>We use only premium components and proven techniques — no shortcuts, ever.</span></div></div>
-          <div class="mv-divider"></div>
-          <div class="mv-commit"><div class="mvc-num">03</div><div class="mvc-body"><strong>Community Impact</strong><span>As a local Cebu business, we're invested in the people and communities we serve.</span></div></div>
-          <div class="mv-divider"></div>
-          <div class="mv-commit"><div class="mvc-num">04</div><div class="mvc-body"><strong>Continuous Growth</strong><span>We invest in training, tools, and technology to stay ahead of the industry.</span></div></div>
-        </div>
-      </div>
-    </section>
-    <section class="team-sec">
-      <div class="team-inner">
-        <div class="team-header">
-          <div class="pill" style="margin:0 auto 18px;"><span class="pill-dot"></span>Our People</div>
-          <h2 class="stitle">Meet the <em>team</em></h2>
-          <p class="sdesc">Skilled, certified, and passionate — the people behind every successful repair at Onin's.</p>
-        </div>
-        <div class="ceo-spotlight">
-          <div class="ceo-img">
-            <img src="images/nino-ceo.jpg" alt="Niño Cabajon - CEO & Owner">
-            <div class="ceo-img-ov"></div>
-            <div class="ceo-badge">Founder & Owner</div>
-            <div class="ceo-avatar-ring">N</div>
-          </div>
-          <div class="ceo-content">
-            <div class="ceo-eyebrow"><i data-feather="settings" style="width:16px;height:16px;display:inline;margin-right:4px;"></i>Leadership</div>
-            <h2>Niño</h2>
-            <div class="ceo-pos">CEO & Owner</div>
-            <p class="ceo-bio">Niño founded Onin's Smartphone Repair & Service with a simple belief: every person in Cebu deserves honest, professional phone repair without the runaround. With over 5 years leading the shop, he has built a team of certified technicians and a culture where quality and customer trust come first.</p>
-            <div class="ceo-tags">
-              <span class="ctag"><i data-feather="tool" style="width:14px;height:14px;display:inline;margin-right:4px;"></i>Master Technician</span>
-              <span class="ctag"><i data-feather="smartphone" style="width:14px;height:14px;display:inline;margin-right:4px;"></i>iPhone Certified</span>
-              <span class="ctag"><i data-feather="star" style="width:14px;height:14px;display:inline;margin-right:4px;"></i>5 Yrs Experience</span>
-              <span class="ctag"><i data-feather="award" style="width:14px;height:14px;display:inline;margin-right:4px;"></i>Samsung Trained</span>
-            </div>
-            <div class="ceo-stat-row">
-              <div class="cstat"><div class="cstat-num">2,400+</div><div class="cstat-lbl">Repairs Overseen</div></div>
-              <div class="cstat"><div class="cstat-num">98%</div><div class="cstat-lbl">Customer Satisfaction</div></div>
-              <div class="cstat"><div class="cstat-num">5 yrs</div><div class="cstat-lbl">In Business</div></div>
-            </div>
-          </div>
-        </div>
-        <div class="team-grid">
-          <div class="tcard"><div class="tcard-img"><img src="images/patrick.jpg" alt="Patrick"><div class="tcard-img-ov"></div><div class="tcard-role-badge">Senior Tech</div></div><div class="tcard-body"><div class="tcard-name">Patrick</div><div class="tcard-pos">Senior Repair Technician</div><div class="tcard-desc">Specializes in complex motherboard-level repairs and micro-soldering.</div></div><div class="tcard-bottom"><span class="tcard-exp">4 yrs experience</span><div class="tcard-arrow">↗</div></div></div>
-          <div class="tcard"><div class="tcard-img"><img src="images/winces.png" alt="Winces"><div class="tcard-img-ov"></div><div class="tcard-role-badge">Tech Lead</div></div><div class="tcard-body"><div class="tcard-name">Winces</div><div class="tcard-pos">Repair Team Lead</div><div class="tcard-desc">Oversees daily repair workflow and ensures quality benchmarks are met.</div></div><div class="tcard-bottom"><span class="tcard-exp">3 yrs experience</span><div class="tcard-arrow">↗</div></div></div>
-          <div class="tcard"><div class="tcard-img"><img src="images/rodiel.png" alt="Rodiel"><div class="tcard-img-ov"></div><div class="tcard-role-badge">Screen Expert</div></div><div class="tcard-body"><div class="tcard-name">Rodiel</div><div class="tcard-pos">Display & Screen Specialist</div><div class="tcard-desc">Expert in screen replacements across all major brands with flawless calibration.</div></div><div class="tcard-bottom"><span class="tcard-exp">3 yrs experience</span><div class="tcard-arrow">↗</div></div></div>
-          <div class="tcard"><div class="tcard-img"><img src="images/ninmark.jpg" alt="Ninmark"><div class="tcard-img-ov"></div><div class="tcard-role-badge">Data Recovery</div></div><div class="tcard-body"><div class="tcard-name">Ninmark</div><div class="tcard-pos">Data Recovery Specialist</div><div class="tcard-desc">Rescues irreplaceable photos, contacts, and files from water-damaged devices.</div></div><div class="tcard-bottom"><span class="tcard-exp">2 yrs experience</span><div class="tcard-arrow">↗</div></div></div>
-          <div class="tcard"><div class="tcard-img"><img src="images/jose.png" alt="Jose"><div class="tcard-img-ov"></div><div class="tcard-role-badge">Software</div></div><div class="tcard-body"><div class="tcard-name">Jose</div><div class="tcard-pos">Software & OS Technician</div><div class="tcard-desc">Handles all software diagnostics — boot loops, OS issues, and virus removal.</div></div><div class="tcard-bottom"><span class="tcard-exp">2 yrs experience</span><div class="tcard-arrow">↗</div></div></div>
-          <div class="tcard"><div class="tcard-img"><img src="images/franco.png" alt="Franco"><div class="tcard-img-ov"></div><div class="tcard-role-badge">Customer Care</div></div><div class="tcard-body"><div class="tcard-name">Franco</div><div class="tcard-pos">Customer Relations Manager</div><div class="tcard-desc">First face customers see. Manages bookings and communicates repair updates.</div></div><div class="tcard-bottom"><span class="tcard-exp">3 yrs experience</span><div class="tcard-arrow">↗</div></div></div>
-          <div class="tcard"><div class="tcard-img"><img src="images/rod.png" alt="Rod"><div class="tcard-img-ov"></div><div class="tcard-role-badge">Parts & Inventory</div></div><div class="tcard-body"><div class="tcard-name">Rod</div><div class="tcard-pos">Parts & Inventory Coordinator</div><div class="tcard-desc">Manages parts inventory to ensure quality components are always in stock.</div></div><div class="tcard-bottom"><span class="tcard-exp">2 yrs experience</span><div class="tcard-arrow">↗</div></div></div>
-          <div class="tcard"><div class="tcard-img"><img src="images/myles.png" alt="Myles"><div class="tcard-img-ov"></div><div class="tcard-role-badge">Junior Tech</div></div><div class="tcard-body"><div class="tcard-name">Myles</div><div class="tcard-pos">Junior Repair Technician</div><div class="tcard-desc">Newest addition to the family, trained directly under Niño with sharp attention to detail.</div></div><div class="tcard-bottom"><span class="tcard-exp">1 yr experience</span><div class="tcard-arrow">↗</div></div></div>
-        </div>
-      </div>
-    </section>
-    <section class="brands-sec">
-      <div class="brands-inner">
-        <div class="pill"><span class="pill-dot"></span>Brands We Service</div>
-        <h2 class="stitle" style="font-size:38px;">We fix <em>all major brands</em></h2>
-        <div class="brands-chips">
-          <span class="bchip">Apple iPhone</span><span class="bchip">Samsung</span><span class="bchip">Huawei</span>
-          <span class="bchip">Oppo</span><span class="bchip">Vivo</span><span class="bchip">Xiaomi</span>
-          <span class="bchip">Realme</span><span class="bchip">OnePlus</span><span class="bchip">Nokia</span>
-          <span class="bchip">Tecno</span><span class="bchip">Itel</span><span class="bchip">+ More</span>
-        </div>
-      </div>
-    </section>
-    <section class="val-sec">
-      <img class="val-bg" src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=1600&q=60&auto=format&fit=crop" alt="">
-      <div class="val-inner">
-        <div class="pill"><span class="pill-dot"></span>Our Values</div>
-        <h2 class="stitle">What we <em>stand for</em></h2>
-        <div class="val-grid">
-          <div class="vc"><span class="vc-icon"><i data-feather="handshake"></i></span><h3>Honesty First</h3><p>Transparent quotes, no hidden fees, no unnecessary repairs. We tell you exactly what your device needs and nothing more.</p></div>
-          <div class="vc"><span class="vc-icon"><i data-feather="target"></i></span><h3>Quality Craft</h3><p>Every repair is performed with precision. We don't cut corners — your device gets the care it deserves from start to finish.</p></div>
-          <div class="vc"><span class="vc-icon"><i data-feather="zap"></i></span><h3>Speed & Reliability</h3><p>Fast turnaround without sacrificing quality. We respect your time and make sure your device is ready when promised.</p></div>
-        </div>
-      </div>
-    </section>
-  </div>
+document.addEventListener('DOMContentLoaded', renderIconsWhenReady);
+		</script>
+		<script>
+			const menuToggle = document.getElementById('menuToggle');
+const navContainer = document.getElementById('navContainer');
+const navButtons = document.querySelectorAll('.hdr-nav button');
 
-  <!-- ══════════════════════════════
-      SERVICES
-  ══════════════════════════════ -->
-  <div class="page" id="pg-services">
-    <div class="ph-hero">
-      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=1600&q=80&auto=format&fit=crop" alt="repair tools">
-      <div class="ph-hero-ov"></div>
-      <div class="ph-hero-geo"><div class="geo-circ gc1"></div><div class="geo-circ gc2"></div><div class="geo-circ gc3"></div></div>
-      <div class="ph-hero-inner">
-        <div class="pill"><span class="pill-dot"></span>What We Fix</div>
-        <h1 class="stitle">Complete repair <em>solutions</em></h1>
-        <p class="sdesc">
-          {% if app.user %}
-            Tap any service below to instantly book your repair. Certified techs, genuine parts, 90-day warranty.
-          {% else %}
-            Browse our services below. Sign in to book your repair instantly.
-          {% endif %}
-        </p>
-      </div>
-    </div>
+function setBurgerFeatherIcon(name) {
+menuToggle.innerHTML = '<i data-feather="' + name + '"></i>';
+if (typeof feather !== 'undefined' && feather.replace) {
+feather.replace();
+}
+}
 
-    <section class="fs-sec">
-      <img class="fs-bg" src="https://images.unsplash.com/photo-1555774698-0b77e0d5fac6?w=1200&q=60&auto=format&fit=crop" alt="">
-      <div class="fs-inner">
-        <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:16px;">
-          <div>
-            <div class="pill"><span class="pill-dot"></span>Our Services</div>
-            <h2 class="stitle">Everything your phone <em>needs</em></h2>
-          </div>
-        </div>
+menuToggle.addEventListener('click', () => {
+navContainer.classList.toggle('open');
+setBurgerFeatherIcon(navContainer.classList.contains('open') ? 'x' : 'menu');
+});
 
-        <!-- ══ AUTH BANNER — shown only when signed OUT ══ -->
-        {% if not app.user %}
-        <div class="auth-banner">
-          <div class="auth-banner-icon"><i data-feather="lock"></i></div>
-          <div class="auth-banner-text">
-            <strong>Sign in to book a repair</strong>
-            <span>Create a free account or sign in to instantly book any of our services below.</span>
-          </div>
-          <button class="auth-banner-btn" onclick="openLoginModal()">Sign In / Register →</button>
-        </div>
-        {% endif %}
-
-        <!-- ══ SIGNED-IN NOTE — shown only when signed IN ══ -->
-        {% if app.user %}
-        <div class="svc-signed-in-note">
-          <span><i data-feather="check" style="color:green;width:20px;height:20px;"></i></span>
-          <span>You're signed in — tap any service card to book your repair instantly.</span>
-        </div>
-        {% endif %}
-
-        <div class="fs-grid">
-
-          <!-- SCREEN REPAIR -->
-          <div class="fscard {% if app.user %}unlocked{% else %}locked{% endif %}"
-              {% if app.user %}onclick="openBooking('Screen Repair & Replacement','smartphone','₱800–₱3,500','Most Common')"{% endif %}>
-            <div class="fsc-icon-wrap"><i data-feather="smartphone"></i></div>
-            {% if not app.user %}<div class="fsc-lock-badge"><i data-feather="lock"></i></div>{% endif %}
-            <div class="fsc-body">
-              <div class="fsc-top"><h3>Screen Repair & Replacement</h3></div>
-              <p>Cracked, shattered, or unresponsive screens repaired for all major brands. Original and OEM-grade panels that restore full display clarity and touch sensitivity.</p>
-            </div>
-            <div class="fsc-meta">
-              <div class="fsc-tag"><span class="fsc-tag-dot"></span>Most Common · ₱800–₱3,500</div>
-              {% if app.user %}<div class="fsc-book-cta">Book Now →</div>{% endif %}
-            </div>
-            {% if not app.user %}
-            <div class="fsc-lock-overlay" onclick="openLoginModal()">
-              <div class="fsc-lock-prompt">
-                <div class="fsc-lock-icon"><i data-feather="lock"></i></div>
-                <div class="fsc-lock-title">Sign in to book</div>
-                <div class="fsc-lock-sub">Create a free account to instantly<br>book this repair.</div>
-                <button class="fsc-lock-btn" onclick="openLoginModal()">Sign In / Register →</button>
-              </div>
-            </div>
-            {% endif %}
-          </div>
-
-          <!-- BATTERY -->
-          <div class="fscard {% if app.user %}unlocked{% else %}locked{% endif %}"
-              {% if app.user %}onclick="openBooking('Battery Replacement','battery','₱600–₱1,800','Same Day · Under 45 mins')"{% endif %}>
-            <div class="fsc-icon-wrap"><i data-feather="battery"></i></div>
-            {% if not app.user %}<div class="fsc-lock-badge"><i data-feather="lock"></i></div>{% endif %}
-            <div class="fsc-body">
-              <div class="fsc-top"><h3>Battery Replacement</h3></div>
-              <p>Rapid drain or unexpected shutdowns? We install genuine OEM-spec batteries that restore your phone's original performance. Done in under 45 minutes.</p>
-            </div>
-            <div class="fsc-meta">
-              <div class="fsc-tag"><span class="fsc-tag-dot"></span>Same Day · ₱600–₱1,800</div>
-              {% if app.user %}<div class="fsc-book-cta">Book Now →</div>{% endif %}
-            </div>
-            {% if not app.user %}
-            <div class="fsc-lock-overlay" onclick="openLoginModal()">
-              <div class="fsc-lock-prompt">
-                <div class="fsc-lock-icon"><i data-feather="lock"></i></div>
-                <div class="fsc-lock-title">Sign in to book</div>
-                <div class="fsc-lock-sub">Create a free account to instantly<br>book this repair.</div>
-                <button class="fsc-lock-btn" onclick="openLoginModal()">Sign In / Register →</button>
-              </div>
-            </div>
-            {% endif %}
-          </div>
-
-          <!-- WATER DAMAGE -->
-          <div class="fscard {% if app.user %}unlocked{% else %}locked{% endif %}"
-              {% if app.user %}onclick="openBooking('Water Damage Repair','droplet','₱500–₱2,000','No fix, no fee')"{% endif %}>
-            <div class="fsc-icon-wrap"><i data-feather="droplet"></i></div>
-            {% if not app.user %}<div class="fsc-lock-badge"><i data-feather="lock"></i></div>{% endif %}
-            <div class="fsc-body">
-              <div class="fsc-top"><h3>Water Damage Repair</h3></div>
-              <p>Don't wait — corrosion sets in fast. Our ultrasonic cleaning process removes moisture and mineral deposits to revive your water-damaged device.</p>
-            </div>
-            <div class="fsc-meta">
-              <div class="fsc-tag"><span class="fsc-tag-dot"></span>Act Fast · ₱500–₱2,000</div>
-              {% if app.user %}<div class="fsc-book-cta">Book Now →</div>{% endif %}
-            </div>
-            {% if not app.user %}
-            <div class="fsc-lock-overlay" onclick="openLoginModal()">
-              <div class="fsc-lock-prompt">
-                <div class="fsc-lock-icon"><i data-feather="lock"></i></div>
-                <div class="fsc-lock-title">Sign in to book</div>
-                <div class="fsc-lock-sub">Create a free account to instantly<br>book this repair.</div>
-                <button class="fsc-lock-btn" onclick="openLoginModal()">Sign In / Register →</button>
-              </div>
-            </div>
-            {% endif %}
-          </div>
-
-          <!-- SOFTWARE -->
-          <div class="fscard {% if app.user %}unlocked{% else %}locked{% endif %}"
-              {% if app.user %}onclick="openBooking('Software & OS Issues','settings','₱300–₱800','Quick Fix')"{% endif %}>
-            <div class="fsc-icon-wrap"><i data-feather="settings"></i></div>
-            {% if not app.user %}<div class="fsc-lock-badge"><i data-feather="lock"></i></div>{% endif %}
-            <div class="fsc-body">
-              <div class="fsc-top"><h3>Software & OS Issues</h3></div>
-              <p>Freezes, boot loops, virus removal, OS updates, and full factory restoration. We diagnose the root cause and fix it properly the first time.</p>
-            </div>
-            <div class="fsc-meta">
-              <div class="fsc-tag"><span class="fsc-tag-dot"></span>Quick Fix · ₱300–₱800</div>
-              {% if app.user %}<div class="fsc-book-cta">Book Now →</div>{% endif %}
-            </div>
-            {% if not app.user %}
-            <div class="fsc-lock-overlay" onclick="openLoginModal()">
-              <div class="fsc-lock-prompt">
-                <div class="fsc-lock-icon"><i data-feather="lock"></i></div>
-                <div class="fsc-lock-title">Sign in to book</div>
-                <div class="fsc-lock-sub">Create a free account to instantly<br>book this repair.</div>
-                <button class="fsc-lock-btn" onclick="openLoginModal()">Sign In / Register →</button>
-              </div>
-            </div>
-            {% endif %}
-          </div>
-
-          <!-- CAMERA -->
-          <div class="fscard {% if app.user %}unlocked{% else %}locked{% endif %}"
-              {% if app.user %}onclick="openBooking('Camera Repair','camera','₱600–₱2,500','Specialist')"{% endif %}>
-            <div class="fsc-icon-wrap"><i data-feather="camera"></i></div>
-            {% if not app.user %}<div class="fsc-lock-badge"><i data-feather="lock"></i></div>{% endif %}
-            <div class="fsc-body">
-              <div class="fsc-top"><h3>Camera Repair</h3></div>
-              <p>Blurry images, broken lens glass, or camera app failures? We replace camera modules and restore full photo and video functionality for all models.</p>
-            </div>
-            <div class="fsc-meta">
-              <div class="fsc-tag"><span class="fsc-tag-dot"></span>Specialist · ₱600–₱2,500</div>
-              {% if app.user %}<div class="fsc-book-cta">Book Now →</div>{% endif %}
-            </div>
-            {% if not app.user %}
-            <div class="fsc-lock-overlay" onclick="openLoginModal()">
-              <div class="fsc-lock-prompt">
-                <div class="fsc-lock-icon"><i data-feather="lock"></i></div>
-                <div class="fsc-lock-title">Sign in to book</div>
-                <div class="fsc-lock-sub">Create a free account to instantly<br>book this repair.</div>
-                <button class="fsc-lock-btn" onclick="openLoginModal()">Sign In / Register →</button>
-              </div>
-            </div>
-            {% endif %}
-          </div>
-
-          <!-- CHARGING PORT -->
-          <div class="fscard {% if app.user %}unlocked{% else %}locked{% endif %}"
-              {% if app.user %}onclick="openBooking('Charging Port Repair','power','₱400–₱1,200','Affordable')"{% endif %}>
-            <div class="fsc-icon-wrap"><i data-feather="power"></i></div>
-            {% if not app.user %}<div class="fsc-lock-badge"><i data-feather="lock"></i></div>{% endif %}
-            <div class="fsc-body">
-              <div class="fsc-top"><h3>Charging Port Repair</h3></div>
-              <p>Phone not charging or connection is intermittent? We clean, repair, or replace charging ports quickly and affordably. USB-C, Lightning, and Micro-USB.</p>
-            </div>
-            <div class="fsc-meta">
-              <div class="fsc-tag"><span class="fsc-tag-dot"></span>Affordable · ₱400–₱1,200</div>
-              {% if app.user %}<div class="fsc-book-cta">Book Now →</div>{% endif %}
-            </div>
-            {% if not app.user %}
-            <div class="fsc-lock-overlay" onclick="openLoginModal()">
-              <div class="fsc-lock-prompt">
-                <div class="fsc-lock-icon"><i data-feather="lock"></i></div>
-                <div class="fsc-lock-title">Sign in to book</div>
-                <div class="fsc-lock-sub">Create a free account to instantly<br>book this repair.</div>
-                <button class="fsc-lock-btn" onclick="openLoginModal()">Sign In / Register →</button>
-              </div>
-            </div>
-            {% endif %}
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <section class="price-sec">
-      <img class="price-bg" src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1600&q=60&auto=format&fit=crop" alt="">
-      <div class="price-inner">
-        <div class="price-head">
-          <div class="pill" style="margin:0 auto 18px;"><span class="pill-dot"></span>Pricing</div>
-          <h2 class="stitle">Transparent <em>pricing</em></h2>
-          <p class="sdesc" style="text-align:center;margin:0 auto;">No hidden fees, ever. Final quote given after free diagnostic.</p>
-        </div>
-        <div class="price-grid">
-          <div class="pcard">
-            <span class="pcard-icon"><i data-feather="smartphone"></i></span>
-            <div class="pcard-name">Screen Repair</div>
-            <div class="pcard-price">₱800–₱3,500</div>
-            <div class="pcard-note">Depends on model & screen type</div>
-            <ul class="pcard-feats">
-              <li>All major brands supported</li>
-              <li>Original & OEM-grade panels</li>
-              <li>Touch calibration included</li>
-              <li>90-day warranty</li>
-            </ul>
-            {% if app.user %}
-            <button class="pcard-btn" onclick="openBooking('Screen Repair & Replacement','smartphone','₱800–₱3,500','Most Common')">Book This Repair →</button>
-            {% else %}
-            <button class="pcard-btn" onclick="openLoginModal()" style="background:linear-gradient(135deg,#6b7280,#9ca3af);box-shadow:none;"><i data-feather="lock" style="width:14px;height:14px;display:inline;margin-right:4px;"></i>Sign In to Book</button>
-            {% endif %}
-          </div>
-          <div class="pcard pop">
-            <span class="pcard-icon"><i data-feather="battery"></i></span>
-            <div class="pcard-name">Battery Replacement</div>
-            <div class="pcard-price">₱600–₱1,800</div>
-            <div class="pcard-note">Genuine OEM cells · Under 45 mins</div>
-            <ul class="pcard-feats">
-              <li>Genuine OEM batteries</li>
-              <li>Done in under 45 minutes</li>
-              <li>Full capacity restored</li>
-              <li>90-day warranty</li>
-            </ul>
-            {% if app.user %}
-            <button class="pcard-btn" onclick="openBooking('Battery Replacement','battery','₱600–₱1,800','Same Day · Under 45 mins')">Book This Repair →</button>
-            {% else %}
-            <button class="pcard-btn" onclick="openLoginModal()" style="background:linear-gradient(135deg,#6b7280,#9ca3af);box-shadow:none;"><i data-feather="lock" style="width:14px;height:14px;display:inline;margin-right:4px;"></i>Sign In to Book</button>
-            {% endif %}
-          </div>
-          <div class="pcard">
-            <span class="pcard-icon"><i data-feather="droplet"></i></span>
-            <div class="pcard-name">Water Damage</div>
-            <div class="pcard-price">₱500–₱2,000</div>
-            <div class="pcard-note">Free diagnosis · No fix, no fee</div>
-            <ul class="pcard-feats">
-              <li>Ultrasonic cleaning</li>
-              <li>Component-level inspection</li>
-              <li>No fix, no fee policy</li>
-              <li>Same-day assessment</li>
-            </ul>
-            {% if app.user %}
-            <button class="pcard-btn" onclick="openBooking('Water Damage Repair','droplet','₱500–₱2,000','No fix, no fee')">Book This Repair →</button>
-            {% else %}
-            <button class="pcard-btn" onclick="openLoginModal()" style="background:linear-gradient(135deg,#6b7280,#9ca3af);box-shadow:none;"><i data-feather="lock" style="width:14px;height:14px;display:inline;margin-right:4px;"></i>Sign In to Book</button>
-            {% endif %}
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
-
-  <!-- ══════════════════════════════
-      CONTACT
-  ══════════════════════════════ -->
-  <div class="page" id="pg-contact">
-    <div class="ph-hero">
-      <img src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1600&q=80&auto=format&fit=crop" alt="contact us">
-      <div class="ph-hero-ov"></div>
-      <div class="ph-hero-geo"><div class="geo-circ gc1"></div><div class="geo-circ gc2"></div><div class="geo-circ gc3"></div></div>
-      <div class="ph-hero-inner">
-        <div class="pill"><span class="pill-dot"></span>Get In Touch</div>
-        <h1 class="stitle">Book your <em>repair today</em></h1>
-        <p class="sdesc">Walk in, message us, or fill out the form. We respond within the hour.</p>
-      </div>
-    </div>
-    <section class="ct-sec">
-      <div class="ct-inner">
-        <div class="ct-info">
-          <h3>Find us in Cebu</h3>
-          <p>We're here to help you get back up and running. Reach out through any channel that's convenient for you.</p>
-          <div class="ct-img-box">
-            <img src="https://images.unsplash.com/photo-1577563908411-5077b6dc7624?w=800&q=80&auto=format&fit=crop" alt="Cebu city">
-            <div class="ct-img-box-ov"></div>
-          </div>
-          <div class="ct-items">
-            <div class="ci"><div class="ci-icon"><i data-feather="map-pin"></i></div><div class="ci-body"><strong>Our Location</strong><span>123 Repair Street, Cebu City<br>Central Visayas, Philippines</span></div></div>
-            <div class="ci"><div class="ci-icon"><i data-feather="phone"></i></div><div class="ci-body"><strong>Phone / Viber</strong><span>+63 912 345 6789</span></div></div>
-            <div class="ci"><div class="ci-icon"><i data-feather="mail"></i></div><div class="ci-body"><strong>Email</strong><span>hello@oninsrepair.com</span></div></div>
-            <div class="ci"><div class="ci-icon"><i data-feather="message-circle"></i></div><div class="ci-body"><strong>Facebook</strong><span>facebook.com/oninsrepair</span></div></div>
-          </div>
-        </div>
-        <div class="ct-form">
-          <h3>Send us a message</h3>
-          <div class="fr">
-            <div class="fg"><label>First Name</label><input type="text" placeholder="Juan"></div>
-            <div class="fg"><label>Last Name</label><input type="text" placeholder="Dela Cruz"></div>
-          </div>
-          <div class="fg"><label>Phone Number</label><input type="tel" placeholder="+63 900 000 0000"></div>
-          <div class="fg"><label>Service Needed</label>
-            <select>
-              <option value="">Select a service...</option>
-              <option>Screen Repair</option><option>Battery Replacement</option>
-              <option>Water Damage</option><option>Software Issues</option>
-              <option>Camera Repair</option><option>Charging Port Repair</option><option>Other</option>
-            </select>
-          </div>
-          <div class="fg"><label>Device Model</label><input type="text" placeholder="e.g. iPhone 14, Samsung S23..."></div>
-          <div class="fg"><label>Message (Optional)</label><textarea placeholder="Describe the issue with your device..."></textarea></div>
-          <button class="btn-a" style="width:100%;justify-content:center;" onclick="submitForm()">Send Message →</button>
-          <div class="ct-form-note">We'll respond within 1 hour during business hours.</div>
-          <div class="success-box" id="successBox"><p><i data-feather="check-circle"></i> Message sent! We'll be in touch within the hour.</p></div>
-        </div>
-      </div>
-    </section>
-    <section class="hrs-sec">
-      <img class="hrs-bg" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&q=60&auto=format&fit=crop" alt="">
-      <div class="hrs-inner">
-        <div>
-          <div class="pill"><span class="pill-dot"></span>Business Hours</div>
-          <h2 class="stitle" style="font-size:38px;">When we're <em>open</em></h2>
-          <table class="ht">
-            <tr><td>Monday – Friday</td><td>8:00 AM – 7:00 PM</td></tr>
-            <tr><td>Saturday</td><td>9:00 AM – 6:00 PM</td></tr>
-            <tr><td>Sunday</td><td>10:00 AM – 4:00 PM</td></tr>
-            <tr><td>Holidays</td><td class="cl">Closed</td></tr>
-          </table>
-        </div>
-        <div>
-          <div class="map-ph">
-            <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?w=800&q=80&auto=format&fit=crop" alt="Cebu location map">
-            <div class="map-ph-ov"><div class="map-ph-label"><i data-feather="map-pin"></i> 123 Repair Street, Cebu City</div></div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
-
-  <!-- ════ FOOTER ════ -->
-  <footer class="ftr">
-    <div class="ftr-inner">
-      <div class="ftr-top">
-        <div class="ftr-brand">
-          <div class="hdr-logo ftr-logo" onclick="go('home')" style="cursor:pointer;">
-            <div class="logo-mark"><i data-feather="settings"></i></div>
-            <div class="logo-text"><div class="ln">Onin's</div><div class="ls">Smartphone Repair & Service</div></div>
-          </div>
-          <p>Cebu's trusted smartphone repair specialists. Certified technicians, premium parts, and every repair backed by a 90-day warranty.</p>
-          <div class="fsoc">
-            <div class="fsoc-btn">f</div>
-            <div class="fsoc-btn"><i data-feather="camera"></i></div>
-            <div class="fsoc-btn"><i data-feather="twitter"></i></div>
-          </div>
-        </div>
-        <div class="ftr-links">
-          <div class="fc-col"><h5>Company</h5><ul>
-            <li><a onclick="go('home')">Home</a></li>
-            <li><a onclick="go('about')">About Us</a></li>
-            <li><a onclick="go('contact')">Contact Us</a></li>
-          </ul></div>
-          <div class="fc-col"><h5>Services</h5><ul>
-            <li><a onclick="go('services')">Screen Repair</a></li>
-            <li><a onclick="go('services')">Battery Replacement</a></li>
-            <li><a onclick="go('services')">Water Damage</a></li>
-            <li><a onclick="go('services')">Software Issues</a></li>
-            <li><a onclick="go('services')">View Pricing</a></li>
-          </ul></div>
-          <div class="fc-col"><h5>Support</h5><ul>
-            <li><a onclick="go('services')">Book a Repair</a></li>
-            <li><a onclick="go('contact')">Get a Quote</a></li>
-            <li><a onclick="go('services')">Warranty Info</a></li>
-            <li><a onclick="go('about')">Our Team</a></li>
-          </ul></div>
-        </div>
-      </div>
-      <div class="ftr-bot">
-        <span class="ftr-copy">© 2025 Onin's Smartphone Repair & Service. All rights reserved.</span>
-        <div class="ftr-legal"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a></div>
-      </div>
-    </div>
-  </footer>
-
-  <!-- ════ BOOKING MODAL ════ -->
-  <div class="booking-overlay" id="bookingOverlay" onclick="closeBookingOnBg(event)">
-    <div class="booking-modal" id="bookingModal">
-      <div class="bm-header">
-        <button class="bm-close" onclick="closeBooking()">×</button>
-        <div class="bm-service-badge" id="bm-badge"><i data-feather="settings"></i> Book a Repair</div>
-        <div class="bm-header-icon" id="bm-icon"><i data-feather="smartphone"></i></div>
-        <h2 id="bm-title">Book Your Repair</h2>
-        <p id="bm-subtitle">Fill in your details and we'll confirm within 1 hour.</p>
-      </div>
-      <div class="bm-progress">
-        <div class="bm-step active" id="prog-1"><div class="bm-step-num">1</div><div class="bm-step-label">Service</div></div>
-        <div class="bm-step-line" id="line-1"></div>
-        <div class="bm-step" id="prog-2"><div class="bm-step-num">2</div><div class="bm-step-label">Details</div></div>
-        <div class="bm-step-line" id="line-2"></div>
-        <div class="bm-step" id="prog-3"><div class="bm-step-num">3</div><div class="bm-step-label">Confirm</div></div>
-      </div>
-      <div class="bm-body">
-        <div class="bm-panel active" id="panel-1">
-          <div class="bm-section-label">Choose Your Service</div>
-          <div class="bm-services-grid" id="services-grid">
-            <div class="bm-svc-chip" data-service="Screen Repair & Replacement" data-icon="smartphone" data-price="₱800–₱3,500" data-tag="Most Common" onclick="selectService(this)">
-              <span class="bm-chip-icon"><i data-feather="smartphone"></i></span><div class="bm-chip-info"><strong>Screen Repair</strong><span>₱800–₱3,500</span></div>
-            </div>
-            <div class="bm-svc-chip" data-service="Battery Replacement" data-icon="battery" data-price="₱600–₱1,800" data-tag="Same Day" onclick="selectService(this)">
-              <span class="bm-chip-icon"><i data-feather="battery"></i></span><div class="bm-chip-info"><strong>Battery Replacement</strong><span>₱600–₱1,800</span></div>
-            </div>
-            <div class="bm-svc-chip" data-service="Water Damage Repair" data-icon="droplet" data-price="₱500–₱2,000" data-tag="No fix, no fee" onclick="selectService(this)">
-              <span class="bm-chip-icon"><i data-feather="droplet"></i></span><div class="bm-chip-info"><strong>Water Damage</strong><span>₱500–₱2,000</span></div>
-            </div>
-            <div class="bm-svc-chip" data-service="Software & OS Issues" data-icon="settings" data-price="₱300–₱800" data-tag="Quick Fix" onclick="selectService(this)">
-              <span class="bm-chip-icon"><i data-feather="settings"></i></span><div class="bm-chip-info"><strong>Software Issues</strong><span>₱300–₱800</span></div>
-            </div>
-            <div class="bm-svc-chip" data-service="Camera Repair" data-icon="camera" data-price="₱600–₱2,500" data-tag="Specialist" onclick="selectService(this)">
-              <span class="bm-chip-icon"><i data-feather="camera"></i></span><div class="bm-chip-info"><strong>Camera Repair</strong><span>₱600–₱2,500</span></div>
-            </div>
-            <div class="bm-svc-chip" data-service="Charging Port Repair" data-icon="power" data-price="₱400–₱1,200" data-tag="Affordable" onclick="selectService(this)">
-              <span class="bm-chip-icon"><i data-feather="power"></i></span><div class="bm-chip-info"><strong>Charging Port</strong><span>₱400–₱1,200</span></div>
-            </div>
-          </div>
-          <div class="bm-section-label">Preferred Date & Time</div>
-          <div class="bm-row" style="margin-bottom:20px;">
-            <div class="bm-field"><label>Preferred Date</label><input type="date" id="bm-date" min=""></div>
-            <div class="bm-field"><label>Preferred Time</label>
-              <select id="bm-time-select">
-                <option value="">Select time...</option>
-                <option>8:00 AM – 10:00 AM</option>
-                <option>10:00 AM – 12:00 PM</option>
-                <option>12:00 PM – 2:00 PM</option>
-                <option>2:00 PM – 4:00 PM</option>
-                <option>4:00 PM – 6:00 PM</option>
-              </select>
-            </div>
-          </div>
-          <div class="bm-footer">
-            <button class="bm-btn-next" id="step1-next" onclick="goToStep(2)" disabled>Continue → Details</button>
-          </div>
-        </div>
-        <div class="bm-panel" id="panel-2">
-          <div class="bm-section-label">Your Information</div>
-          <div class="bm-row">
-            <div class="bm-field"><label>First Name</label><input type="text" id="bm-fname" placeholder="Juan"></div>
-            <div class="bm-field"><label>Last Name</label><input type="text" id="bm-lname" placeholder="Dela Cruz"></div>
-          </div>
-          <div class="bm-row">
-            <div class="bm-field"><label>Phone / Viber</label><input type="tel" id="bm-phone" placeholder="+63 900 000 0000"></div>
-            <div class="bm-field"><label>Email (Optional)</label><input type="email" id="bm-email" placeholder="you@email.com"></div>
-          </div>
-          <div class="bm-section-label">Device Info</div>
-          <div class="bm-row">
-            <div class="bm-field"><label>Device Brand</label>
-              <select id="bm-brand">
-                <option value="">Select brand...</option>
-                <option>Apple iPhone</option><option>Samsung</option><option>Huawei</option>
-                <option>Oppo</option><option>Vivo</option><option>Xiaomi</option>
-                <option>Realme</option><option>OnePlus</option><option>Nokia</option><option>Other</option>
-              </select>
-            </div>
-            <div class="bm-field"><label>Device Model</label><input type="text" id="bm-model" placeholder="e.g. iPhone 14, S23 Ultra"></div>
-          </div>
-          <div class="bm-field"><label>Describe the Issue</label><textarea id="bm-issue" placeholder="Tell us more about what's happening with your device..."></textarea></div>
-          <div class="bm-footer">
-            <button class="bm-btn-back" onclick="goToStep(1)">← Back</button>
-            <button class="bm-btn-next" onclick="goToStep(3)">Review Booking →</button>
-          </div>
-        </div>
-        <div class="bm-panel" id="panel-3">
-          <div class="bm-section-label">Booking Summary</div>
-          <div class="bm-review-card" id="bm-review">
-            <div class="bm-review-row"><span class="label">Service</span><span class="value" id="rev-service">—</span></div>
-            <div class="bm-review-row"><span class="label">Price Range</span><span class="value" id="rev-price">—</span></div>
-            <div class="bm-review-row"><span class="label">Date & Time</span><span class="value" id="rev-datetime">—</span></div>
-            <div class="bm-review-row"><span class="label">Name</span><span class="value" id="rev-name">—</span></div>
-            <div class="bm-review-row"><span class="label">Phone</span><span class="value" id="rev-phone">—</span></div>
-            <div class="bm-review-row"><span class="label">Device</span><span class="value" id="rev-device">—</span></div>
-            <div class="bm-review-row"><span class="label">Issue</span><span class="value" id="rev-issue">—</span></div>
-          </div>
-          <p style="font-size:13px;color:var(--text3);line-height:1.6;margin-bottom:24px;"><i data-feather="clipboard"></i> Final pricing is confirmed after a <strong>free diagnostic</strong>. We'll contact you within 1 hour to confirm your appointment.</p>
-          <div class="bm-footer">
-            <button class="bm-btn-back" onclick="goToStep(2)">← Edit Details</button>
-            <button class="bm-btn-next" onclick="confirmBooking()">✓ Confirm Booking</button>
-          </div>
-        </div>
-        <div class="bm-panel" id="panel-success">
-          <div class="bm-success">
-            <div class="bm-success-icon"><i data-feather="check-circle" style="color:green;width:40px;height:40px;"></i></div>
-            <h3>Booking Confirmed!</h3>
-            <p>Thank you! Your repair request has been received. Our team will call or message you within <strong>1 hour</strong> to confirm your appointment details.</p>
-            <div class="bm-ref" id="bm-ref-num">ONR-000000</div>
-            <p style="font-size:13px;color:var(--text3);margin-bottom:20px;">Save your reference number above. You can also check your booking status by contacting us.</p>
-            <button class="bm-btn-next" onclick="closeBooking()" style="max-width:280px;">Back to Services</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ════ LOGIN MODAL ════ -->
-  <div class="login-modal-overlay" id="loginModal" onclick="closeLoginModal(event)">
-    <div class="login-modal" onclick="event.stopPropagation()">
-      <button class="login-modal-close" onclick="closeLoginModal()">&times;</button>
-      <div class="login-modal-header">
-        <h2>Welcome Back</h2>
-        <p>Sign in to book your repair</p>
-      </div>
-      <div class="login-modal-tabs">
-        <button class="login-modal-tab active" onclick="switchModalTab('login')">Sign In</button>
-        <button class="login-modal-tab" onclick="switchModalTab('register')">Sign Up</button>
-      </div>
-      <div id="modal-login-tab" class="login-modal-content active">
-        <form method="post" action="{{ path('app_login_check') }}" id="modal-login-form">
-          <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-          <div class="form-group">
-            <label for="modal-username">Email</label>
-            <input type="email" name="_username" id="modal-username" placeholder="Enter your email" required autofocus>
-          </div>
-          <div class="form-group">
-            <label for="modal-password">Password</label>
-            <input type="password" name="_password" id="modal-password" placeholder="Enter your password" required>
-          </div>
-          <button type="submit">Sign In</button>
-        </form>
-      </div>
-      <div id="modal-register-tab" class="login-modal-content">
-        <form id="modal-register-form" method="post" action="{{ path('app_register') }}">
-          <input type="hidden" name="form_type" value="registration">
-          <input type="hidden" name="registration[_token]" value="{{ csrf_token('registration') }}">
-          <div class="form-group">
-            <label for="modal-reg-name">Full Name</label>
-            <input type="text" name="registration[username]" id="modal-reg-name" placeholder="Enter your name" required>
-          </div>
-          <div class="form-group">
-            <label for="modal-reg-email">Email</label>
-            <input type="email" name="registration[email]" id="modal-reg-email" placeholder="Enter your email" required>
-          </div>
-          <div class="form-group">
-            <label for="modal-reg-password">Password</label>
-            <input type="password" name="registration[plainPassword][first]" id="modal-reg-password" placeholder="Create password" required>
-          </div>
-          <div class="form-group">
-            <label for="modal-reg-confirm">Confirm Password</label>
-            <input type="password" name="registration[plainPassword][second]" id="modal-reg-confirm" placeholder="Confirm password" required>
-          </div>
-          <button type="submit">Create Account</button>
-        </form>
-      </div>
-      <div class="login-modal-footer">By continuing, you agree to our Terms of Service</div>
-    </div>
-  </div>
-
-  <script>
-  /* Navigation */
-  function go(id){
-    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-    document.getElementById('pg-'+id).classList.add('active');
-    document.querySelectorAll('.hdr-nav button:not(.hdr-cta)').forEach(b=>b.classList.remove('act'));
-    const nb=document.getElementById('nb-'+id);
-    if(nb)nb.classList.add('act');
-    window.scrollTo({top:0,behavior:'smooth'});
-  }
-
-  /* Contact Form */
-  function submitForm(){
-    document.getElementById('successBox').classList.add('on');
-    setTimeout(()=>document.getElementById('successBox').classList.remove('on'),5000);
-  }
-
-  /* Login Modal */
-  function openLoginModal(){
-    document.getElementById('loginModal').classList.add('active');
-    document.body.style.overflow='hidden';
-    setTimeout(()=>document.getElementById('modal-username')?.focus(),100);
-  }
-  function closeLoginModal(event){
-    if(!event||event.target.id==='loginModal'||event.target.classList.contains('login-modal-close')){
-      document.getElementById('loginModal').classList.remove('active');
-      document.body.style.overflow='';
-    }
-  }
-  function switchModalTab(tab){
-    document.querySelectorAll('.login-modal-tab').forEach(t=>t.classList.remove('active'));
-    document.querySelectorAll('.login-modal-content').forEach(c=>c.classList.remove('active'));
-    if(tab==='login'){
-      document.querySelectorAll('.login-modal-tab')[0].classList.add('active');
-      document.getElementById('modal-login-tab').classList.add('active');
-    }else{
-      document.querySelectorAll('.login-modal-tab')[1].classList.add('active');
-      document.getElementById('modal-register-tab').classList.add('active');
-    }
-  }
-  document.getElementById('modal-login-form').addEventListener('submit',function(e){
-    const u=document.getElementById('modal-username').value.trim();
-    const p=document.getElementById('modal-password').value.trim();
-    if(!u||!p){e.preventDefault();alert('Please enter both email and password.');return false;}
-  });
-  document.getElementById('modal-register-form').addEventListener('submit',function(e){
-    const p=document.getElementById('modal-reg-password').value;
-    const c=document.getElementById('modal-reg-confirm').value;
-    if(p!==c){e.preventDefault();alert('Passwords do not match!');return false;}
-  });
-
-  /* Booking Modal */
-  let bookingData={service:'',icon:'',price:'',tag:'',date:'',time:'',fname:'',lname:'',phone:'',email:'',brand:'',model:'',issue:''};
-  let currentStep=1;
-
-  document.addEventListener('DOMContentLoaded',function(){
-    const today=new Date().toISOString().split('T')[0];
-    document.getElementById('bm-date').setAttribute('min',today);
-  });
-
-  function openBooking(service,icon,price,tag){
-    currentStep=1;
-    bookingData={service,icon,price,tag,date:'',time:'',fname:'',lname:'',phone:'',email:'',brand:'',model:'',issue:''};
-    document.getElementById('bm-title').textContent=service||'Book a Repair';
-    document.getElementById('bm-icon').innerHTML=icon||'<i data-feather="tool"></i>';
-    document.getElementById('bm-subtitle').textContent=price?price+' · Free diagnostic included':'Fill in your details below.';
-    document.getElementById('bm-badge').innerHTML=tag?'<i data-feather="settings"></i> '+tag:'<i data-feather="settings"></i> Book a Repair';
-    document.querySelectorAll('.bm-svc-chip').forEach(c=>{
-      c.classList.remove('selected');
-      if(service&&c.dataset.service===service)c.classList.add('selected');
-    });
-    showPanel(1);updateProgress(1);checkStep1();
-    document.getElementById('bookingOverlay').classList.add('active');
-    document.body.style.overflow='hidden';
-  }
-  function closeBooking(){
-    document.getElementById('bookingOverlay').classList.remove('active');
-    document.body.style.overflow='';
-  }
-  function closeBookingOnBg(e){if(e.target.id==='bookingOverlay')closeBooking();}
-  function showPanel(n){
-    document.querySelectorAll('.bm-panel').forEach(p=>p.classList.remove('active'));
-    document.getElementById('panel-'+(n==='success'?'success':n)).classList.add('active');
-  }
-  function updateProgress(step){
-    for(let i=1;i<=3;i++){
-      const el=document.getElementById('prog-'+i);
-      el.classList.remove('active','done');
-      if(i<step)el.classList.add('done');
-      else if(i===step)el.classList.add('active');
-    }
-    for(let i=1;i<=2;i++){
-      document.getElementById('line-'+i).classList.toggle('done',i<step);
-    }
-  }
-  function selectService(chip){
-    document.querySelectorAll('.bm-svc-chip').forEach(c=>c.classList.remove('selected'));
-    chip.classList.add('selected');
-    bookingData.service=chip.dataset.service;
-    bookingData.icon=chip.dataset.icon;
-    bookingData.price=chip.dataset.price;
-    bookingData.tag=chip.dataset.tag;
-    document.getElementById('bm-title').textContent=bookingData.service;
-    document.getElementById('bm-icon').textContent=bookingData.icon;
-    document.getElementById('bm-subtitle').textContent=bookingData.price+' · Free diagnostic included';
-    checkStep1();
-  }
-  function checkStep1(){
-    const hasService=document.querySelector('.bm-svc-chip.selected')!==null;
-    document.getElementById('step1-next').disabled=!hasService;
-  }
-  document.getElementById('bm-date').addEventListener('change',checkStep1);
-  document.getElementById('bm-time-select').addEventListener('change',checkStep1);
-
-  function goToStep(n){
-    if(n===2){bookingData.date=document.getElementById('bm-date').value;bookingData.time=document.getElementById('bm-time-select').value;}
-    if(n===3){
-      bookingData.fname=document.getElementById('bm-fname').value.trim();
-      bookingData.lname=document.getElementById('bm-lname').value.trim();
-      bookingData.phone=document.getElementById('bm-phone').value.trim();
-      bookingData.email=document.getElementById('bm-email').value.trim();
-      bookingData.brand=document.getElementById('bm-brand').value;
-      bookingData.model=document.getElementById('bm-model').value.trim();
-      bookingData.issue=document.getElementById('bm-issue').value.trim();
-      if(!bookingData.fname||!bookingData.phone){document.getElementById('bm-fname').focus();document.getElementById('bm-fname').style.borderColor='var(--or1)';return;}
-      populateReview();
-    }
-    currentStep=n;showPanel(n);updateProgress(n);
-    document.getElementById('bookingModal').scrollTop=0;
-  }
-  function populateReview(){
-    const dateStr=bookingData.date?new Date(bookingData.date).toLocaleDateString('en-PH',{weekday:'short',year:'numeric',month:'long',day:'numeric'}):'Not specified';
-    document.getElementById('rev-service').textContent=bookingData.service||'—';
-    document.getElementById('rev-price').textContent=bookingData.price||'TBD after free diagnostic';
-    document.getElementById('rev-datetime').textContent=bookingData.date?dateStr+(bookingData.time?', '+bookingData.time:''):'Walk-in';
-    document.getElementById('rev-name').textContent=(bookingData.fname+' '+bookingData.lname).trim()||'—';
-    document.getElementById('rev-phone').textContent=bookingData.phone||'—';
-    document.getElementById('rev-device').textContent=[bookingData.brand,bookingData.model].filter(Boolean).join(' ')||'Not specified';
-    document.getElementById('rev-issue').textContent=bookingData.issue||'Not specified';
-  }
-  function confirmBooking(){
-    const ref='ONR-'+Date.now().toString().slice(-6);
-    document.getElementById('bm-ref-num').textContent=ref;
-    showPanel('success');
-    for(let i=1;i<=3;i++){const el=document.getElementById('prog-'+i);el.classList.remove('active');el.classList.add('done');}
-    document.getElementById('line-1').classList.add('done');
-    document.getElementById('line-2').classList.add('done');
-    document.getElementById('bookingModal').scrollTop=0;
-  }
-  document.addEventListener('keydown',function(e){
-    if(e.key==='Escape'){closeLoginModal();closeBooking();}
-  });
-
-  /* Initialize Feather Icons */
-  feather.replace();
-
-  /* Re-initialize Feather icons when booking modal is shown */
-  const originalOpenBooking = window.openBooking;
-  window.openBooking = function(...args) {
-    originalOpenBooking.apply(this, args);
-    setTimeout(() => feather.replace(), 100);
-  };
-  </script>
-  </body>
-  </html>
+navButtons.forEach(btn => {
+btn.addEventListener('click', () => {
+navContainer.classList.remove('open');
+setBurgerFeatherIcon('menu');
+});
+});
+		</script>
+	</body>
+</html>

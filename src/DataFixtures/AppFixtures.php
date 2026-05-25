@@ -27,6 +27,7 @@ class AppFixtures extends Fixture
         $this->createStockItems($manager, $suppliers);
         $this->createProducts($manager, $suppliers, $categories);
         $this->createAdminUser($manager);
+        $this->createDemoCustomer($manager);
         $manager->flush();
     }
 
@@ -224,24 +225,16 @@ class AppFixtures extends Fixture
 
     private function createProducts(ObjectManager $manager, array $suppliers, array $categories): void
     {
+        // Repair services shown on the public site and mobile customer app
         $productsData = [
-            ['name' => 'Dell Latitude 5520 Laptop', 'issue' => 'Business laptop with Intel i7, 16GB RAM, 512GB SSD', 'price' => 52500.00, 'category' => 0, 'supplier' => 0],
-            ['name' => 'HP ProBook 450 G8', 'issue' => 'Professional laptop with Intel i5, 8GB RAM, 256GB SSD', 'price' => 48500.00, 'category' => 0, 'supplier' => 0],
-            ['name' => 'Dell 24" Full HD Monitor', 'issue' => 'IPS display with 99% sRGB color accuracy', 'price' => 10500.00, 'category' => 2, 'supplier' => 0],
-            ['name' => 'Samsung 27" Curved Monitor', 'issue' => '144Hz gaming monitor with 1ms response time', 'price' => 15500.00, 'category' => 2, 'supplier' => 0],
-            ['name' => 'Intel Core i7-12700', 'issue' => '12th gen processor, 12 cores, 20 threads', 'price' => 21500.00, 'category' => 5, 'supplier' => 1],
-            ['name' => 'Kingston 16GB DDR4 RAM', 'issue' => '3200MHz gaming RAM with heat spreader', 'price' => 3800.00, 'category' => 5, 'supplier' => 1],
-            ['name' => 'RTX 3060 12GB GPU', 'issue' => 'Ray tracing capable GPU for 1080p gaming', 'price' => 25500.00, 'category' => 5, 'supplier' => 1],
-            ['name' => 'Razer DeathAdder V2 Mouse', 'issue' => 'Gaming mouse with 20K DPI optical sensor', 'price' => 4200.00, 'category' => 6, 'supplier' => 2],
-            ['name' => 'HyperX Cloud II Headset', 'issue' => '7.1 surround sound gaming headset', 'price' => 5200.00, 'category' => 6, 'supplier' => 2],
-            ['name' => 'TP-Link Archer AX73 Router', 'issue' => 'Wi-Fi 6 router, AX5400 dual-band', 'price' => 8800.00, 'category' => 3, 'supplier' => 3],
-            ['name' => 'Cisco 24-Port Gigabit Switch', 'issue' => 'Managed switch with VLAN support', 'price' => 21500.00, 'category' => 3, 'supplier' => 3],
-            ['name' => 'Synology DS920+ NAS', 'issue' => '4-bay NAS for small business storage', 'price' => 39500.00, 'category' => 4, 'supplier' => 4],
-            ['name' => 'Samsung 980 Pro 1TB NVMe', 'issue' => 'PCIe 4.0 SSD with 7000MB/s read speed', 'price' => 9800.00, 'category' => 4, 'supplier' => 4],
-            ['name' => 'HP LaserJet Pro M404', 'issue' => 'Monochrome laser printer, 40ppm', 'price' => 20500.00, 'category' => 7, 'supplier' => 5],
-            ['name' => 'HDMI 2.1 Cable 2m', 'issue' => '8K@60Hz, 48Gbps bandwidth', 'price' => 550.00, 'category' => 8, 'supplier' => 6],
-            ['name' => 'USB-C Hub 7-in-1', 'issue' => '4K HDMI, USB-A, SD card reader', 'price' => 2600.00, 'category' => 8, 'supplier' => 6],
-            ['name' => 'Corsair RM750 PSU', 'issue' => '750W 80+ Gold modular power supply', 'price' => 8800.00, 'category' => 9, 'supplier' => 7],
+            ['name' => 'Screen Repair & Replacement', 'issue' => 'Cracked, shattered, or unresponsive screens. OEM-grade panels, 90-day warranty.', 'price' => 1800.00, 'category' => 0, 'supplier' => 0],
+            ['name' => 'Battery Replacement', 'issue' => 'Fast-draining or swollen batteries replaced with certified cells.', 'price' => 1200.00, 'category' => 0, 'supplier' => 0],
+            ['name' => 'Water Damage Recovery', 'issue' => 'Ultrasonic cleaning and component-level recovery for liquid damage.', 'price' => 2500.00, 'category' => 0, 'supplier' => 0],
+            ['name' => 'Charging Port Repair', 'issue' => 'Loose ports, slow charging, and USB-C/Lightning connector replacement.', 'price' => 900.00, 'category' => 0, 'supplier' => 0],
+            ['name' => 'Software & OS Issues', 'issue' => 'Boot loops, update failures, virus removal, and data-safe restores.', 'price' => 800.00, 'category' => 0, 'supplier' => 0],
+            ['name' => 'Camera Module Replacement', 'issue' => 'Blurry, cracked, or non-working front/rear camera modules.', 'price' => 1500.00, 'category' => 0, 'supplier' => 0],
+            ['name' => 'Speaker & Microphone Repair', 'issue' => 'Distorted audio, no sound, or failed call microphones.', 'price' => 1100.00, 'category' => 0, 'supplier' => 0],
+            ['name' => 'Back Glass & Housing Repair', 'issue' => 'Shattered back glass and bent frame straightening for major brands.', 'price' => 2200.00, 'category' => 0, 'supplier' => 0],
         ];
 
         foreach ($productsData as $productData) {
@@ -264,6 +257,7 @@ class AppFixtures extends Fixture
         $admin->setRoles(['ROLE_ADMIN']);
         $admin->setPassword($this->passwordHasher->hashPassword($admin, 'admin123'));
         $admin->setIsActive(true);
+        $admin->setIsVerified(true);
         $manager->persist($admin);
 
         $staff = new User();
@@ -273,6 +267,20 @@ class AppFixtures extends Fixture
         $staff->setRoles(['ROLE_STAFF']);
         $staff->setPassword($this->passwordHasher->hashPassword($staff, 'staff123'));
         $staff->setIsActive(true);
+        $staff->setIsVerified(true);
         $manager->persist($staff);
+    }
+
+    private function createDemoCustomer(ObjectManager $manager): void
+    {
+        $customer = new User();
+        $customer->setUsername('customer@onins.com');
+        $customer->setEmail('customer@onins.com');
+        $customer->setFullName('Demo Customer');
+        $customer->setRoles(['ROLE_USER']);
+        $customer->setPassword($this->passwordHasher->hashPassword($customer, 'customer123'));
+        $customer->setIsActive(true);
+        $customer->setIsVerified(true);
+        $manager->persist($customer);
     }
 }

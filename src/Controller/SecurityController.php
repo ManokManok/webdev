@@ -5,12 +5,14 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\RegistrationType;
 use App\Service\ActivityLogService;
+use App\Service\EmailVerificationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
@@ -19,8 +21,7 @@ class SecurityController extends AbstractController
         private ActivityLogService $activityLogService,
         private EntityManagerInterface $entityManager,
         private UserPasswordHasherInterface $passwordHasher
-    ) {
-    }
+    ) {}
 
     #[Route('/login', name: 'app_login', methods: ['GET', 'POST'])]
     public function login(AuthenticationUtils $authenticationUtils, Request $request): Response
@@ -69,8 +70,11 @@ class SecurityController extends AbstractController
 
     #[Route('/register', name: 'app_register', methods: ['POST'])]
     #[Route('/register-admin', name: 'app_register_admin', methods: ['POST'])]
-    public function register(Request $request, AuthenticationUtils $authenticationUtils): Response
-    {
+    public function register(
+        Request $request,
+        AuthenticationUtils $authenticationUtils,
+        EmailVerificationService $emailVerificationService,
+    ): Response {
         // If user is already logged in, redirect based on role
         $user = $this->getUser();
         if ($user instanceof \App\Entity\User) {
@@ -86,6 +90,11 @@ class SecurityController extends AbstractController
 
         // Handle registration form
         $user = new User();
+        $routeName = $request->attributes->get('_route');
+        if ($routeName === 'app_register_admin' && !$this->isGranted('ROLE_ADMIN')) {
+            return $this->json(['status' => 'error', 'message' => 'Admin registration requires admin privileges.'], Response::HTTP_FORBIDDEN);
+        }
+
         $registrationForm = $this->createForm(RegistrationType::class, $user);
         $registrationForm->handleRequest($request);
 
@@ -102,17 +111,34 @@ class SecurityController extends AbstractController
             // Admins and staff should be created through the admin panel
             $user->setRoles(['ROLE_USER']);
 
-            // Email is already set from the form
+            $verificationToken = $emailVerificationService->generateVerificationToken();
+            $user->setVerificationToken($verificationToken);
+            $user->setIsVerified(false);
 
-            // Save user
             $this->entityManager->persist($user);
             $this->entityManager->flush();
 
-            // Add success message
-            $this->addFlash('success', 'Account created successfully! Welcome to Onin\'s Smartphone Repair.');
+            $verificationUrl = $this->generateUrl(
+                'app_verify_email',
+                ['token' => $verificationToken],
+                UrlGeneratorInterface::ABSOLUTE_URL
+            );
 
-            // Redirect to home page
-            return $this->redirectToRoute('app_home');
+            $emailSent = $emailVerificationService->sendVerificationEmail($user, $verificationUrl);
+
+            if ($emailSent) {
+                $this->addFlash(
+                    'success',
+                    'Welcome to Onin\'s Smartphone Repair! Your account was created. Check your email (including spam) to verify before signing in.'
+                );
+            } else {
+                $this->addFlash(
+                    'warning',
+                    'Welcome to Onin\'s Smartphone Repair! Your account was created, but the verification email could not be sent. Please contact support.'
+                );
+            }
+
+            return $this->redirectToRoute('app_login');
         }
 
         // If form has errors, render the login page with the form errors
@@ -134,4 +160,3 @@ class SecurityController extends AbstractController
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 }
-

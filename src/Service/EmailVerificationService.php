@@ -48,13 +48,18 @@ class EmailVerificationService
             $this->logger->info('Verification email sent successfully to: ' . $user->getEmail());
             return true;
         } catch (TransportExceptionInterface $e) {
-            $this->logger->error('Failed to send verification email: ' . $e->getMessage());
+            $this->logger->error('Failed to send verification email (transport): ' . $e->getMessage());
+            return false;
+        } catch (\Throwable $e) {
+            $this->logger->error('Failed to send verification email: ' . $e->getMessage(), [
+                'exception' => $e,
+            ]);
             return false;
         }
     }
 
     /**
-     * Verify a token and mark user as verified
+     * Verify a token and mark user as verified 
      */
     public function verifyToken(string $token): ?User
     {

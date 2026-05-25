@@ -32,6 +32,7 @@ class AdminFixture extends Fixture
         $admin->setFullName('Administrator');
         $admin->setPassword($this->passwordHasher->hashPassword($admin, 'admin123'));
         $admin->setRoles(['ROLE_ADMIN', 'ROLE_USER']);
+        $admin->setIsVerified(true);
         $admin->setIsActive(true);
         $admin->setIsArchived(false);
         $admin->setCreatedAt(new \DateTime());
@@ -39,8 +40,8 @@ class AdminFixture extends Fixture
         $manager->persist($admin);
         $manager->flush();
 
-        echo "Admin user created successfully!\n";
-        echo "Email/Username: admin@onins.com\n";
-        echo "Password: admin123\n";
+        // echo "Admin user created successfully!\n";
+        // echo "Email/Username: admin@onins.com\n";
+        // echo "Password: admin123\n";
     }
 }

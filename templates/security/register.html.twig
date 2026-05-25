@@ -1,168 +1,28 @@
 {% extends 'base.html.twig' %}
 
+{% block flashes %}
+{% endblock %}
+
 {% block title %}Register - Admin Panel{% endblock %}
 
 {% block stylesheets %}
-<style>
-    body {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    .register-container {
-        max-width: 480px;
-        width: 100%;
-        padding: 20px;
-    }
-    
-    .register-card {
-        background: white;
-        border-radius: 20px;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        overflow: hidden;
-        animation: slideUp 0.5s ease-out;
-    }
-    
-    @keyframes slideUp {
-        from {
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-    
-    .register-header {
-        background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
-        padding: 40px 30px;
-        text-align: center;
-        color: white;
-    }
-    
-    .register-header h1 {
-        margin: 0;
-        font-size: 28px;
-        font-weight: 700;
-        letter-spacing: 0.5px;
-    }
-    
-    .register-header p {
-        margin: 10px 0 0 0;
-        opacity: 0.9;
-        font-size: 14px;
-    }
-    
-    .register-body {
-        padding: 40px 30px;
-    }
-    
-    .form-label {
-        font-weight: 600;
-        color: #333;
-        margin-bottom: 8px;
-        font-size: 14px;
-        display: block;
-    }
-    
-    .form-control {
-        border: 2px solid #e5e7eb;
-        border-radius: 10px;
-        padding: 12px 16px;
-        font-size: 15px;
-        transition: all 0.3s ease;
-        width: 100%;
-        box-sizing: border-box;
-    }
-    
-    .form-control:focus {
-        border-color: #f59e0b;
-        box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
-        outline: none;
-    }
-    
-    .btn-register {
-        background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
-        border: none;
-        border-radius: 10px;
-        padding: 14px;
-        font-weight: 600;
-        font-size: 16px;
-        color: white;
-        width: 100%;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
-        margin-top: 8px;
-    }
-    
-    .btn-register:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5);
-        color: white;
-    }
-    
-    .btn-link {
-        background: transparent;
-        border: 2px solid #e5e7eb;
-        border-radius: 10px;
-        padding: 12px;
-        font-weight: 600;
-        font-size: 14px;
-        color: #6b7280;
-        width: 100%;
-        transition: all 0.3s ease;
-        text-decoration: none;
-        display: block;
-        text-align: center;
-        margin-top: 12px;
-    }
-    
-    .btn-link:hover {
-        border-color: #f59e0b;
-        color: #f59e0b;
-        background: rgba(245, 158, 11, 0.05);
-    }
-    
-    .alert {
-        border-radius: 10px;
-        border: none;
-        padding: 14px 16px;
-        margin-bottom: 20px;
-    }
-    
-    .register-footer {
-        text-align: center;
-        padding: 20px 30px;
-        background: #f9fafb;
-        color: #6b7280;
-        font-size: 13px;
-    }
-    
-    .form-group {
-        margin-bottom: 20px;
-    }
-    
-    .form-error {
-        color: #ef4444;
-        font-size: 13px;
-        margin-top: 6px;
-    }
-    
-    .navbar {
-        display: none;
-    }
-    
-    main.container {
-        padding: 0;
-    }
-</style>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="{{ asset('css/register.css') }}">
 {% endblock %}
 
 {% block body %}
+<div id="flash-toasts" class="flash-toasts" aria-live="polite" aria-atomic="true">
+    {% for type, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="flash-toast flash-toast--{{ type == 'error' ? 'danger' : type }}" role="status" data-flash-toast>
+                <button type="button" class="flash-toast__close" aria-label="Dismiss">&times;</button>
+                <span class="flash-toast__text">{{ message }}</span>
+            </div>
+        {% endfor %}
+    {% endfor %}
+</div>
 <div class="register-container">
     <div class="register-card">
         <div class="register-header">
@@ -170,13 +30,6 @@
             <p>Sign up to get started</p>
         </div>
         <div class="register-body">
-            {# Display flash messages #}
-            {% for message in app.flashes('success') %}
-                <div class="alert alert-success">
-                    {{ message }}
-                </div>
-            {% endfor %}
-
             {# Registration Form #}
             {{ form_start(registrationForm) }}
                 <div class="form-group">
@@ -212,10 +65,26 @@
                 Already have an account? Sign in
             </a>
         </div>
-        <div class="register-footer">
+        {# <div class="register-footer">
             <p class="mb-0">© 2024 ONINS Admin Panel. All rights reserved.</p>
-        </div>
+        </div> #}
     </div>
 </div>
+<script>
+document.querySelectorAll('[data-flash-toast]').forEach(function (toast) {
+    var remove = function () {
+        toast.classList.add('flash-toast--out');
+        setTimeout(function () { toast.remove(); }, 280);
+    };
+    var t = setTimeout(remove, 7000);
+    var btn = toast.querySelector('.flash-toast__close');
+    if (btn) {
+        btn.addEventListener('click', function () {
+            clearTimeout(t);
+            remove();
+        });
+    }
+});
+</script>
 {% endblock %}
 

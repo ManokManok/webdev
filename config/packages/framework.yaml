@@ -17,6 +17,11 @@ framework:
     php_errors:
         log: true
 
+when@prod:
+    framework:
+        # Railway terminates TLS and forwards X-Forwarded-* headers.
+        trusted_proxies: 'private_ranges'
+
 when@test:
     framework:
         test: true

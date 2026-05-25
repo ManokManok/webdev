@@ -37,7 +37,7 @@
         
         <nav class="menu">
             <a class="menu-item {{ current == 'app_staff_dashboard' ? 'active' : '' }}" href="{{ path('app_staff_dashboard') }}">
-                <i class="menu-icon">📊</i>
+                <i class="menu-icon"><i data-feather="bar-chart-2"></i></i>
                 <span>Dashboard</span>
             </a>
             <a class="menu-item {{ current starts with 'app_product_' ? 'active' : '' }}" href="{{ path('app_product_index') }}">
@@ -45,18 +45,18 @@
                 <span>Product Services</span>
             </a>
             <a class="menu-item {{ current starts with 'app_category_' ? 'active' : '' }}" href="{{ path('app_category_index') }}">
-                <i class="menu-icon">🏷️</i>
+                <i class="menu-icon"><i data-feather="tag"></i></i>
                 <span>Categories</span>
             </a>
             <a class="menu-item {{ current starts with 'app_supplier_' ? 'active' : '' }}" href="{{ path('app_supplier_index') }}">
-                <i class="menu-icon">🏢</i>
+                <i class="menu-icon"><i data-feather="briefcase"></i></i>
                 <span>Suppliers</span>
             </a>
         </nav>
         
         <div class="sidebar-footer">
             <a href="{{ path('app_logout') }}" class="logout-button">
-                <i class="menu-icon">🚪</i>
+                <i class="menu-icon"><i data-feather="log-out"></i></i>
                 <span>Logout</span>
             </a>
         </div>

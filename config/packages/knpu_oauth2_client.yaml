@@ -4,6 +4,6 @@ knpu_oauth2_client:
       type: google
       client_id: '%env(GOOGLE_CLIENT_ID)%'
       client_secret: '%env(GOOGLE_CLIENT_SECRET)%'
-      # This route must generate the URI you put in Google Console
+      # Symfony builds the callback URL from this route; add the same URL in Google Cloud Console
+      # (e.g. http://127.0.0.1:8000/connect/google/check and your LAN IP if you use start-api-for-mobile.bat)
       redirect_route: connect_google_check
-      redirect_params: {}

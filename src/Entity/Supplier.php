@@ -6,6 +6,30 @@ use App\Repository\SupplierRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Delete;
+
+use Symfony\Component\Serializer\Attribute\Groups;
+
+#[ApiResource(
+    operations: [
+        new Get(),
+        new GetCollection(),
+        new Post(),
+        new Put(),
+        new Delete()
+    ],
+    normalizationContext: [
+        'groups' => ['supplier:read']
+    ],
+    denormalizationContext: [
+        'groups' => ['supplier:write']
+    ]
+)]
 
 #[ORM\Entity(repositoryClass: SupplierRepository::class)]
 class Supplier
@@ -13,18 +37,27 @@ class Supplier
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+        #[Groups(['supplier:read'])]
+
     private ?int $id = null;
 
     #[ORM\Column(length: 150)]
+    #[Groups(['supplier:read', 'supplier:write'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 150, nullable: true)]
+    #[Groups(['supplier:read', 'supplier:write'])]
+
     private ?string $contact = null;
 
     #[ORM\OneToMany(mappedBy: 'supplier', targetEntity: Product::class)]
+        #[Groups(['supplier:read', 'supplier:write'])]
+
     private Collection $products;
 
     #[ORM\OneToMany(mappedBy: 'supplier', targetEntity: Stock::class)]
+        #[Groups(['supplier:read', 'supplier:write'])]
+
     private Collection $stocks;
 
     public function __construct()
