@@ -40,7 +40,7 @@ if [ "${RUN_FIXTURES:-0}" = "1" ]; then
 fi
 
 # Safe seed: never purges existing data (mobile demo login).
-php bin/console doctrine:fixtures:load --append --group=customer --no-interaction 2>/dev/null || echo "Customer seed skipped."
+php bin/console app:ensure-demo-customer --no-interaction || echo "Demo customer seed skipped."
 
 php bin/console cache:clear --env=prod --no-warmup
 php bin/console cache:warmup --env=prod
