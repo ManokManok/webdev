@@ -36,9 +36,9 @@ class SupplierController extends AbstractController
             return $this->redirectToRoute('app_supplier_index');
         }
 
-        return $this->renderForm('supplier/new.html.twig', [
+        return $this->render('supplier/new.html.twig', [
             'supplier' => $supplier,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -62,9 +62,9 @@ class SupplierController extends AbstractController
             return $this->redirectToRoute('app_supplier_index');
         }
 
-        return $this->renderForm('supplier/edit.html.twig', [
+        return $this->render('supplier/edit.html.twig', [
             'supplier' => $supplier,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 
