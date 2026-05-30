@@ -21,8 +21,8 @@ class EnsureDemoCustomerCommand extends Command
     /** @var list<array{email: string, username: string, fullName: string, password: string, roles: list<string>}> */
     private const DEMO_ACCOUNTS = [
         [
-            'email' => 'admin@onins.com',
-            'username' => 'admin@onins.com',
+            'email' => 'admin@onins',
+            'username' => 'admin@onins',
             'fullName' => 'Administrator',
             'password' => 'admin123',
             'roles' => ['ROLE_ADMIN', 'ROLE_USER'],
@@ -67,7 +67,10 @@ class EnsureDemoCustomerCommand extends Command
         foreach (self::DEMO_ACCOUNTS as $account) {
             $user = $this->userRepository->findOneBy(['email' => $account['email']]);
             if ($user) {
-                if (!$user->isAdmin() && in_array('ROLE_ADMIN', $account['roles'], true)) {
+                if (in_array('ROLE_ADMIN', $account['roles'], true) && !$user->isAdmin()) {
+                    $user->setRoles($account['roles']);
+                    ++$updated;
+                } elseif (in_array('ROLE_STAFF', $account['roles'], true) && !$user->isStaff() && !$user->isAdmin()) {
                     $user->setRoles($account['roles']);
                     ++$updated;
                 }

@@ -19,7 +19,7 @@ class AdminFixture extends Fixture
     public function load(ObjectManager $manager): void
     {
         // Remove existing admin user if exists
-        $existingAdmin = $manager->getRepository(User::class)->findOneBy(['email' => 'admin@onins.com']);
+        $existingAdmin = $manager->getRepository(User::class)->findOneBy(['email' => 'admin@onins']);
         if ($existingAdmin) {
             $manager->remove($existingAdmin);
             $manager->flush();
@@ -27,8 +27,8 @@ class AdminFixture extends Fixture
 
         // Create admin user with email as username
         $admin = new User();
-        $admin->setUsername('admin@onins.com');  // Set email as username for login
-        $admin->setEmail('admin@onins.com');
+        $admin->setUsername('admin@onins');
+        $admin->setEmail('admin@onins');
         $admin->setFullName('Administrator');
         $admin->setPassword($this->passwordHasher->hashPassword($admin, 'admin123'));
         $admin->setRoles(['ROLE_ADMIN', 'ROLE_USER']);
@@ -41,7 +41,7 @@ class AdminFixture extends Fixture
         $manager->flush();
 
         // echo "Admin user created successfully!\n";
-        // echo "Email/Username: admin@onins.com\n";
+        // echo "Email/Username: admin@onins\n";
         // echo "Password: admin123\n";
     }
 }

@@ -15,7 +15,7 @@ $kernel->boot();
 $container = $kernel->getContainer();
 
 $em = $container->get('doctrine')->getManager();
-$user = $em->getRepository(User::class)->findOneBy(['email' => 'admin@onins.com']);
+$user = $em->getRepository(User::class)->findOneBy(['email' => 'admin@onins']);
 if (!$user instanceof User) {
     fwrite(STDERR, "Admin user not found\n");
     exit(1);
