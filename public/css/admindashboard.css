@@ -305,6 +305,274 @@ body {
   50%      { opacity: .6; transform: scale(1.4); }
 }
 
+/* ─── BOOKING HUB STRIP ─────────────────────────────────── */
+.booking-hub-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+@media (max-width: 1100px) { .booking-hub-strip { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 520px)  { .booking-hub-strip { grid-template-columns: 1fr; } }
+
+.hub-card {
+  border-radius: var(--radius);
+  padding: 24px 22px;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: transform .25s, box-shadow .25s;
+  animation: fadeUp .5s cubic-bezier(.22,1,.36,1) both;
+  position: relative;
+  overflow: hidden;
+}
+a.hub-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+}
+.hub-card::before {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.12);
+  pointer-events: none;
+}
+.hub-bookings {
+  background: linear-gradient(145deg, #ff6b00 0%, #ea580c 100%);
+  color: #fff;
+  box-shadow: 0 12px 40px rgba(234,88,12,.28);
+}
+.hub-orders {
+  background: linear-gradient(145deg, #f59e0b 0%, #d97706 100%);
+  color: #fff;
+  box-shadow: 0 12px 40px rgba(245,158,11,.25);
+}
+.hub-payments {
+  background: linear-gradient(145deg, #16a34a 0%, #15803d 100%);
+  color: #fff;
+  box-shadow: 0 12px 40px rgba(22,163,74,.22);
+}
+.hub-revenue {
+  background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
+  color: #fff;
+  box-shadow: 0 12px 40px rgba(15,23,42,.25);
+  cursor: default;
+}
+.hub-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.hub-icon {
+  width: 40px; height: 40px;
+  border-radius: 12px;
+  background: rgba(255,255,255,.18);
+  display: flex; align-items: center; justify-content: center;
+}
+.hub-icon svg { width: 20px; height: 20px; stroke: #fff; }
+.hub-badge {
+  font-size: .68rem; font-weight: 700;
+  padding: 4px 10px; border-radius: 50px;
+  background: rgba(255,255,255,.22);
+  letter-spacing: .03em;
+  text-transform: uppercase;
+}
+.hub-badge-light { background: rgba(255,255,255,.12); }
+.hub-val {
+  font-family: 'Syne', sans-serif;
+  font-size: 2.4rem; font-weight: 800;
+  line-height: 1;
+}
+.hub-label {
+  font-size: .85rem; font-weight: 600;
+  opacity: .92;
+}
+.hub-sub {
+  font-size: .75rem;
+  opacity: .75;
+  margin-top: 2px;
+}
+.hub-bookings { animation-delay: .04s; }
+.hub-orders   { animation-delay: .08s; }
+.hub-payments { animation-delay: .12s; }
+.hub-revenue  { animation-delay: .16s; }
+
+/* ─── ACTIVITY GRID ─────────────────────────────────────── */
+.activity-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+@media (max-width: 1100px) { .activity-grid { grid-template-columns: 1fr; } }
+
+.activity-panel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 18px;
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(10px);
+  animation: fadeUp .5s .12s cubic-bezier(.22,1,.36,1) both;
+}
+.panel-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.panel-head h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: .95rem; font-weight: 700;
+  display: flex; align-items: center; gap: 8px;
+  color: var(--ink);
+}
+.panel-head h3 svg { width: 18px; height: 18px; stroke: var(--or2); }
+.panel-head a {
+  font-size: .78rem; font-weight: 600;
+  color: var(--or2); text-decoration: none;
+}
+.panel-head a:hover { text-decoration: underline; }
+
+.activity-list { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+.activity-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 8px; border-radius: var(--radius-sm);
+  transition: background .15s;
+}
+.activity-row:hover { background: rgba(234,88,12,.04); }
+.activity-row.empty {
+  color: var(--muted); font-size: .82rem;
+  padding: 20px 8px; justify-content: center; text-align: center;
+}
+.activity-body { flex: 1; min-width: 0; }
+.activity-title {
+  font-size: .85rem; font-weight: 600;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.activity-meta { font-size: .72rem; color: var(--muted); margin-top: 2px; }
+
+.status-pill {
+  font-size: .65rem; font-weight: 700;
+  padding: 3px 8px; border-radius: 50px;
+  text-transform: uppercase; letter-spacing: .04em;
+  flex-shrink: 0;
+}
+.status-pending   { background: rgba(245,158,11,.15); color: #b45309; }
+.status-approved  { background: rgba(34,197,94,.12); color: #15803d; }
+.status-rejected  { background: rgba(239,68,68,.12); color: #b91c1c; }
+.status-cancelled { background: rgba(107,114,128,.15); color: #4b5563; }
+.status-confirmed { background: rgba(59,130,246,.12); color: #1d4ed8; }
+.status-paid        { background: rgba(34,197,94,.12); color: #15803d; }
+.status-completed   { background: rgba(34,197,94,.12); color: #15803d; }
+
+.order-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+.order-actions .inline-form { display: inline; margin: 0; }
+.btn-approve,
+.btn-reject {
+  border: none;
+  border-radius: 8px;
+  font-size: .72rem;
+  font-weight: 700;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+.btn-approve { background: rgba(34,197,94,.15); color: #15803d; }
+.btn-reject { background: rgba(239,68,68,.12); color: #b91c1c; }
+.muted-action { color: var(--muted); font-size: .8rem; }
+
+.metrics-strip-secondary .metric-card {
+  padding: 16px 18px;
+}
+.metrics-strip-secondary .metric-val {
+  font-size: 1.35rem;
+}
+
+/* ─── LIST PAGES ────────────────────────────────────────── */
+.list-page {
+  padding: 36px 40px 48px;
+  max-width: 1400px;
+}
+.list-page-header {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  margin-bottom: 28px; gap: 16px; flex-wrap: wrap;
+}
+.list-page-header h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.8rem; font-weight: 800;
+  background: var(--grad-hero);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.list-page-header p { color: var(--muted); font-size: .9rem; margin-top: 4px; }
+.list-back-link {
+  font-size: .85rem; font-weight: 600;
+  color: var(--or2); text-decoration: none;
+  padding: 8px 16px; border-radius: 50px;
+  border: 1px solid var(--border);
+  background: var(--card);
+}
+.list-back-link:hover { background: rgba(234,88,12,.06); }
+
+.list-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+.list-card-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 22px 28px;
+  border-bottom: 1px solid var(--border);
+}
+.list-card-head h5 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700; font-size: 1.05rem;
+}
+.list-count {
+  font-size: .8rem; color: var(--muted);
+  background: rgba(234,88,12,.08);
+  padding: 4px 12px; border-radius: 50px;
+}
+.table-wrap { overflow-x: auto; }
+.data-table {
+  width: 100%; border-collapse: collapse;
+  font-size: .88rem;
+}
+.data-table th {
+  text-align: left; padding: 14px 24px;
+  font-size: .72rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .06em;
+  color: var(--muted);
+  background: rgba(255,248,240,.8);
+  border-bottom: 1px solid var(--border);
+}
+.data-table td {
+  padding: 16px 24px;
+  border-bottom: 1px solid rgba(234,88,12,.06);
+  vertical-align: middle;
+}
+.data-table tbody tr:hover { background: rgba(234,88,12,.03); }
+.data-table small { color: var(--muted); font-size: .78rem; }
+.empty-cell {
+  text-align: center; color: var(--muted);
+  padding: 48px 24px !important;
+}
+.linked-tag {
+  font-size: .65rem; font-weight: 700;
+  background: rgba(59,130,246,.1); color: #1d4ed8;
+  padding: 2px 6px; border-radius: 4px;
+  margin-left: 6px; vertical-align: middle;
+}
+
 /* ─── METRIC STRIP ─────────────────────────────────────── */
 .metrics-strip {
   display: grid;
@@ -598,6 +866,24 @@ body {
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--off); }
 ::-webkit-scrollbar-thumb { background: rgba(234,88,12,.25); border-radius: 10px; }
+
+/* Faster dashboard paint — no staggered fade-in delays */
+.hub-card,
+.metric-card,
+.ops-hub,
+.ops-panel,
+.chart-panel,
+.quick-panel,
+.admin-header {
+  animation: none !important;
+}
+.hub-bookings,
+.hub-orders,
+.hub-payments,
+.hub-revenue,
+.metric-card:nth-child(n) {
+  animation-delay: 0s !important;
+}
 
 /* ─── RESPONSIVE ─────────────────────────────────────────── */
 @media (max-width: 640px) {

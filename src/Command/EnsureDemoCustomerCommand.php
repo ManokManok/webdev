@@ -21,6 +21,13 @@ class EnsureDemoCustomerCommand extends Command
     /** @var list<array{email: string, username: string, fullName: string, password: string, roles: list<string>}> */
     private const DEMO_ACCOUNTS = [
         [
+            'email' => 'admin@onins.com',
+            'username' => 'admin@onins.com',
+            'fullName' => 'Administrator',
+            'password' => 'admin123',
+            'roles' => ['ROLE_ADMIN', 'ROLE_USER'],
+        ],
+        [
             'email' => 'customer@onins.com',
             'username' => 'customer@onins.com',
             'fullName' => 'Demo Customer',
@@ -55,9 +62,15 @@ class EnsureDemoCustomerCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
         $created = 0;
+        $updated = 0;
 
         foreach (self::DEMO_ACCOUNTS as $account) {
-            if ($this->userRepository->findOneBy(['email' => $account['email']])) {
+            $user = $this->userRepository->findOneBy(['email' => $account['email']]);
+            if ($user) {
+                if (!$user->isAdmin() && in_array('ROLE_ADMIN', $account['roles'], true)) {
+                    $user->setRoles($account['roles']);
+                    ++$updated;
+                }
                 continue;
             }
 
@@ -74,11 +87,11 @@ class EnsureDemoCustomerCommand extends Command
             ++$created;
         }
 
-        if ($created > 0) {
+        if ($created > 0 || $updated > 0) {
             $this->entityManager->flush();
-            $io->success(sprintf('Created %d demo account(s).', $created));
+            $io->success(sprintf('Created %d and updated %d demo account(s).', $created, $updated));
         } else {
-            $io->writeln('Demo accounts already exist.');
+            $io->writeln('Demo accounts already exist with correct roles.');
         }
 
         return Command::SUCCESS;

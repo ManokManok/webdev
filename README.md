@@ -37,6 +37,22 @@ symfony server:start
 
 CORS for mobile: set `CORS_ALLOW_ORIGIN` in `.env` (e.g. `*` for local dev).
 
+## Realtime & push (mobile app)
+
+| Channel | Technology | Example |
+|---------|------------|---------|
+| System push | **Firebase FCM** | Admin approves/rejects order → notification on phone |
+| In-app live UI | **Mercure** (SSE) | Admin adds product or changes order → app refreshes without pull |
+
+Start Mercure with MySQL: `docker compose up -d mysql mercure` (hub on port **3000**).
+
+Configure in `.env`:
+
+- `MERCURE_*` — must match `MERCURE_JWT_SECRET` in `docker-compose.yaml`
+- `FIREBASE_PROJECT_ID` + `config/firebase-credentials.json` (copy from `config/firebase-credentials.json.example`) for FCM
+
+Admin order actions: **Admin → Orders** (Approve / Reject) or `PATCH /api/admin/orders/{id}/status` with `{"status":"APPROVED"}`.
+
 ## Demo accounts
 
 | Role     | Email                      | Password     |
@@ -58,7 +74,7 @@ In [Google Cloud Console](https://console.cloud.google.com/) → OAuth client �
 
 `GOOGLE_OAUTH_CALLBACK_BASE` forces that host even when you open the site via a LAN IP (e.g. `10.x.x.x:8000`), so one redirect URI in Google is enough for local dev.
 
-**Mobile app:** run `appdevv1/enable-usb-api.bat` (adb reverse), set `EXPO_PUBLIC_OAUTH_URL=http://127.0.0.1:8000`, then use Continue with Google. Without adb, add `http://<LAN-IP>:8000/connect/google/check` to Google Console and set `EXPO_PUBLIC_OAUTH_URL` to that LAN URL.
+**Mobile app (APPDEV):** set `EXPO_PUBLIC_GOOGLE_CLIENT_ID` in APPDEV `.env` to the same value as `GOOGLE_CLIENT_ID`. Use **Continue with Google** on the login screen (`POST /api/auth/google` with ID token).
 
 ## Customer API (JWT)
 
@@ -159,4 +175,4 @@ Import `docs/ONINS-Customer-API.postman_collection.json` into Postman. Run **Log
 
 ## Mobile app
 
-See `../appdevv1/README.md` for React Native setup. Data created in the mobile app is stored in the same MySQL database and visible in the web admin after refresh.
+See `../APPDEV/README.md` for React Native setup. Start the API with `start-api-for-mobile.bat` or `scripts/start-api.ps1`. Data from the app uses the same MySQL database and appears in the web admin after refresh.

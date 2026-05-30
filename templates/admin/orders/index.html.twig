@@ -1,0 +1,72 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Orders{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" href="{{ asset('css/admindashboard.css') }}?v=2">
+{% endblock %}
+
+{% block content %}
+<div class="list-page">
+  <header class="list-page-header">
+    <div>
+      <h1>Orders</h1>
+      <p>Product orders from the mobile app (excludes booking payments)</p>
+    </div>
+    <a href="{{ path('app_admin_dashboard') }}" class="list-back-link">← Dashboard</a>
+  </header>
+
+  <div class="admin-card list-card">
+    <div class="list-card-head">
+      <h5>All orders</h5>
+      <span class="list-count">{{ orders|length }} total</span>
+    </div>
+    <div class="table-wrap">
+      <table class="data-table" data-realtime-table="orders">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Customer</th>
+            <th>Service</th>
+            <th>Qty</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Created</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for order in orders %}
+          <tr>
+            <td><strong>{{ order.id }}</strong></td>
+            <td>{{ order.user.fullName|default(order.user.username) }}<br><small>{{ order.user.email }}</small></td>
+            <td>{{ order.product.name }}</td>
+            <td>{{ order.quantity }}</td>
+            <td>₱{{ order.totalAmount|number_format(2) }}</td>
+            <td><span class="status-pill status-{{ order.status|lower }}">{{ order.status }}</span></td>
+            <td>{{ order.createdAt|date('M d, Y') }}</td>
+            <td class="order-actions">
+              {% if order.status == 'PENDING' %}
+              <form method="post" action="{{ path('app_admin_order_approve', { id: order.id }) }}" class="inline-form">
+                <input type="hidden" name="_token" value="{{ csrf_token('order_status_' ~ order.id) }}">
+                <button type="submit" class="btn-approve">Approve</button>
+              </form>
+              <form method="post" action="{{ path('app_admin_order_reject', { id: order.id }) }}" class="inline-form">
+                <input type="hidden" name="_token" value="{{ csrf_token('order_status_' ~ order.id) }}">
+                <button type="submit" class="btn-reject">Reject</button>
+              </form>
+              {% else %}
+              <span class="muted-action">—</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% else %}
+          <tr><td colspan="8" class="empty-cell">No orders yet. Orders are created from the mobile app.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

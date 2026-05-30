@@ -72,6 +72,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:read', 'user:write'])]
     private ?string $googleId = null;
 
+    #[ORM\Column(length: 512, nullable: true)]
+    private ?string $fcmToken = null;
+
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Groups(['user:read', 'user:write'])]
     private ?\DateTimeInterface $createdAt = null;
@@ -184,6 +187,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setGoogleId(?string $googleId): static
     {
         $this->googleId = $googleId;
+
+        return $this;
+    }
+
+    public function getFcmToken(): ?string
+    {
+        return $this->fcmToken;
+    }
+
+    public function setFcmToken(?string $fcmToken): static
+    {
+        $this->fcmToken = $fcmToken;
 
         return $this;
     }

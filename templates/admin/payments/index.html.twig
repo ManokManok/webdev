@@ -1,0 +1,57 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Payments{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" href="{{ asset('css/admindashboard.css') }}?v=2">
+{% endblock %}
+
+{% block content %}
+<div class="list-page">
+  <header class="list-page-header">
+    <div>
+      <h1>Payments</h1>
+      <p>Payment transactions from customer orders</p>
+    </div>
+    <a href="{{ path('app_admin_dashboard') }}" class="list-back-link">← Dashboard</a>
+  </header>
+
+  <div class="admin-card list-card">
+    <div class="list-card-head">
+      <h5>All payments</h5>
+      <span class="list-count">{{ payments|length }} total</span>
+    </div>
+    <div class="table-wrap">
+      <table class="data-table" data-realtime-table="payments">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Customer</th>
+            <th>Order</th>
+            <th>Amount</th>
+            <th>Method</th>
+            <th>Status</th>
+            <th>Paid at</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for payment in payments %}
+          <tr>
+            <td><strong>{{ payment.id }}</strong></td>
+            <td>{{ payment.user.fullName|default(payment.user.username) }}<br><small>{{ payment.user.email }}</small></td>
+            <td>#{{ payment.order.id }} — {{ payment.order.product.name }}</td>
+            <td><strong>₱{{ payment.amount|number_format(2) }}</strong></td>
+            <td>{{ payment.method|capitalize }}</td>
+            <td><span class="status-pill status-{{ payment.status|lower }}">{{ payment.status }}</span></td>
+            <td>{{ payment.paidAt ? payment.paidAt|date('M d, Y g:i A') : '—' }}</td>
+          </tr>
+          {% else %}
+          <tr><td colspan="7" class="empty-cell">No payments yet. Customers pay for orders in the mobile app.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

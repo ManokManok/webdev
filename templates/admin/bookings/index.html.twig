@@ -1,0 +1,55 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Bookings{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" href="{{ asset('css/admindashboard.css') }}?v=2">
+{% endblock %}
+
+{% block content %}
+<div class="list-page">
+  <header class="list-page-header">
+    <div>
+      <h1>Bookings</h1>
+      <p>Service appointments from the mobile app</p>
+    </div>
+    <a href="{{ path('app_admin_dashboard') }}" class="list-back-link">← Dashboard</a>
+  </header>
+
+  <div class="admin-card list-card">
+    <div class="list-card-head">
+      <h5>All bookings</h5>
+      <span class="list-count">{{ bookings|length }} total</span>
+    </div>
+    <div class="table-wrap">
+      <table class="data-table" data-realtime-table="bookings">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Customer</th>
+            <th>Service</th>
+            <th>Scheduled</th>
+            <th>Status</th>
+            <th>Created</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for booking in bookings %}
+          <tr>
+            <td><strong>{{ booking.id }}</strong></td>
+            <td>{{ booking.user.fullName|default(booking.user.username) }}<br><small>{{ booking.user.email }}</small></td>
+            <td>{{ booking.product.name }}</td>
+            <td>{{ booking.scheduledAt|date('M d, Y g:i A') }}</td>
+            <td><span class="status-pill status-{{ booking.status|lower }}">{{ booking.status }}</span></td>
+            <td>{{ booking.createdAt|date('M d, Y') }}</td>
+          </tr>
+          {% else %}
+          <tr><td colspan="6" class="empty-cell">No bookings yet. Customers can book services from the mobile app.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

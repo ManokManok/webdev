@@ -21,6 +21,9 @@ use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPasspor
 
 class GoogleAuthenticator extends OAuth2Authenticator
 {
+    /**
+     * @param list<string> $adminEmails
+     */
     public function __construct(
         private ClientRegistry $clientRegistry,
         private EntityManagerInterface $entityManager,
@@ -28,6 +31,7 @@ class GoogleAuthenticator extends OAuth2Authenticator
         private JWTTokenManagerInterface $jwtManager,
         private UserPasswordHasherInterface $passwordHasher,
         private AuthenticationSuccessHandler $authenticationSuccessHandler,
+        private array $adminEmails = [],
     ) {
     }
 
@@ -61,6 +65,7 @@ class GoogleAuthenticator extends OAuth2Authenticator
                     if (!$user->isVerified()) {
                         $user->setIsVerified(true);
                     }
+                    $this->ensureAdminRoleForEmail($user, $email);
                     $this->entityManager->flush();
 
                     return $user;
@@ -80,7 +85,7 @@ class GoogleAuthenticator extends OAuth2Authenticator
                 $user->setGoogleId($googleId);
                 $user->setIsVerified(true);
                 $user->setIsActive(true);
-                $user->setRoles($isMobile ? ['ROLE_USER'] : ['ROLE_STAFF']);
+                $user->setRoles($this->resolveRolesForNewUser($email, $isMobile));
                 $user->setPassword(
                     $this->passwordHasher->hashPassword($user, bin2hex(random_bytes(16)))
                 );
@@ -173,5 +178,37 @@ class GoogleAuthenticator extends OAuth2Authenticator
         $state = (string) $request->query->get('state', '');
 
         return str_starts_with($state, 'mobile_');
+    }
+
+    /**
+     * @return list<string>
+     */
+    private function resolveRolesForNewUser(string $email, bool $isMobile): array
+    {
+        if ($this->isAdminEmail($email)) {
+            return ['ROLE_ADMIN', 'ROLE_USER'];
+        }
+
+        return $isMobile ? ['ROLE_USER'] : ['ROLE_STAFF'];
+    }
+
+    private function ensureAdminRoleForEmail(User $user, string $email): void
+    {
+        if ($this->isAdminEmail($email) && !$user->isAdmin()) {
+            $user->setRoles(['ROLE_ADMIN', 'ROLE_USER']);
+        }
+    }
+
+    private function isAdminEmail(string $email): bool
+    {
+        $normalized = strtolower(trim($email));
+
+        foreach ($this->adminEmails as $adminEmail) {
+            if ($normalized === strtolower(trim($adminEmail))) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

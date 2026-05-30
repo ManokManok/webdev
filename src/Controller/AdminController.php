@@ -3,7 +3,10 @@
 namespace App\Controller;
 
 use App\Repository\ActivityLogRepository;
+use App\Repository\BookingRepository;
 use App\Repository\CategoryRepository;
+use App\Repository\CustomerOrderRepository;
+use App\Repository\PaymentRepository;
 use App\Repository\ProductRepository;
 use App\Repository\StockRepository;
 use App\Repository\SupplierRepository;
@@ -36,7 +39,10 @@ class AdminController extends AbstractController
         ActivityLogRepository $activityLogRepository,
         CategoryRepository $categoryRepository,
         SupplierRepository $supplierRepository,
-        StockRepository $stockRepository
+        StockRepository $stockRepository,
+        BookingRepository $bookingRepository,
+        CustomerOrderRepository $customerOrderRepository,
+        PaymentRepository $paymentRepository
     ): Response {
         // Total counts
         $totalUsers = $userRepository->count([]);
@@ -75,6 +81,39 @@ class AdminController extends AbstractController
             ->getQuery()
             ->getResult();
 
+        // Booking & commerce stats (from mobile app API)
+        $totalBookings = $bookingRepository->count([]);
+        $pendingBookings = $bookingRepository->count(['status' => 'PENDING']);
+        $confirmedBookings = $bookingRepository->count(['status' => 'CONFIRMED']);
+
+        $totalOrders = $customerOrderRepository->countStandalone();
+        $pendingOrders = $customerOrderRepository->countStandalone(['status' => 'PENDING']);
+        $paidOrders = $customerOrderRepository->countStandalone(['status' => 'PAID']);
+
+        $totalPayments = $paymentRepository->count([]);
+        $completedPayments = $paymentRepository->count(['status' => 'COMPLETED']);
+
+        $totalRevenue = (float) $paymentRepository->createQueryBuilder('p')
+            ->select('COALESCE(SUM(p.amount), 0)')
+            ->where('p.status = :status')
+            ->setParameter('status', 'COMPLETED')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        $recentBookings = $bookingRepository->createQueryBuilder('b')
+            ->orderBy('b.createdAt', 'DESC')
+            ->setMaxResults(5)
+            ->getQuery()
+            ->getResult();
+
+        $recentOrders = $customerOrderRepository->findStandaloneBy(['createdAt' => 'DESC'], 5);
+
+        $recentPayments = $paymentRepository->createQueryBuilder('p')
+            ->orderBy('p.createdAt', 'DESC')
+            ->setMaxResults(5)
+            ->getQuery()
+            ->getResult();
+
         return $this->render('admin/dashboard.html.twig', [
             'totalUsers' => $totalUsers,
             'totalStaff' => $totalStaff,
@@ -86,6 +125,18 @@ class AdminController extends AbstractController
             'recent' => $recent,
             'inStockCount' => $inStockCount,
             'lowStockCount' => $lowStockCount,
+            'totalBookings' => $totalBookings,
+            'pendingBookings' => $pendingBookings,
+            'confirmedBookings' => $confirmedBookings,
+            'totalOrders' => $totalOrders,
+            'pendingOrders' => $pendingOrders,
+            'paidOrders' => $paidOrders,
+            'totalPayments' => $totalPayments,
+            'completedPayments' => $completedPayments,
+            'totalRevenue' => $totalRevenue,
+            'recentBookings' => $recentBookings,
+            'recentOrders' => $recentOrders,
+            'recentPayments' => $recentPayments,
         ]);
     }
 }

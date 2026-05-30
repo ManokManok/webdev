@@ -1,0 +1,30 @@
+<div class="admin-live-header" data-admin-live-header>
+  <span class="admin-live-pill" id="adminLivePill" title="Connecting to live updates…" aria-live="polite">
+    <span class="admin-live-dot"></span>
+    <span class="admin-live-label">Live</span>
+  </span>
+  <div class="notification-wrapper">
+    <button type="button" class="notification-btn" id="notificationBtn" aria-label="Notifications" aria-expanded="false">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+      </svg>
+      <span class="notification-badge" id="notificationCount" style="display:none">0</span>
+    </button>
+    <div class="notification-dropdown" id="notificationDropdown" role="region" aria-label="Notifications">
+      <div class="notification-header">
+        <h4>Live activity</h4>
+        <button type="button" class="mark-read" id="markAllRead">Mark all read</button>
+      </div>
+      <div class="notification-list" id="notificationList">
+        <div class="notification-empty" id="notificationEmpty">
+          <p>No new activity yet — updates from the mobile app appear here instantly.</p>
+        </div>
+      </div>
+      <div class="notification-footer">
+        <a href="{{ path('app_admin_bookings') }}">Bookings</a>
+        <a href="{{ path('app_admin_orders') }}">Orders</a>
+        <a href="{{ path('app_admin_payments') }}">Payments</a>
+      </div>
+    </div>
+  </div>
+</div>

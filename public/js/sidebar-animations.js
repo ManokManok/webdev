@@ -88,53 +88,28 @@
     }
 
     /**
-     * Smooth page transitions
+     * Optional top loading bar on internal navigation (no artificial delay).
      */
     function initPageTransitions() {
-        // Add exit animation before page unload
         const links = document.querySelectorAll('a:not([target="_blank"]):not([href^="#"]):not([href^="javascript"])');
-        
+
         links.forEach(link => {
-            link.addEventListener('click', function(e) {
+            link.addEventListener('click', function () {
                 const href = this.getAttribute('href');
-                
-                // Skip if it's the current page
+
                 if (this.classList.contains('active')) {
                     return;
                 }
-                
-                // Skip external links
+
                 if (href && (href.startsWith('http') || href.startsWith('//'))) {
                     return;
                 }
 
-                // Show loading indicator
-                showLoadingIndicator();
-                
-                // Add page exit animation
-                const main = document.querySelector('.main');
-                if (main && href && !href.startsWith('#')) {
-                    e.preventDefault();
-                    main.style.animation = 'pageExit 0.25s ease forwards';
-                    
-                    setTimeout(() => {
-                        window.location.href = href;
-                    }, 250);
+                if (href && !href.startsWith('#')) {
+                    showLoadingIndicator();
                 }
             });
         });
-
-        // Add exit animation CSS
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes pageExit {
-                to {
-                    opacity: 0;
-                    transform: translateY(-10px);
-                }
-            }
-        `;
-        document.head.appendChild(style);
     }
 
     /**
@@ -209,15 +184,9 @@
      * Staggered animation for dynamically added content
      */
     window.animateNewContent = function(elements) {
-        elements.forEach((el, index) => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(20px)';
-            el.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
-            
-            setTimeout(() => {
-                el.style.opacity = '1';
-                el.style.transform = 'translateY(0)';
-            }, index * 100);
+        elements.forEach(el => {
+            el.style.opacity = '1';
+            el.style.transform = 'none';
         });
     };
 

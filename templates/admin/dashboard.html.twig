@@ -5,7 +5,7 @@
 {% block stylesheets %}
 {{ parent() }}
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{{ asset('css/admindashboard.css') }}">
+<link rel="stylesheet" href="{{ asset('css/admindashboard.css') }}?v=2">
 {% endblock %}
 
 {% block content %}
@@ -23,55 +23,10 @@
   <!-- ── HEADER ── -->
   <header class="db-header">
     <div class="db-header-left">
-      <h1>Dashboard Overview</h1>
-      <p>Welcome back — here's what's happening today.</p>
+      <h1>Booking &amp; Service Hub</h1>
+      <p>Live overview of bookings, orders, and payments from the mobile app.</p>
     </div>
     <div class="db-header-right">
-      <!-- Notification Button -->
-      <div class="notification-wrapper">
-        <button class="notification-btn" id="notificationBtn" aria-label="Notifications">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-          </svg>
-          <span class="notification-badge" id="notificationCount">3</span>
-        </button>
-        <div class="notification-dropdown" id="notificationDropdown">
-          <div class="notification-header">
-            <h4>Messages & Requests</h4>
-            <span class="mark-read" id="markAllRead">Mark all read</span>
-          </div>
-          <div class="notification-list" id="notificationList">
-            <!-- Sample notifications - replace with dynamic data -->
-            <a href="#" class="notification-item unread">
-              <div class="notification-avatar">JD</div>
-              <div class="notification-content">
-                <div class="notification-title">New repair request</div>
-                <div class="notification-text">iPhone 13 Pro screen replacement inquiry from John D.</div>
-                <div class="notification-time">2 min ago</div>
-              </div>
-            </a>
-            <a href="#" class="notification-item unread">
-              <div class="notification-avatar">SM</div>
-              <div class="notification-content">
-                <div class="notification-title">Customer message</div>
-                <div class="notification-text">Question about Samsung Galaxy warranty coverage</div>
-                <div class="notification-time">15 min ago</div>
-              </div>
-            </a>
-            <a href="#" class="notification-item">
-              <div class="notification-avatar">AK</div>
-              <div class="notification-content">
-                <div class="notification-title">Quote request</div>
-                <div class="notification-text">iPad Air battery replacement quote requested</div>
-                <div class="notification-time">1 hour ago</div>
-              </div>
-            </a>
-          </div>
-          <div class="notification-footer">
-            <a href="#">View all messages</a>
-          </div>
-        </div>
-      </div>
       <!-- Date Badge -->
       <div class="db-date-badge">
         <span class="dot"></span>
@@ -80,26 +35,66 @@
     </div>
   </header>
 
-  <!-- ── METRICS STRIP ── -->
-  <section class="metrics-strip">
+  <!-- ── BOOKING HUB METRICS ── -->
+  <section class="booking-hub-strip">
+    <a href="{{ path('app_admin_bookings') }}" class="hub-card hub-bookings">
+      <div class="hub-card-top">
+        <span class="hub-icon"><i data-feather="calendar"></i></span>
+        <span class="hub-badge" data-realtime-count="pendingBookings">{{ pendingBookings }} pending</span>
+      </div>
+      <div class="hub-val" data-hub-count="totalBookings" data-count="{{ totalBookings }}">0</div>
+      <div class="hub-label">Total Bookings</div>
+      <div class="hub-sub">{{ confirmedBookings }} confirmed</div>
+    </a>
+    <a href="{{ path('app_admin_orders') }}" class="hub-card hub-orders">
+      <div class="hub-card-top">
+        <span class="hub-icon"><i data-feather="shopping-bag"></i></span>
+        <span class="hub-badge" data-realtime-count="pendingOrders">{{ pendingOrders }} unpaid</span>
+      </div>
+      <div class="hub-val" data-hub-count="totalOrders" data-count="{{ totalOrders }}">0</div>
+      <div class="hub-label">Total Orders</div>
+      <div class="hub-sub">{{ paidOrders }} paid</div>
+    </a>
+    <a href="{{ path('app_admin_payments') }}" class="hub-card hub-payments">
+      <div class="hub-card-top">
+        <span class="hub-icon"><i data-feather="credit-card"></i></span>
+        <span class="hub-badge">{{ completedPayments }} completed</span>
+      </div>
+      <div class="hub-val" data-hub-count="totalPayments" data-count="{{ totalPayments }}">0</div>
+      <div class="hub-label">Total Payments</div>
+      <div class="hub-sub">All transactions</div>
+    </a>
+    <div class="hub-card hub-revenue">
+      <div class="hub-card-top">
+        <span class="hub-icon"><i data-feather="trending-up"></i></span>
+        <span class="hub-badge hub-badge-light">Revenue</span>
+      </div>
+      <div class="hub-val hub-val-currency" data-hub-count="totalRevenue" data-count="{{ totalRevenue }}" data-prefix="₱" data-decimals="2">₱0</div>
+      <div class="hub-label">Total Collected</div>
+      <div class="hub-sub">From completed payments</div>
+    </div>
+  </section>
+
+  <!-- ── SECONDARY METRICS ── -->
+  <section class="metrics-strip metrics-strip-secondary">
     <div class="metric-card">
       <div class="metric-icon"><i data-feather="users"></i></div>
       <div>
-        <div class="metric-label">Total Users</div>
+        <div class="metric-label">Customers</div>
         <div class="metric-val" data-count="{{ totalUsers }}">0</div>
       </div>
     </div>
     <div class="metric-card">
       <div class="metric-icon"><i data-feather="user"></i></div>
       <div>
-        <div class="metric-label">Total Staff</div>
+        <div class="metric-label">Staff</div>
         <div class="metric-val" data-count="{{ totalStaff }}">0</div>
       </div>
     </div>
     <div class="metric-card">
       <div class="metric-icon"><i data-feather="package"></i></div>
       <div>
-        <div class="metric-label">Products</div>
+        <div class="metric-label">Services</div>
         <div class="metric-val" data-count="{{ totalProducts }}">0</div>
       </div>
     </div>
@@ -119,28 +114,92 @@
     </div>
   </section>
 
-  <!-- ── MAIN GRID ── -->
-  <div class="main-grid">
+  <!-- ── ACTIVITY GRID ── -->
+  <div class="activity-grid">
 
-    <!-- Turnover Chart -->
+    <div class="activity-panel">
+      <div class="panel-head">
+        <h3><i data-feather="calendar"></i> Recent Bookings</h3>
+        <a href="{{ path('app_admin_bookings') }}">View all →</a>
+      </div>
+      <ul class="activity-list">
+        {% for b in recentBookings %}
+        <li class="activity-row">
+          <div class="avatar-sm">{{ b.product.name|slice(0,1)|upper }}</div>
+          <div class="activity-body">
+            <div class="activity-title">{{ b.product.name }}</div>
+            <div class="activity-meta">{{ b.user.fullName|default(b.user.username) }} · {{ b.scheduledAt|date('M d, Y') }}</div>
+          </div>
+          <span class="status-pill status-{{ b.status|lower }}">{{ b.status }}</span>
+        </li>
+        {% else %}
+        <li class="activity-row empty">No bookings yet — data appears when customers use the app.</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="activity-panel">
+      <div class="panel-head">
+        <h3><i data-feather="shopping-bag"></i> Recent Orders</h3>
+        <a href="{{ path('app_admin_orders') }}">View all →</a>
+      </div>
+      <ul class="activity-list">
+        {% for o in recentOrders %}
+        <li class="activity-row">
+          <div class="avatar-sm">{{ o.product.name|slice(0,1)|upper }}</div>
+          <div class="activity-body">
+            <div class="activity-title">Order #{{ o.id }} — ₱{{ o.totalAmount|number_format(2) }}</div>
+            <div class="activity-meta">{{ o.user.fullName|default(o.user.username) }} · {{ o.product.name }}</div>
+          </div>
+          <span class="status-pill status-{{ o.status|lower }}">{{ o.status }}</span>
+        </li>
+        {% else %}
+        <li class="activity-row empty">No orders yet.</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="activity-panel">
+      <div class="panel-head">
+        <h3><i data-feather="credit-card"></i> Recent Payments</h3>
+        <a href="{{ path('app_admin_payments') }}">View all →</a>
+      </div>
+      <ul class="activity-list">
+        {% for p in recentPayments %}
+        <li class="activity-row">
+          <div class="avatar-sm">₱</div>
+          <div class="activity-body">
+            <div class="activity-title">₱{{ p.amount|number_format(2) }} — {{ p.method|capitalize }}</div>
+            <div class="activity-meta">{{ p.user.fullName|default(p.user.username) }} · Order #{{ p.order.id }}</div>
+          </div>
+          <span class="status-pill status-{{ p.status|lower }}">{{ p.status }}</span>
+        </li>
+        {% else %}
+        <li class="activity-row empty">No payments yet.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <!-- ── INVENTORY ROW ── -->
+  <div class="main-grid">
     <div class="turnover-card">
       <div class="turnover-top">
         <div>
-          <div class="turnover-label">Inventory Turnover</div>
-          <div class="turnover-amount">₱{{ totalValue|number_format(2) }}</div>
-          <div class="turnover-sub">Total inventory value · updated now</div>
+          <div class="turnover-label">Revenue Overview</div>
+          <div class="turnover-amount">₱{{ totalRevenue|number_format(2) }}</div>
+          <div class="turnover-sub">{{ completedPayments }} completed payment{{ completedPayments != 1 ? 's' : '' }} · {{ paidOrders }} paid orders</div>
         </div>
-        <a href="{{ path('app_product_index') }}" class="turnover-link">View All →</a>
+        <a href="{{ path('app_admin_payments') }}" class="turnover-link">Payments →</a>
       </div>
       <div class="chart-wrap">
         <canvas id="turnoverChart"></canvas>
       </div>
     </div>
 
-    <!-- Stock Overview -->
     <div class="stock-card">
       <div class="stock-head">
-        <div class="stock-title">Stock Overview</div>
+        <div class="stock-title">Inventory &amp; Services</div>
         <div class="stock-badges">
           <span class="badge in"><i class="fas fa-check-circle"></i> {{ inStockCount|default(0) }} In Stock</span>
           <span class="badge low"><i class="fas fa-exclamation-triangle"></i> {{ lowStockCount|default(0) }} Low</span>
@@ -157,7 +216,7 @@
             <a href="{{ path('app_product_show', {id:p.id}) }}" class="row-action">Details</a>
           </li>
         {% else %}
-          <li class="recent-row empty">No items yet</li>
+          <li class="recent-row empty">No services yet</li>
         {% endfor %}
       </ul>
     </div>
@@ -226,92 +285,19 @@
   el.textContent = fmt();
 })();
 
-/* ── NOTIFICATION DROPDOWN ── */
-(function() {
-  const btn = document.getElementById('notificationBtn');
-  const dropdown = document.getElementById('notificationDropdown');
-  const markRead = document.getElementById('markAllRead');
-  const badge = document.getElementById('notificationCount');
-  const wrapper = document.querySelector('.notification-wrapper');
-  
-  if (!btn || !dropdown) return;
-  
-  // Move dropdown to body to escape all stacking contexts
-  document.body.appendChild(dropdown);
-  dropdown.style.position = 'fixed';
-  dropdown.style.zIndex = '2147483647';
-  
-  function positionDropdown() {
-    const rect = btn.getBoundingClientRect();
-    dropdown.style.top = (rect.bottom + 10) + 'px';
-    dropdown.style.right = (window.innerWidth - rect.right) + 'px';
-  }
-  
-  // Toggle dropdown
-  btn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    if (!dropdown.classList.contains('active')) {
-      positionDropdown();
-    }
-    dropdown.classList.toggle('active');
-  });
-  
-  // Reposition on resize
-  window.addEventListener('resize', () => {
-    if (dropdown.classList.contains('active')) {
-      positionDropdown();
-    }
-  });
-  
-  // Close when clicking outside
-  document.addEventListener('click', (e) => {
-    if (!dropdown.contains(e.target) && !btn.contains(e.target)) {
-      dropdown.classList.remove('active');
-    }
-  });
-  
-  // Mark all as read
-  if (markRead) {
-    markRead.addEventListener('click', () => {
-      const unreadItems = dropdown.querySelectorAll('.notification-item.unread');
-      unreadItems.forEach(item => item.classList.remove('unread'));
-      if (badge) badge.style.display = 'none';
-    });
-  }
-  
-  // Individual item click - mark as read
-  dropdown.querySelectorAll('.notification-item').forEach(item => {
-    item.addEventListener('click', () => {
-      item.classList.remove('unread');
-      updateBadge();
-    });
-  });
-  
-  function updateBadge() {
-    const unreadCount = dropdown.querySelectorAll('.notification-item.unread').length;
-    if (badge) {
-      if (unreadCount > 0) {
-        badge.textContent = unreadCount;
-        badge.style.display = 'flex';
-      } else {
-        badge.style.display = 'none';
-      }
-    }
-  }
-})();
-
 /* ── COUNT-UP ANIMATION ── */
 function countUp(el, target, duration) {
   const start = performance.now();
-  const isFloat = target % 1 !== 0;
+  const prefix = el.dataset.prefix || '';
+  const decimals = parseInt(el.dataset.decimals || '0', 10);
+  const isFloat = decimals > 0 || target % 1 !== 0;
   (function step(now) {
     const p = Math.min((now - start) / duration, 1);
     const ease = 1 - Math.pow(1 - p, 4);
-    el.textContent = isFloat
-      ? (target * ease).toFixed(2)
-      : Math.round(target * ease).toLocaleString();
+    const val = target * ease;
+    el.textContent = prefix + (isFloat ? val.toFixed(decimals) : Math.round(val).toLocaleString());
     if (p < 1) requestAnimationFrame(step);
-    else el.textContent = isFloat ? target.toFixed(2) : target.toLocaleString();
+    else el.textContent = prefix + (isFloat ? target.toFixed(decimals) : target.toLocaleString());
   })(start);
 }
 
@@ -328,8 +314,9 @@ const observer = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.2 });
 
-const strip = document.querySelector('.metrics-strip');
-if (strip) observer.observe(strip);
+document.querySelectorAll('.booking-hub-strip, .metrics-strip').forEach(strip => {
+  if (strip) observer.observe(strip);
+});
 
 /* ── FILTER ── */
 function filterRecent(q) {
@@ -357,8 +344,8 @@ if (ctx && typeof Chart !== 'undefined') {
   areaGrad.addColorStop(0.5, 'rgba(255,255,255,0.15)');
   areaGrad.addColorStop(1,   'rgba(255,255,255,0.02)');
 
-  const base = {{ totalValue|default(269100) }} / 1000;
-  const data = [base*.60, base*.75, base*.55, base*.82, base*.95, base*.78, base*1.0];
+  const base = {{ totalRevenue|default(0) }} / 1000 || 1;
+  const data = [base*.40, base*.55, base*.45, base*.70, base*.85, base*.65, base*1.0];
 
   new Chart(ctx, {
     type: 'line',

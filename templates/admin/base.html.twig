@@ -2,7 +2,7 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('css/admin.css') }}?v=11">
+    <link rel="stylesheet" href="{{ asset('css/admin.css') }}?v=12">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -21,8 +21,21 @@
         <nav class="menu">
             <a class="menu-item {{ current == 'app_admin_dashboard' ? 'active' : '' }}" href="{{ path('app_admin_dashboard') }}">
                 <i class="menu-icon"><i data-feather="bar-chart-2"></i></i>
-                <span>Admin</span>
+                <span>Dashboard</span>
             </a>
+            <a class="menu-item {{ current == 'app_admin_bookings' ? 'active' : '' }}" href="{{ path('app_admin_bookings') }}">
+                <i class="menu-icon"><i data-feather="calendar"></i></i>
+                <span>Bookings</span>
+            </a>
+            <a class="menu-item {{ current == 'app_admin_orders' ? 'active' : '' }}" href="{{ path('app_admin_orders') }}">
+                <i class="menu-icon"><i data-feather="shopping-bag"></i></i>
+                <span>Orders</span>
+            </a>
+            <a class="menu-item {{ current == 'app_admin_payments' ? 'active' : '' }}" href="{{ path('app_admin_payments') }}">
+                <i class="menu-icon"><i data-feather="credit-card"></i></i>
+                <span>Payments</span>
+            </a>
+            <a class="menu-item menu-divider-label"><span>Inventory</span></a>
             <a class="menu-item {{ current starts with 'app_product_' ? 'active' : '' }}" href="{{ path('app_product_index') }}">
                 <i class="menu-icon"><i data-feather="smartphone"></i></i>
                 <span>Product Services</span>
@@ -54,6 +67,9 @@
     </aside>
 
     <div class="main">
+        {% if is_granted('ROLE_ADMIN') %}
+            {% include 'admin/_realtime_notifications.html.twig' %}
+        {% endif %}
         <main class="content">
             {% for type, messages in app.flashes %}
                 {% for message in messages %}
@@ -73,4 +89,7 @@
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('js/sidebar-animations.js') }}"></script>
+    {% if is_granted('ROLE_ADMIN') %}
+    <script src="{{ asset('js/admin-realtime.js') }}?v=4"></script>
+    {% endif %}
 {% endblock %}

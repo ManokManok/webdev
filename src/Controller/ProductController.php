@@ -6,6 +6,7 @@ use App\Entity\Product;
 use App\Form\Product1Type;
 use App\Repository\ProductRepository;
 use App\Service\ActivityLogService;
+use App\Service\CustomerNotificationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,7 +17,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProductController extends AbstractController
 {
     public function __construct(
-        private ActivityLogService $activityLogService
+        private ActivityLogService $activityLogService,
+        private CustomerNotificationService $customerNotifications,
     ) {
     }
     /**
@@ -49,6 +51,8 @@ class ProductController extends AbstractController
             
             $entityManager->persist($product);
             $entityManager->flush();
+
+            $this->customerNotifications->productsChanged('created', $product);
 
             $this->activityLogService->log(
                 $this->getUser(),
@@ -91,6 +95,8 @@ class ProductController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
+            $this->customerNotifications->productsChanged('updated', $product);
+
             $this->activityLogService->log(
                 $this->getUser(),
                 'UPDATE',
@@ -114,6 +120,7 @@ class ProductController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$product->getId(), $request->request->get('_token'))) {
             $productId = $product->getId();
             $productName = $product->getName();
+            $this->customerNotifications->productsChanged('deleted', $product);
             $entityManager->remove($product);
             $entityManager->flush();
 
