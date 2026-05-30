@@ -136,12 +136,21 @@ else
       || echo "Schema sync skipped."
   fi
 
-  # Same demo data as local: full fixtures on empty catalog, otherwise ensure accounts only.
+  # Seed from local nino DB dump (data/seeds/app-fixture-nino-railway.sql) when catalog is empty.
   if ! php bin/console dbal:run-sql "SELECT 1 FROM product LIMIT 1" >/dev/null 2>&1; then
-    echo "Empty catalog — loading demo fixtures (same as local doctrine:fixtures:load)..."
-    php bin/console doctrine:fixtures:load --no-interaction || echo "Fixtures skipped."
+    if [ -f "data/seeds/app-fixture-nino-railway.sql" ]; then
+      echo "Empty catalog — importing nino SQL seed (app-fixture-nino)..."
+      php bin/console app:import-nino-seed --no-interaction || echo "Nino seed skipped."
+    else
+      echo "Empty catalog — loading demo fixtures..."
+      php bin/console doctrine:fixtures:load --no-interaction || echo "Fixtures skipped."
+    fi
   elif [ "${RUN_FIXTURES:-0}" = "1" ]; then
-    php bin/console doctrine:fixtures:load --no-interaction || echo "Fixtures skipped."
+    if [ -f "data/seeds/app-fixture-nino-railway.sql" ]; then
+      php bin/console app:import-nino-seed --force --no-interaction || echo "Nino seed skipped."
+    else
+      php bin/console doctrine:fixtures:load --no-interaction || echo "Fixtures skipped."
+    fi
   fi
 
   php bin/console app:ensure-demo-customer --no-interaction || echo "Demo customer seed skipped."

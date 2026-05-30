@@ -57,7 +57,7 @@ Admin order actions: **Admin → Orders** (Approve / Reject) or `PATCH /api/admi
 
 | Role     | Email                      | Password     |
 |----------|----------------------------|--------------|
-| Admin    | admin@onins                  | admin123     |
+| Admin    | admin@onins.com              | admin123     |
 | Customer | customer@onins.com         | customer123  |
 | Admin    | stockadmin@cabajon.com     | admin123     |
 | Staff    | stockmanager@cabajon.com   | staff123     |
@@ -180,7 +180,7 @@ Production API / web admin: **https://webdev-production-c694.up.railway.app**
 
 1. In the Railway project, open the **webdev** service → **Variables** → **Add Reference** → select **MySQL** → add `DATABASE_URL` (or all `MYSQL*` variables). Without this, the container cannot reach the database.
 2. Set `APP_SECRET` to a long random string (see `railway.env.example`).
-3. `RAILWAY_PUBLIC_DOMAIN` is set automatically; `scripts/railway-start.sh` uses it for `GOOGLE_OAUTH_CALLBACK_BASE` and runs migrations + demo fixtures (same flow as local `start-api.ps1`).
+3. `RAILWAY_PUBLIC_DOMAIN` is set automatically; `scripts/railway-start.sh` runs migrations, then imports **`data/seeds/app-fixture-nino-railway.sql`** (exported from your local `nino` MySQL database) when the product catalog is empty. Full backup: `data/seeds/app-fixture-nino.sql` / `data/seeds/app fixture nino (1).sql`. Refresh after local changes: `php bin/console app:import-nino-seed` (see `railway.env.example`). Set `RUN_FIXTURES=1` to force re-import on deploy.
 4. Health check: `/health.html` · API: `https://webdev-production-c694.up.railway.app/api`
 
 **Google OAuth on Railway:** add `https://webdev-production-c694.up.railway.app/connect/google/check` to authorized redirect URIs and set `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` on webdev.

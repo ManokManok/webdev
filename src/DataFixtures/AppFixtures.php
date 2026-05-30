@@ -250,6 +250,16 @@ class AppFixtures extends Fixture
 
     private function createAdminUser(ObjectManager $manager): void
     {
+        $primaryAdmin = new User();
+        $primaryAdmin->setUsername('admin@onins.com');
+        $primaryAdmin->setEmail('admin@onins.com');
+        $primaryAdmin->setFullName('Administrator');
+        $primaryAdmin->setRoles(['ROLE_ADMIN', 'ROLE_USER']);
+        $primaryAdmin->setPassword($this->passwordHasher->hashPassword($primaryAdmin, 'admin123'));
+        $primaryAdmin->setIsActive(true);
+        $primaryAdmin->setIsVerified(true);
+        $manager->persist($primaryAdmin);
+
         $admin = new User();
         $admin->setUsername('stockadmin');
         $admin->setEmail('stockadmin@cabajon.com');
