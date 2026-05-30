@@ -57,6 +57,7 @@ Admin order actions: **Admin → Orders** (Approve / Reject) or `PATCH /api/admi
 
 | Role     | Email                      | Password     |
 |----------|----------------------------|--------------|
+| Admin    | admin@onins                  | admin123     |
 | Customer | customer@onins.com         | customer123  |
 | Admin    | stockadmin@cabajon.com     | admin123     |
 | Staff    | stockmanager@cabajon.com   | staff123     |
