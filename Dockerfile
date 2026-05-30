@@ -25,6 +25,15 @@ RUN printf '%s\n' \
     'JWT_SECRET_KEY=%kernel.project_dir%/config/jwt/private.pem' \
     'JWT_PUBLIC_KEY=%kernel.project_dir%/config/jwt/public.pem' \
     'JWT_PASSPHRASE=build' \
+    'JWT_TOKEN_TTL=604800' \
+    'CORS_ALLOW_ORIGIN=^https?://.*$' \
+    'MERCURE_JWT_SECRET=buildtime_mercure_secret' \
+    'MERCURE_URL=http://127.0.0.1:3000/.well-known/mercure' \
+    'MERCURE_PUBLIC_URL=http://127.0.0.1:3000/.well-known/mercure' \
+    'GOOGLE_CLIENT_ID=not-configured' \
+    'GOOGLE_CLIENT_SECRET=not-configured' \
+    'MESSENGER_TRANSPORT_DSN=sync://' \
+    'MAILER_DSN=null://null' \
     > .env \
     && mkdir -p config/jwt
 
