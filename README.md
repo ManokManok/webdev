@@ -173,6 +173,20 @@ Import `docs/ONINS-Customer-API.postman_collection.json` into Postman. Run **Log
 { "status": "error", "message": "...", "errors": { "field": "..." } }
 ```
 
+## Railway (webdev + MySQL)
+
+Production API / web admin: **https://webdev-production-c694.up.railway.app**
+
+1. In the Railway project, open the **webdev** service → **Variables** → **Add Reference** → select **MySQL** → add `DATABASE_URL` (or all `MYSQL*` variables). Without this, the container cannot reach the database.
+2. Set `APP_SECRET` to a long random string (see `railway.env.example`).
+3. `RAILWAY_PUBLIC_DOMAIN` is set automatically; `scripts/railway-start.sh` uses it for `GOOGLE_OAUTH_CALLBACK_BASE` and runs migrations + demo fixtures (same flow as local `start-api.ps1`).
+4. Health check: `/health.html` · API: `https://webdev-production-c694.up.railway.app/api`
+
+**Google OAuth on Railway:** add `https://webdev-production-c694.up.railway.app/connect/google/check` to authorized redirect URIs and set `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` on webdev.
+
+**Mobile app against Railway:** in APPDEV `.env` set  
+`EXPO_PUBLIC_API_URL=https://webdev-production-c694.up.railway.app/api` and restart Metro.
+
 ## Mobile app
 
 See `../APPDEV/README.md` for React Native setup. Start the API with `start-api-for-mobile.bat` or `scripts/start-api.ps1`. Data from the app uses the same MySQL database and appears in the web admin after refresh.

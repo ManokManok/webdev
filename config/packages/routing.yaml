@@ -9,4 +9,6 @@ framework:
 when@prod:
     framework:
         router:
+            # CLI / absolute URLs on Railway (set by scripts/railway-start.sh)
+            default_uri: '%env(default::APP_DEFAULT_URI)%'
             strict_requirements: null
