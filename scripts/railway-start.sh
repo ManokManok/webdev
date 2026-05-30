@@ -69,7 +69,23 @@ else
 fi
 
 export CORS_ALLOW_ORIGIN="${CORS_ALLOW_ORIGIN:-'^https?://.*$'}"
-export MERCURE_JWT_SECRET="${MERCURE_JWT_SECRET:-buildtime_mercure_secret}"
+# Mercure HS256 requires a key of at least 32 bytes (Lcobucci JWT).
+export MERCURE_JWT_SECRET="${MERCURE_JWT_SECRET:-}"
+if [ -z "${MERCURE_JWT_SECRET}" ] || [ "${#MERCURE_JWT_SECRET}" -lt 32 ]; then
+  MERCURE_JWT_SECRET="$(php -r '
+    $raw = getenv("MERCURE_JWT_SECRET") ?: "";
+    $app = getenv("APP_SECRET") ?: "";
+    if (strlen($raw) >= 32) {
+        echo $raw;
+    } elseif (strlen($app) >= 32) {
+        echo hash("sha256", $app);
+    } else {
+        echo hash("sha256", "onins_mercure_production_fallback_v1");
+    }
+  ')"
+  export MERCURE_JWT_SECRET
+  echo "MERCURE_JWT_SECRET normalized to 32+ bytes for HS256."
+fi
 export MERCURE_URL="${MERCURE_URL:-http://127.0.0.1:3000/.well-known/mercure}"
 export MERCURE_PUBLIC_URL="${MERCURE_PUBLIC_URL:-http://127.0.0.1:3000/.well-known/mercure}"
 export GOOGLE_CLIENT_ID="${GOOGLE_CLIENT_ID:-not-configured}"

@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Lcobucci\JWT\Signer\InvalidKeyProvided;
 use Symfony\Component\Mercure\Jwt\TokenFactoryInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -40,7 +41,14 @@ class AdminRealtimeController extends AbstractController
         }
 
         $topics = RealtimeTopics::forAdmin();
-        $subscriberToken = $tokenFactory->create($topics, []);
+        try {
+            $subscriberToken = $tokenFactory->create($topics, []);
+        } catch (InvalidKeyProvided $e) {
+            return $this->json([
+                'status' => 'error',
+                'message' => 'Mercure JWT secret is invalid (must be at least 32 characters). Set MERCURE_JWT_SECRET on the server.',
+            ], Response::HTTP_SERVICE_UNAVAILABLE);
+        }
 
         return $this->json([
             'status' => 'success',
@@ -87,7 +95,18 @@ class AdminRealtimeController extends AbstractController
         }
 
         $topics = RealtimeTopics::forAdmin();
-        $token = $tokenFactory->create($topics, []);
+        try {
+            $token = $tokenFactory->create($topics, []);
+        } catch (InvalidKeyProvided) {
+            return new StreamedResponse(
+                static function (): void {
+                    echo "event: error\ndata: {\"message\":\"Mercure JWT secret is too short. Set MERCURE_JWT_SECRET to at least 32 characters.\"}\n\n";
+                    flush();
+                },
+                Response::HTTP_SERVICE_UNAVAILABLE,
+                ['Content-Type' => 'text/event-stream; charset=UTF-8']
+            );
+        }
         $topicQuery = implode('&', array_map(
             static fn (string $topic) => 'topic='.rawurlencode($topic),
             $topics
