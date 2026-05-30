@@ -47,6 +47,9 @@ class SecurityController extends AbstractController
         $user = new User();
         $registrationForm = $this->createForm(RegistrationType::class, $user);
 
+        // Start session before CSRF token is rendered (required on Railway / PHP built-in server).
+        $request->getSession()->start();
+
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user

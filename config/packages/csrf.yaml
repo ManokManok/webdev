@@ -5,7 +5,6 @@ framework:
             token_id: submit
 
     csrf_protection:
+        # Login uses session-backed CSRF (required behind Railway HTTPS proxy).
         stateless_token_ids:
             - submit
-            - authenticate
-            - logout

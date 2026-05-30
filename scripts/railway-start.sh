@@ -78,6 +78,9 @@ export JWT_PASSPHRASE="${JWT_PASSPHRASE:-build}"
 export JWT_TOKEN_TTL="${JWT_TOKEN_TTL:-604800}"
 export MESSENGER_TRANSPORT_DSN="${MESSENGER_TRANSPORT_DSN:-sync://}"
 export MAILER_DSN="${MAILER_DSN:-null://null}"
+export TRUSTED_PROXIES="${TRUSTED_PROXIES:-REMOTE_ADDR}"
+
+mkdir -p var/sessions var/cache
 
 printf '%s\n' \
   "APP_ENV=${APP_ENV}" \
@@ -99,7 +102,8 @@ printf '%s\n' \
   "MAILER_DSN=${MAILER_DSN}" \
   > .env
 
-mkdir -p config/jwt
+mkdir -p config/jwt var/sessions
+chmod 777 var/sessions 2>/dev/null || true
 php bin/console lexik:jwt:generate-keypair --skip-if-exists --no-interaction
 
 echo "Public URL: ${APP_PUBLIC_URL}"
