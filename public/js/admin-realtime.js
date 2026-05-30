@@ -1,5 +1,6 @@
 /**
- * Admin Mercure subscriber — live toasts, notification bell, and list refresh (no page reload).
+ * Admin live updates: Mercure SSE (when available) + event poll + list poll for
+ * bookings, orders, and payments (no page reload).
  */
 (function () {
   const REALTIME_EVENTS = new Set([
@@ -31,13 +32,22 @@
     'payment.created': 'payments',
   };
 
+  const EVENT_POLL_MS = 2500;
+  const LIST_POLL_MS = 5000;
+
   let eventSource = null;
   let reconnectTimer = null;
-  let pollTimer = null;
+  let eventPollTimer = null;
+  let listPollTimer = null;
   let connectWatchdog = null;
   let connected = false;
   let pollMode = false;
   let lastEventId = 0;
+  const listSnapshots = {
+    orders: { seeded: false, ids: new Set(), statuses: new Map() },
+    bookings: { seeded: false, ids: new Set(), statuses: new Map() },
+    payments: { seeded: false, ids: new Set(), statuses: new Map() },
+  };
   const seenIds = new Set();
   const MAX_NOTIFICATIONS = 40;
 
@@ -439,6 +449,72 @@
     }
   }
 
+  function rowPayload(kind, row) {
+    if (kind === 'orders') {
+      return {
+        orderId: row.id,
+        customerName: row.customerName,
+        productName: row.productName,
+        status: row.status,
+      };
+    }
+    if (kind === 'bookings') {
+      return {
+        bookingId: row.id,
+        customerName: row.customerName,
+        productName: row.productName,
+        status: row.status,
+      };
+    }
+    return {
+      paymentId: row.id,
+      orderId: row.orderId,
+      customerName: row.customerName,
+      amount: row.amount,
+      status: row.status,
+    };
+  }
+
+  function detectListChanges(kind, rows) {
+    const snap = listSnapshots[kind];
+    if (!snap) {
+      return;
+    }
+
+    rows.forEach(function (row) {
+      const id = row.id;
+      const status = String(row.status || '');
+      if (snap.seeded) {
+        if (!snap.ids.has(id)) {
+          const createdType =
+            kind === 'orders' ? 'order.created' : kind === 'bookings' ? 'booking.created' : 'payment.created';
+          processParsedEvent({
+            type: createdType,
+            payload: rowPayload(kind, row),
+            at: new Date().toISOString(),
+          });
+        } else if (snap.statuses.get(id) !== status && kind !== 'payments') {
+          const updatedType = kind === 'orders' ? 'order.updated' : 'booking.updated';
+          processParsedEvent({
+            type: updatedType,
+            payload: rowPayload(kind, row),
+            at: new Date().toISOString(),
+          });
+        }
+      }
+      snap.ids.add(id);
+      snap.statuses.set(id, status);
+    });
+
+    snap.seeded = true;
+  }
+
+  function getActiveListKinds() {
+    return Object.keys(LIST_ENDPOINTS).filter(function (kind) {
+      return document.querySelector('[data-realtime-table="' + kind + '"]');
+    });
+  }
+
   function refreshList(kind) {
     const url = LIST_ENDPOINTS[kind];
     if (!url || !document.querySelector('[data-realtime-table="' + kind + '"]')) {
@@ -455,6 +531,7 @@
         if (!body || !Array.isArray(body.data)) {
           return;
         }
+        detectListChanges(kind, body.data);
         if (kind === 'orders') {
           renderOrdersTable(body.data);
         } else if (kind === 'bookings') {
@@ -464,6 +541,35 @@
         }
       })
       .catch(function () {});
+  }
+
+  function pollLists() {
+    refreshCounts();
+    const kinds = getActiveListKinds();
+    if (!kinds.length) {
+      return;
+    }
+    kinds.forEach(function (kind) {
+      refreshList(kind);
+    });
+    if (!connected) {
+      markLive('poll');
+    }
+  }
+
+  function startListPolling() {
+    if (listPollTimer) {
+      return;
+    }
+    pollLists();
+    listPollTimer = window.setInterval(pollLists, LIST_POLL_MS);
+  }
+
+  function stopListPolling() {
+    if (listPollTimer) {
+      clearInterval(listPollTimer);
+      listPollTimer = null;
+    }
   }
 
   function markLive(mode) {
@@ -547,18 +653,18 @@
       });
   }
 
-  function startPolling() {
-    if (pollTimer) {
+  function startEventPolling() {
+    if (eventPollTimer) {
       return;
     }
     pollEvents();
-    pollTimer = window.setInterval(pollEvents, 2500);
+    eventPollTimer = window.setInterval(pollEvents, EVENT_POLL_MS);
   }
 
-  function stopPolling() {
-    if (pollTimer) {
-      clearInterval(pollTimer);
-      pollTimer = null;
+  function stopEventPolling() {
+    if (eventPollTimer) {
+      clearInterval(eventPollTimer);
+      eventPollTimer = null;
     }
   }
 
@@ -569,7 +675,7 @@
     connectWatchdog = window.setTimeout(function () {
       connectWatchdog = null;
       if (!connected) {
-        startPolling();
+        startEventPolling();
       }
     }, 4000);
   }
@@ -584,7 +690,7 @@
 
     eventSource.onopen = function () {
       markLive('stream');
-      stopPolling();
+      // Keep event + list polling — Mercure hub is often unreachable on Railway.
     };
 
     eventSource.onmessage = function (event) {
@@ -698,7 +804,8 @@
     initNotificationDropdown();
     refreshCounts();
     bootstrap();
-    startPolling();
+    startEventPolling();
+    startListPolling();
   }
 
   if (document.readyState === 'loading') {
@@ -717,6 +824,7 @@
     if (connectWatchdog) {
       clearTimeout(connectWatchdog);
     }
-    stopPolling();
+    stopEventPolling();
+    stopListPolling();
   });
 })();

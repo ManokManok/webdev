@@ -20,6 +20,11 @@ class RealtimePublisher
 
     public function publish(string $topic, string $type, array $payload = []): void
     {
+        // Always queue for /admin/realtime/poll even when Mercure hub is down (e.g. Railway).
+        if (str_contains($topic, '/admin/')) {
+            $this->adminEvents->push($type, $payload);
+        }
+
         try {
             $this->hub->publish(new Update(
                 $topic,
@@ -30,10 +35,6 @@ class RealtimePublisher
                 ], JSON_THROW_ON_ERROR),
                 true
             ));
-
-            if (str_contains($topic, '/admin/')) {
-                $this->adminEvents->push($type, $payload);
-            }
         } catch (\Throwable $exception) {
             $this->logger?->warning('Mercure publish failed: {message}', [
                 'message' => $exception->getMessage(),
